@@ -105,7 +105,7 @@ const DirectReferralReward = () => {
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
             {/* <FaPlane className="text-cyan-400 text-xl sm:text-2xl" /> */}
-            Direct Referral Tour Rewards
+            Referral Tour Rewards
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Manage global tour reward tiers and view achievers
