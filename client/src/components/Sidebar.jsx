@@ -235,6 +235,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
                   <button className={submenuClass(isActive("/dashboard/rewards"))} onClick={() => go("/dashboard/rewards")} type="button">Rewards</button>
                   <button className={submenuClass(isActive("/dashboard/reward-claims"))} onClick={() => go("/dashboard/reward-claims")} type="button">Monthly Claims</button>
                   <button className={submenuClass(isActive("/dashboard/banner-image"))} onClick={() => go("/dashboard/banner-image")} type="button">Banner Image</button>
+                  <button className={submenuClass(isActive("/dashboard/config-referral"))} onClick={() => go("/dashboard/config-referral")} type="button">Referral Rewards</button>
                 </div>
               </div>
             </div>
@@ -260,7 +261,6 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
                   <button className={submenuClass(isActive("/dashboard/config-level"))} onClick={() => go("/dashboard/config-level")} type="button">Level</button>
                   <button className={submenuClass(isActive("/dashboard/config-unlock"))} onClick={() => go("/dashboard/config-unlock")} type="button">Level Unlock</button>
                   <button className={submenuClass(isActive("/dashboard/config-rank"))} onClick={() => go("/dashboard/config-rank")} type="button">Rank</button>
-                  <button className={submenuClass(isActive("/dashboard/config-referral"))} onClick={() => go("/dashboard/config-referral")} type="button">Direct Referral</button>
                 </div>
               </div>
             </div>
