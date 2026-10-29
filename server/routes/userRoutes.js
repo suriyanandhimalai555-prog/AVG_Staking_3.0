@@ -34,6 +34,13 @@ import {
   updateStakingMultiplier,
   getStakingDivisor,
   updateStakingDivisor,
+  getReferralRewardTiers,
+  addReferralRewardTier,
+  updateReferralRewardTier,
+  deleteReferralRewardTier,
+  getReferralRewardAchievers,
+  getUserRewardTiers,
+  getMyRewardProgress,
 } from "../controllers/userController.js";
 import { verifyToken, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -111,5 +118,15 @@ router.post("/staking-divisor", verifyToken, isAdmin, updateStakingDivisor);
 router.put("/:id/status", verifyToken, isAdmin, updateUserStatus);
 router.put("/:id", verifyToken, isAdmin, updateUser);
 router.delete("/:id", verifyToken, isAdmin, deleteUser);
+
+router.get("/admin/reward-tiers", verifyToken, isAdmin, getReferralRewardTiers);
+router.post("/admin/reward-tiers", verifyToken, isAdmin, addReferralRewardTier);
+router.put("/admin/reward-tiers/:id", verifyToken, isAdmin, updateReferralRewardTier);
+router.delete("/admin/reward-tiers/:id", verifyToken, isAdmin, deleteReferralRewardTier);
+router.get("/admin/reward-achievers", verifyToken, isAdmin, getReferralRewardAchievers);
+
+// User Reward Routes
+router.get("/reward-tiers", verifyToken, getUserRewardTiers);
+router.get("/my-reward-progress", verifyToken, getMyRewardProgress);
 
 export default router;

@@ -1,220 +1,142 @@
-import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/user/UserSidebar";
 import Topbar from "../components/user/UserTopbar";
-import { formatDateTimeIST } from "../utils/dateFormat";
+import axios from "axios";
+import { FaInfo, FaTrophy } from "react-icons/fa";
 
 const UserDirectReferralReward = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [tierData, setTierData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
 
-  // ✅ FETCH DATA
-  const fetchDirectReferrals = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/users/my-direct-income`,
-        {
+  useEffect(() => {
+    const fetchUserRewardsData = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/users/my-reward-progress`, {
           headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+        });
 
-      const formattedData = (res.data || []).map((item) => ({
-        id: `D-${item.id}`,
-        from: item.from || "-",
-        fromId: item.fromId || "-",
-        to: item.to || "-",
-        toId: item.toId || "-",
-        type: item.type || "Direct Referral Reward",
-        amount: `$${Number(item.amount || 0).toFixed(2)}`,
-        date: item.date || item.created_at,
-      }));
+        setTierData(res.data.tiers || []);
+      } catch (err) {
+        console.error("Error fetching user tour rewards:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      // Sort by newest date first
-      const sorted = formattedData.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
-
-      setData(sorted);
-    } catch (err) {
-      console.error("Direct referral reward fetch error:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchDirectReferrals();
-  }, []);
-
-  // ✅ FILTER
-  const filteredData = useMemo(() => {
-    return data.filter((item) =>
-      Object.values(item)
-        .join("")
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
-  }, [search, data]);
-
-  // ✅ PAGINATION
-  const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
-
-  const paginatedData = useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    return filteredData.slice(start, start + rowsPerPage);
-  }, [filteredData, page, rowsPerPage]);
-
-  useEffect(() => {
-    if (page > totalPages) setPage(1);
-  }, [totalPages, page]);
-
-  const getPagination = () => {
-    const pages = [];
-    const maxVisible = 5;
-
-    let start = Math.max(page - 2, 1);
-    let end = Math.min(start + maxVisible - 1, totalPages);
-
-    if (end - start < maxVisible - 1) {
-      start = Math.max(end - maxVisible + 1, 1);
-    }
-
-    if (start > 1) {
-      pages.push(1);
-      if (start > 2) pages.push("...");
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (end < totalPages) {
-      if (end < totalPages - 1) pages.push("...");
-      pages.push(totalPages);
-    }
-
-    return pages;
-  };
+    fetchUserRewardsData();
+  }, [token]);
 
   return (
-    <div className="utxLayout">
+    <div className="userRewardLayout">
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <div className="main">
         <Topbar isOpen={isOpen} setIsOpen={setIsOpen} />
 
-        <div className="utxContent">
-          <div className="utxFirstContent">
-            <h2 className="utxTitle">Direct Referral Rewards</h2>
+        <div className="userRewardPage">
+          {/* HEADER */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-white tracking-wide flex items-center gap-2">
+                Level-wise Tour Rewards
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">
+                Track your milestone progress and unlock exclusive global tours level by level.
+              </p>
+            </div>
 
-            <div className="utxSearch">
-              <input
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                  setPage(1);
-                }}
-              />
+            {/* Policy Notice Box */}
+            <div className="flex items-start md:items-center gap-3 bg-amber-500/10 border border-amber-500/20 px-4 py-3 rounded-lg max-w-md">
+              <div className="p-1.5 bg-amber-500/20 rounded-md text-amber-400 mt-0.5 md:mt-0 flex items-center justify-center shrink-0">
+                <FaInfo className="text-xs" />
+              </div>
+              <h2 className="text-xs leading-relaxed text-amber-200/90 font-medium">
+                Each tour reward tier corresponds to active business volume achieved at that specific referral level.
+              </h2>
             </div>
           </div>
 
-          <div className="utxTableWrapper">
-            <table className="utxTable">
-              <thead>
-                <tr>
-                  <th>S.NO</th>
-                  <th>FROM USER</th>
-                  <th>TO USER</th>
-                  <th>TYPE</th>
-                  <th>AMOUNT</th>
-                  <th>CREATED AT</th>
-                </tr>
-              </thead>
+          {/* BODY */}
+          {loading ? (
+            <div className="rewardEmpty">Loading...</div>
+          ) : tierData.length === 0 ? (
+            <div className="rewardEmpty">No tour reward tiers available</div>
+          ) : (
+            tierData.map((tier, index) => {
+              const progressPercent = Math.min(
+                100,
+                (Number(tier.currentVolume || 0) / Number(tier.target_volume)) * 100
+              );
 
-              <tbody>
-                {paginatedData.length === 0 ? (
-                  <tr>
-                    <td colSpan="6" style={{ textAlign: "center" }}>
-                      No direct referral rewards found
-                    </td>
-                  </tr>
-                ) : (
-                  paginatedData.map((item, index) => (
-                    <tr key={item.id}>
-                      <td>{(page - 1) * rowsPerPage + index + 1}</td>
-                      <td>
-                        <p>{item.from}</p>
-                        <span>{item.fromId}</span>
-                      </td>
-                      <td>
-                        <p>{item.to}</p>
-                        <span>{item.toId}</span>
-                      </td>
-                      <td>{item.type}</td>
-                      <td className="utxAmount">{item.amount}</td>
-                      <td>{formatDateTimeIST(item.date)}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+              return (
+                <div className="rewardCard" key={tier.id || index}>
+                  {/* TOP */}
+                  <div className="rewardCardTop">
+                    <div className="rewardTitleBlock">
+                      <FaTrophy className="rewardIcon" />
+                      <div>
+                        <h3>Level {tier.level}: {tier.tour_name}</h3>
+                        <p>Required Volume: ${Number(tier.target_volume).toLocaleString()}</p>
+                      </div>
+                    </div>
 
-          {/* ✅ CLEAN PAGINATION */}
-          <div className="usrDeposit__footer">
-            <div className="usrDeposit__rows">
-              Rows:
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                  setPage(1);
-                }}
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-              </select>
-            </div>
+                    <div className={`rewardStatus ${tier.isAchieved ? "success" : "pending"}`}>
+                      {tier.isAchieved ? "Completed" : "In Progress"}
+                    </div>
+                  </div>
 
-            <div className="usrDeposit__pagination">
-              <button
-                disabled={page === 1}
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-              >
-                {"<"}
-              </button>
+                  {/* TABLE */}
+                  <div className="rewardTableWrap">
+                    <table className="rewardTable">
+                      <thead>
+                        <tr>
+                          <th>Level</th>
+                          <th>Target Volume</th>
+                          <th>Proposed Tour</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Level {tier.level}</td>
+                          <td>${Number(tier.target_volume).toLocaleString()}</td>
+                          <td>{tier.tour_name}</td>
+                          <td>
+                            <span className={`statusBadge ${tier.isAchieved ? "success" : "pending"}`}>
+                              {tier.isAchieved ? "Unlocked ✅" : "Locked 🔒"}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-              {getPagination().map((p, i) =>
-                p === "..." ? (
-                  <span key={i}>...</span>
-                ) : (
-                  <button
-                    key={i}
-                    className={page === p ? "active" : ""}
-                    onClick={() => setPage(p)}
-                  >
-                    {p}
-                  </button>
-                )
-              )}
+                  {/* PROGRESS */}
+                  <div className="progressBox">
+                    <div className="progressHead">
+                      <span>Level {tier.level} Progress</span>
+                      <span>
+                        ${Number(tier.currentVolume || 0).toLocaleString()} / ${Number(tier.target_volume).toLocaleString()}
+                      </span>
+                    </div>
 
-              <button
-                disabled={page === totalPages}
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              >
-                {">"}
-              </button>
-            </div>
-          </div>
+                    <div className="progressBar">
+                      <div
+                        className="progressFill"
+                        style={{
+                          width: `${tier.isAchieved ? 100 : progressPercent}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>

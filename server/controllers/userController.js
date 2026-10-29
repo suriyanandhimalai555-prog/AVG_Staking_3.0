@@ -1207,3 +1207,233 @@ export const updateStakingDivisor = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+/* ================= REFERRAL REWARD TIERS & ACHIEVERS (BY LEVEL) ================= */
+
+async function ensureRewardTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS referral_reward_tiers (
+        id SERIAL PRIMARY KEY,
+        target_volume NUMERIC(12,2) NOT NULL,
+        tour_name VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+}
+
+// Get all unique reward tiers sorted by target volume (Levels 1 to 7)
+export const getReferralRewardTiers = async (req, res) => {
+  try {
+    await ensureRewardTable();
+    const result = await pool.query(
+      `SELECT DISTINCT ON (target_volume) * FROM referral_reward_tiers ORDER BY target_volume ASC, id ASC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("getReferralRewardTiers error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Add new reward tier (Admin)
+export const addReferralRewardTier = async (req, res) => {
+  try {
+    await ensureRewardTable();
+    const { target_volume, tour_name } = req.body;
+    if (!target_volume || !tour_name) {
+      return res.status(400).json({ message: "Target volume and tour name are required" });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO referral_reward_tiers (target_volume, tour_name) VALUES ($1, $2) RETURNING *`,
+      [target_volume, tour_name]
+    );
+
+    res.json({ message: "Reward tier added successfully", tier: result.rows[0] });
+  } catch (err) {
+    console.error("addReferralRewardTier error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Update reward tier (Admin)
+export const updateReferralRewardTier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { target_volume, tour_name } = req.body;
+
+    const result = await pool.query(
+      `UPDATE referral_reward_tiers SET target_volume = $1, tour_name = $2 WHERE id = $3 RETURNING *`,
+      [target_volume, tour_name, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Tier not found" });
+    }
+
+    res.json({ message: "Reward tier updated successfully", tier: result.rows[0] });
+  } catch (err) {
+    console.error("updateReferralRewardTier error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Delete reward tier (Admin)
+export const deleteReferralRewardTier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query(`DELETE FROM referral_reward_tiers WHERE id = $1`, [id]);
+    res.json({ message: "Reward tier deleted successfully" });
+  } catch (err) {
+    console.error("deleteReferralRewardTier error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get list of users who achieved tour rewards mapped by level volume (Admin)
+export const getReferralRewardAchievers = async (req, res) => {
+  try {
+    await ensureRewardTable();
+
+    // Calculate volume per user per level using recursive CTE
+    const query = `
+      WITH RECURSIVE referral_network AS (
+        SELECT 
+          referrer_user_id AS main_user_id, 
+          referred_user_id AS user_id, 
+          1 AS level
+        FROM referrals
+        
+        UNION ALL
+        
+        SELECT 
+          rn.main_user_id, 
+          r.referred_user_id, 
+          rn.level + 1
+        FROM referrals r
+        JOIN referral_network rn ON r.referrer_user_id = rn.user_id
+        WHERE rn.level < 7
+      ),
+      level_volumes AS (
+        SELECT 
+          rn.main_user_id,
+          rn.level,
+          COALESCE(SUM(up.amount), 0) AS volume
+        FROM referral_network rn
+        JOIN user_plans up ON up.user_id = rn.user_id AND up.status IN ('active', 'completed')
+        GROUP BY rn.main_user_id, rn.level
+      ),
+      sorted_tiers AS (
+        SELECT id, target_volume, tour_name, 
+               ROW_NUMBER() OVER (ORDER BY target_volume ASC, id ASC) AS tier_level
+        FROM (SELECT DISTINCT ON (target_volume) * FROM referral_reward_tiers ORDER BY target_volume ASC, id ASC) t
+      )
+      SELECT 
+        u.id,
+        u.name,
+        u.lastname,
+        u.user_code,
+        u.email,
+        u.phone,
+        lv.volume AS total_direct_volume,
+        st.tour_name AS unlocked_tour,
+        lv.level AS achieved_level
+      FROM level_volumes lv
+      JOIN sorted_tiers st ON lv.level = st.tier_level AND lv.volume >= st.target_volume
+      JOIN users u ON u.id = lv.main_user_id
+      ORDER BY lv.volume DESC;
+    `;
+
+    const result = await pool.query(query);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("getReferralRewardAchievers error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get reward tiers for users to view
+export const getUserRewardTiers = async (req, res) => {
+  try {
+    await ensureRewardTable();
+    const result = await pool.query(
+      `SELECT DISTINCT ON (target_volume) * FROM referral_reward_tiers ORDER BY target_volume ASC, id ASC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("getUserRewardTiers error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get individual user's tour reward progress level-by-level
+export const getMyRewardProgress = async (req, res) => {
+  try {
+    await ensureRewardTable();
+    const userId = req.user.id;
+
+    // Get volume for each level (1 to 7) for the logged-in user
+    const volRes = await pool.query(
+      `
+      WITH RECURSIVE referral_network AS (
+        SELECT 
+          referred_user_id AS user_id, 
+          1 AS level
+        FROM referrals
+        WHERE referrer_user_id = $1
+        
+        UNION ALL
+        
+        SELECT 
+          r.referred_user_id, 
+          rn.level + 1
+        FROM referrals r
+        JOIN referral_network rn ON r.referrer_user_id = rn.user_id
+        WHERE rn.level < 7
+      )
+      SELECT 
+        rn.level,
+        COALESCE(SUM(up.amount), 0) AS volume
+      FROM referral_network rn
+      LEFT JOIN user_plans up ON up.user_id = rn.user_id AND up.status IN ('active', 'completed')
+      GROUP BY rn.level
+      ORDER BY rn.level ASC;
+      `,
+      [userId]
+    );
+
+    // Map volume by level (e.g., levelVolumes[1] = volume at level 1)
+    const levelVolumes = {};
+    volRes.rows.forEach((row) => {
+      levelVolumes[Number(row.level)] = Number(row.volume);
+    });
+
+    // Fetch sorted unique tiers
+    const tiersRes = await pool.query(
+      `SELECT DISTINCT ON (target_volume) * FROM referral_reward_tiers ORDER BY target_volume ASC, id ASC`
+    );
+    const tiers = tiersRes.rows;
+
+    // Attach level-specific volume and achievement status to each tier
+    const evaluatedTiers = tiers.map((tier, index) => {
+      const tierLevel = index + 1; // Tier 1 corresponds to Level 1, Tier 2 to Level 2, etc.
+      const currentLevelVolume = levelVolumes[tierLevel] || 0;
+      const targetVol = Number(tier.target_volume);
+      const isAchieved = currentLevelVolume >= targetVol;
+
+      return {
+        ...tier,
+        level: tierLevel,
+        currentVolume: currentLevelVolume,
+        isAchieved,
+      };
+    });
+
+    res.json({
+      tiers: evaluatedTiers,
+    });
+  } catch (err) {
+    console.error("getMyRewardProgress error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
