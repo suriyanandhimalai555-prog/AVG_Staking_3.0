@@ -61,19 +61,19 @@ const Signup = () => {
       email: data.email.trim(),
       phone: data.phone.trim(),
       password: data.password,
-      referralCode: data.referralCode.trim(),
+      referralCode: data.referralCode ? data.referralCode.trim() : "",
     };
 
+    // Referral code is now optional
     if (
       !payload.name ||
       !payload.lastname ||
       !payload.email ||
       !payload.phone ||
       !payload.password ||
-      !data.confirmPassword ||
-      !payload.referralCode
+      !data.confirmPassword
     ) {
-      return toast.error("All fields are required");
+      return toast.error("All required fields must be filled");
     }
 
     if (payload.password !== data.confirmPassword) {
@@ -259,7 +259,7 @@ const Signup = () => {
               </div>
 
               <div className="field">
-                <label>Referral Code</label>
+                <label>Referral Code <span style={{ opacity: 0.6, fontSize: "0.85rem" }}>(Optional)</span></label>
                 <div className="input-shell">
                   <span className="input-icon">
                     <MailIcon />
@@ -267,7 +267,7 @@ const Signup = () => {
                   <input
                     type="text"
                     name="referralCode"
-                    placeholder="Referral code"
+                    placeholder="Referral code (optional)"
                     value={data.referralCode}
                     onChange={handleChange}
                   />
