@@ -28,6 +28,7 @@ import RewardClaims from "./pages/RewardClaims";
 import LevelConfig from "./pages/Config-level";
 import LevelUnlockConfig from "./pages/LevelUnlock";
 import RankConfig from "./pages/Rank";
+import DirectReferralReward from "./pages/DirectReferralReward";
 
 import Profile from "./pages/Profile";
 import SupportTicket from "./pages/SupportTicket";
@@ -57,6 +58,7 @@ import Signup from "./pages/Signup";
 import Otp from "./pages/Otp";
 import ForgotPassword from "./pages/ForgotPassword";
 import BannerImage from "./pages/BannerImage";
+import UserDirectReferralReward from "./pages/UserDirectReferralReward";
 
 function App() {
   return (
@@ -114,6 +116,7 @@ function App() {
             <Route path="config-level" element={<LevelConfig />} />
             <Route path="config-unlock" element={<LevelUnlockConfig />} />
             <Route path="config-rank" element={<RankConfig />} />
+            <Route path="config-referral" element={<DirectReferralReward />} />
 
             {/* Account */}
             <Route path="profile" element={<Profile />} />
@@ -140,6 +143,7 @@ function App() {
           <Route path="/user-bank" element={<UserBank />} />
           <Route path="/user-rewards" element={<UserReward />} />
           <Route path="/user-monthly-claims" element={<UserRewardClaims />} />
+          <Route path="/direct-reward" element={<UserDirectReferralReward />} />
         </Route>
 
       </Routes>

@@ -260,6 +260,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
                   <button className={submenuClass(isActive("/dashboard/config-level"))} onClick={() => go("/dashboard/config-level")} type="button">Level</button>
                   <button className={submenuClass(isActive("/dashboard/config-unlock"))} onClick={() => go("/dashboard/config-unlock")} type="button">Level Unlock</button>
                   <button className={submenuClass(isActive("/dashboard/config-rank"))} onClick={() => go("/dashboard/config-rank")} type="button">Rank</button>
+                  <button className={submenuClass(isActive("/dashboard/config-referral"))} onClick={() => go("/dashboard/config-referral")} type="button">Direct Referral</button>
                 </div>
               </div>
             </div>

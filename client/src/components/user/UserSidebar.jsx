@@ -203,6 +203,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <div className={`us-dropdown ${openMenu === "rewards" ? "open" : ""}`}>
           <SubItem label="Rewards" to="/user-rewards" />
           <SubItem label="Monthly Claims" to="/user-monthly-claims" />
+          <SubItem label="Direct Referral Reward" to="/direct-reward" />
         </div>
 
         {/* ACCOUNT */}
