@@ -12,7 +12,64 @@ import { sendForgotPasswordOtpEmail } from "../utils/mailer.js";
 const OTP_MINUTES = Number(process.env.OTP_EXPIRE_MINUTES || 10);
 
 /* ================= SIGNUP (OTP SEND) ================= */
+// export const signup = async (req, res) => {
+//   try {
+//     const { name, lastname, email, phone, password, referralCode } = req.body;
+
+//     if (!name || !lastname || !email || !phone || !password) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+
+//     const normalizedEmail = email.trim().toLowerCase();
+
+//     // ❌ REMOVED strict email uniqueness check (now multiple users allowed)
+
+//     const otp = crypto.randomInt(100000, 999999).toString();
+//     const otpHash = await bcrypt.hash(otp, 10);
+
+//     const signupId = uuidv4(); // 🔥 unique per signup
+
+//     const payload = {
+//       name,
+//       lastname,
+//       email: normalizedEmail,
+//       phone,
+//       password,
+//       referralCode: referralCode?.trim() || null,
+//     };
+
+//     const expiresAt = new Date(Date.now() + OTP_MINUTES * 60 * 1000);
+
+//     // ✅ insert without conflict (multiple rows allowed)
+//     await pool.query(
+//       `
+//       INSERT INTO pending_signups (id, email, otp_hash, payload, expires_at)
+//       VALUES ($1, $2, $3, $4::jsonb, $5)
+//       `,
+//       [signupId, normalizedEmail, otpHash, JSON.stringify(payload), expiresAt]
+//     );
+
+//     await sendSignupOtpEmail({
+//       to: normalizedEmail,
+//       otp,
+//       name,
+//     });
+
+//     return res.status(200).json({
+//       message: "OTP sent to your email",
+//       signupId, // 🔥 IMPORTANT for frontend
+//     });
+//   } catch (error) {
+//     console.error("Signup OTP error:", error);
+//     return res.status(500).json({ message: "Failed to send OTP" });
+//   }
+// };
+
+
+/* ================= DIRECT SIGNUP (NO OTP) ================= */
 export const signup = async (req, res) => {
+  const client = await pool.connect();
+
   try {
     const { name, lastname, email, phone, password, referralCode } = req.body;
 
@@ -22,49 +79,73 @@ export const signup = async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // ❌ REMOVED strict email uniqueness check (now multiple users allowed)
+    await client.query("BEGIN");
 
-    const otp = crypto.randomInt(100000, 999999).toString();
-    const otpHash = await bcrypt.hash(otp, 10);
+    let sponsor = null;
 
-    const signupId = uuidv4(); // 🔥 unique per signup
+    // 🔍 FIND SPONSOR
+    if (referralCode) {
+      const refUser = await client.query(
+        "SELECT id, user_code FROM users WHERE user_code = $1",
+        [referralCode.trim()]
+      );
 
-    const payload = {
-      name,
-      lastname,
-      email: normalizedEmail,
-      phone,
-      password,
-      referralCode: referralCode?.trim() || null,
-    };
+      if (!refUser.rows[0]) {
+        await client.query("ROLLBACK");
+        return res.status(400).json({ message: "Invalid referral code" });
+      }
 
-    const expiresAt = new Date(Date.now() + OTP_MINUTES * 60 * 1000);
+      sponsor = refUser.rows[0];
+    }
 
-    // ✅ insert without conflict (multiple rows allowed)
-    await pool.query(
-      `
-      INSERT INTO pending_signups (id, email, otp_hash, payload, expires_at)
-      VALUES ($1, $2, $3, $4::jsonb, $5)
-      `,
-      [signupId, normalizedEmail, otpHash, JSON.stringify(payload), expiresAt]
+    // 🔐 PASSWORD HASH
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user_code = generateUserCode();
+
+    // ✅ CREATE USER
+    const user = await createUser(
+      {
+        user_code,
+        password: hashedPassword,
+        role: "user",
+        name: name.trim(),
+        lastname: lastname.trim(),
+        email: normalizedEmail,
+        phone: phone.trim(),
+        referred_by: sponsor ? sponsor.user_code : null,
+      },
+      client
     );
 
-    await sendSignupOtpEmail({
-      to: normalizedEmail,
-      otp,
-      name,
+    // 🔥 INSERT INTO referrals TABLE
+    if (sponsor) {
+      await createReferralChain(client, user.user_code, sponsor.user_code);
+
+      await client.query(
+        `
+        INSERT INTO referrals
+        (referrer_user_id, referred_user_id, level, created_at)
+        VALUES ($1, $2, 1, NOW())
+        `,
+        [sponsor.id, user.id]
+      );
+    }
+
+    await client.query("COMMIT");
+
+    return res.status(201).json({
+      message: "Account created successfully",
+      user_code: user.user_code, // 🔥 Must be sent back to frontend
     });
 
-    return res.status(200).json({
-      message: "OTP sent to your email",
-      signupId, // 🔥 IMPORTANT for frontend
-    });
   } catch (error) {
-    console.error("Signup OTP error:", error);
-    return res.status(500).json({ message: "Failed to send OTP" });
+    await client.query("ROLLBACK");
+    console.error("Direct Signup error:", error);
+    return res.status(500).json({ message: "Failed to create account" });
+  } finally {
+    client.release();
   }
 };
-
 /* ================= VERIFY OTP ================= */
 export const verifySignupOtp = async (req, res) => {
   const client = await pool.connect();
