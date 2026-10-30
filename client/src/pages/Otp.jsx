@@ -36,7 +36,7 @@ const Otp = () => {
 
   const referralLink = useMemo(() => {
     if (!createdUserCode) return "";
-    return `${window.location.origin}/auth/registration?referral_code=${encodeURIComponent(
+    return `${window.location.origin}/auth/register?referral_code=${encodeURIComponent(
       createdUserCode
     )}`;
   }, [createdUserCode]);
