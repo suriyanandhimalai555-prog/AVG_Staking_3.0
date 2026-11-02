@@ -2,6 +2,126 @@
 import { pool } from "../config/db.js";
 import bcrypt from "bcrypt";
 
+/* ================= LEVEL INCOME LOGIC & PROCESSOR ================= */
+
+/**
+ * Distributes Level Income up to 7 levels deep based on downline eligibility targets.
+ * Hardcoded configuration matching your exact business rules:
+ * - Level 1: 5% (No volume target needed)
+ * - Level 2: 4% (Requires $20,000 in Level 1 volume)
+ * - Level 3: 3% (Requires $40,000 in Level 2 volume)
+ * - Level 4: 2.5% (Requires $80,000 in Level 3 volume)
+ * - Level 5: 2% (Requires $100,000 in Level 4 volume)
+ * - Level 6: 1.5% (Requires $150,000 in Level 5 volume)
+ * - Level 7: 1% (Requires $200,000 in Level 6 volume)
+ */
+export const processLevelIncome = async (dbClient, buyerId, depositAmount) => {
+  const client = dbClient || pool;
+  try {
+    // 1. Fetch upline chain up to Level 7 using recursive CTE
+    const uplineRes = await client.query(
+      `
+      WITH RECURSIVE upline_chain AS (
+        SELECT 
+          referrer_user_id AS sponsor_id,
+          1 AS current_level
+        FROM referrals
+        WHERE referred_user_id = $1
+
+        UNION ALL
+
+        SELECT 
+          r.referrer_user_id,
+          uc.current_level + 1
+        FROM referrals r
+        JOIN upline_chain uc ON r.referred_user_id = uc.sponsor_id
+        WHERE uc.current_level < 7
+      )
+      SELECT sponsor_id, current_level 
+      FROM upline_chain 
+      ORDER BY current_level ASC;
+      `,
+      [buyerId]
+    );
+
+    const uplines = uplineRes.rows;
+    if (uplines.length === 0) return;
+
+    // 2. Hardcoded configuration
+    const levelConfigs = {
+      1: { percentage: 5.0, targetVolume: 0 },
+      2: { percentage: 4.0, targetVolume: 20000 },
+      3: { percentage: 3.0, targetVolume: 40000 },
+      4: { percentage: 2.5, targetVolume: 80000 },
+      5: { percentage: 2.0, targetVolume: 100000 },
+      6: { percentage: 1.5, targetVolume: 150000 },
+      7: { percentage: 1.0, targetVolume: 200000 },
+    };
+
+    // 3. Process eligibility for each upline sponsor
+    for (const upline of uplines) {
+      const sponsorId = upline.sponsor_id;
+      const levelNum = upline.current_level;
+      const levelSetting = levelConfigs[levelNum];
+
+      if (!levelSetting || levelSetting.percentage <= 0) continue;
+
+      let isEligible = true;
+
+      // Level 2+: Check if the sponsor's previous level downline volume meets target_volume
+      if (levelNum > 1) {
+        const requiredLevelCheck = levelNum - 1;
+
+        const volRes = await client.query(
+          `
+          WITH RECURSIVE downline AS (
+            SELECT referred_user_id AS id, 1 AS lvl
+            FROM referrals
+            WHERE referrer_user_id = $1
+
+            UNION ALL
+
+            SELECT r.referred_user_id, d.lvl + 1
+            FROM referrals r
+            JOIN downline d ON r.referrer_user_id = d.id
+            WHERE d.lvl < 7
+          )
+          SELECT COALESCE(SUM(up.amount), 0) AS total_vol
+          FROM downline d
+          JOIN user_plans up ON up.user_id = d.id AND up.status IN ('active', 'completed')
+          WHERE d.lvl = $2;
+          `,
+          [sponsorId, requiredLevelCheck]
+        );
+
+        const achievedVolume = Number(volRes.rows[0]?.total_vol || 0);
+
+        if (achievedVolume < levelSetting.targetVolume) {
+          isEligible = false; // Target not unlocked yet
+        }
+      }
+
+      // 4. Record income if eligible
+      if (isEligible) {
+        const commissionAmount = (depositAmount * levelSetting.percentage) / 100;
+
+        if (commissionAmount > 0) {
+          await client.query(
+            `
+            INSERT INTO level_income (user_id, from_user_id, level, income_type, amount, created_at)
+            VALUES ($1, $2, $3, 'level', $4, NOW())
+            `,
+            [sponsorId, buyerId, levelNum, commissionAmount]
+          );
+        }
+      }
+    }
+  } catch (err) {
+    console.error("processLevelIncome error:", err);
+    throw err;
+  }
+};
+
 /* GET ALL USERS (admin) */
 export const getAllUsers = async (req, res) => {
   try {

@@ -92,14 +92,22 @@ const UserWithdraw = () => {
         const amount = Number(w.amount || 0);
         const fee = amount * 0.1;
         const approvedUsd = amount - fee;
+        const currencyType = String(w.currency_type || "").toUpperCase();
+
+        // ✅ If AVG currency, approved amount is also in AVG (amount / 25 or approved_amount)
+        const rawApproved = w.approved_amount ?? approvedUsd;
+        const approvedFormatted =
+          currencyType === "AVG"
+            ? `${Number(rawApproved / (w.approved_amount ? 1 : 25)).toFixed(2)} AVG`
+            : `₹${Number(rawApproved).toFixed(2)}`;
 
         return {
           id: w.id,
-          currency: w.currency_type,
+          currency: currencyType,
           transactionId: w.transaction_id || "",
           proof: w.transaction_proof || "",
           request: `$${amount.toFixed(2)}`,
-          approved: `₹${Number(w.approved_amount ?? approvedUsd * 95).toFixed(2)}`,
+          approved: approvedFormatted,
           status: w.status,
           date: w.created_at,
         };
@@ -213,7 +221,6 @@ const UserWithdraw = () => {
     const err = validate();
     if (Object.keys(err).length) return setErrors(err);
 
-    // Set submitting to true immediately to disable the button
     setSubmitting(true);
 
     try {
@@ -232,7 +239,6 @@ const UserWithdraw = () => {
     } catch (err) {
       alert(err.response?.data?.message || "Error");
     } finally {
-      // Re-enable the button when the API call finishes (success or error)
       setSubmitting(false);
     }
   };
@@ -278,7 +284,7 @@ const UserWithdraw = () => {
               <tbody>
                 {paginatedData.length === 0 ? (
                   <tr>
-                    <td colSpan="8">No data</td>
+                    <td colSpan="7">No data</td>
                   </tr>
                 ) : (
                   paginatedData.map((item, i) => (
@@ -361,22 +367,27 @@ const UserWithdraw = () => {
               <button onClick={() => setShowModal(false)}>✕</button>
             </div>
 
-            <div className="uw2Price">
-              Live USDT Price: ${wallets.usdtPrice}
-            </div>
-
             <div className="uw2Stats">
               <div>
                 <p>ROI</p>
                 <h4>${wallets.roi}</h4>
+                <small style={{ color: "#22c55e", fontSize: "12px" }}>
+                  {(Number(wallets.roi || 0) / 25).toFixed(2)} AVG
+                </small>
               </div>
               <div>
                 <p>Level</p>
                 <h4>${wallets.level}</h4>
+                <small style={{ color: "#22c55e", fontSize: "12px" }}>
+                  {(Number(wallets.level || 0) / 25).toFixed(2)} AVG
+                </small>
               </div>
               <div>
                 <p>Direct</p>
                 <h4>${wallets.direct}</h4>
+                <small style={{ color: "#22c55e", fontSize: "12px" }}>
+                  {(Number(wallets.direct || 0) / 25).toFixed(2)} AVG
+                </small>
               </div>
             </div>
 
@@ -405,21 +416,28 @@ const UserWithdraw = () => {
                     setForm({ ...form, currencyType: e.target.value })
                   }
                 >
-                  <option value="">Select</option>
+                  <option value="">Select Currency</option>
                   <option value="INR">INR</option>
-                  <option value="USDT">USDT</option>
+                  <option value="AVG">AVG Coin</option>
                 </select>
                 <span className="error">{errors.currencyType}</span>
               </div>
 
               <div className="uw2Field">
-                <label>Amount</label>
+                <label>Amount ($)</label>
                 <input
+                  type="number"
                   value={form.amount}
                   onChange={(e) =>
                     setForm({ ...form, amount: e.target.value })
                   }
+                  placeholder="Enter amount in USD"
                 />
+                {form.currencyType === "AVG" && form.amount && !isNaN(form.amount) && (
+                  <small style={{ color: "#22c55e", marginTop: "4px", display: "block" }}>
+                    Equivalent AVG Coin: {(Number(form.amount) / 25).toFixed(2)} AVG
+                  </small>
+                )}
                 <span className="error">{errors.amount}</span>
               </div>
             </div>

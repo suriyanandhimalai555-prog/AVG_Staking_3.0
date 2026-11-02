@@ -9,6 +9,7 @@ const Topbar = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [wallet, setWallet] = useState(0);
+  const [avgCoin, setAvgCoin] = useState(0); // ✅ Added AVG Coin state
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const Topbar = ({ isOpen, setIsOpen }) => {
         const totalWallet = roi + direct + level;
 
         setWallet(totalWallet);
+        setAvgCoin(totalWallet / 25); // ✅ Calculate AVG Coin (Wallet Balance / 25)
 
       } catch (err) {
         console.error("Topbar fetch error:", err);
@@ -82,6 +84,11 @@ const Topbar = ({ isOpen, setIsOpen }) => {
               {/* ✅ CORRECT WALLET */}
               <p className="utb-wallet">
                 Wallet Balance: ${wallet.toFixed(2)}
+              </p>
+
+              {/* ✅ AVG COIN BALANCE */}
+              <p className="utb-wallet">
+                AVG Coin: {avgCoin.toFixed(2)}
               </p>
             </>
           )}
