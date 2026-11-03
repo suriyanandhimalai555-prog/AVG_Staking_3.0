@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import logo from "../assets/logo.png";
-import "../styles/auth.css";
+import FooterBg from "../assets/footer-bg.jpeg";
+import Buttons from "../components/Buttons";
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon, UserIcon } from "./AuthIcons";
 
 const ForgotPassword = () => {
@@ -148,193 +149,240 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-shell">
-        <div className="auth-left">
-          <div className="logo-box">
-            <img src={logo} alt="AVG Logo" />
-          </div>
+    <div className="relative min-w-full min-h-screen text-white flex items-center justify-center px-4 sm:px-8 py-16 overflow-hidden">
+      
+      {/* Background Image & Gradient Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={FooterBg} 
+          alt="Background View" 
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-[#0437cc]/85 to-[#021f7a]" />
+      </div>
 
-          <h1>
-            <span className="light-text">Reset </span>
-            <span className="accent">Password</span>
-          </h1>
+      {/* Massive Background Watermark */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-0 overflow-hidden px-4">
+        <h1 className="text-[14vw] font-black uppercase tracking-widest text-white/10 leading-none whitespace-nowrap">
+          AGILAVETRI
+        </h1>
+      </div>
 
-          <p>Use your email and user code to reset the correct account.</p>
+      <div className="relative z-10 w-full max-w-md mx-auto bg-white/95 backdrop-blur-md text-gray-900 rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100">
+        
+        {/* Header / Logo Section */}
+        <div className="flex items-center gap-3 mb-6">
+          <img src={logo} alt="AVG Staking Logo" className="w-10 h-10 object-contain" />
+          <span className="text-xl font-bold tracking-tight text-gray-900 flex items-center gap-1.5">
+            AVG Staking 
+          </span>
         </div>
 
-        <div className="auth-right">
-          <div className="auth-card">
-            {step === 1 && (
-              <>
-                <h2 className="auth-heading">
-                  Forgot <span className="accent">Password</span>
-                </h2>
-                <p className="auth-subtitle">
-                  Enter your email and user code.
-                </p>
+        {/* STEP 1: Request OTP */}
+        {step === 1 && (
+          <>
+            <h2 className="text-2xl font-black text-gray-900 mb-1">
+              Forgot <span className="text-[#0437cc]">Password</span>
+            </h2>
+            <p className="text-sm text-gray-500 mb-6">Enter your email and user code to receive an OTP.</p>
 
-                <form className="auth-form" onSubmit={handleRequestOtp}>
-                  <div className="field">
-                    <label>Email</label>
-                    <div className="input-shell">
-                      <span className="input-icon">
-                        <MailIcon />
-                      </span>
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="you@domain.com"
-                        value={data.email}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
+            <form className="space-y-4" onSubmit={handleRequestOtp}>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700">Email</label>
+                <div 
+                  style={{ backgroundColor: "#f9fafb", border: "1px solid #e5e7eb" }}
+                  className="flex items-center rounded-xl px-3 py-2.5 transition-colors focus-within:border-[#0437cc]"
+                >
+                  <span className="text-gray-400 mr-2.5 flex items-center"><MailIcon /></span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="you@domain.com"
+                    value={data.email}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "transparent", color: "#111827", border: "none" }}
+                    className="w-full text-sm focus:outline-none placeholder:text-gray-400"
+                  />
+                </div>
+              </div>
 
-                  <div className="field">
-                    <label>User Code</label>
-                    <div className="input-shell">
-                      <span className="input-icon">
-                        <UserIcon />
-                      </span>
-                      <input
-                        type="text"
-                        name="user_code"
-                        placeholder="Enter user code"
-                        value={data.user_code}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700">User Code</label>
+                <div 
+                  style={{ backgroundColor: "#f9fafb", border: "1px solid #e5e7eb" }}
+                  className="flex items-center rounded-xl px-3 py-2.5 transition-colors focus-within:border-[#0437cc]"
+                >
+                  <span className="text-gray-400 mr-2.5 flex items-center"><UserIcon /></span>
+                  <input
+                    type="text"
+                    name="user_code"
+                    placeholder="Enter user code"
+                    value={data.user_code}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "transparent", color: "#111827", border: "none" }}
+                    className="w-full text-sm focus:outline-none placeholder:text-gray-400"
+                  />
+                </div>
+              </div>
 
-                  <button className="primary-btn" type="submit" disabled={loading}>
-                    {loading ? "Sending OTP..." : "Send OTP"}
+              <div className="pt-2">
+                <Buttons 
+                  text={loading ? "Sending OTP..." : "Send OTP"}
+                  variant="primary"
+                  className="w-full !mt-2"
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="text-center text-xs text-gray-600 pt-2">
+                Back to{" "}
+                <button 
+                  type="button" 
+                  onClick={() => navigate("/login")}
+                  className="text-[#0437cc] font-bold hover:underline cursor-pointer"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+
+        {/* STEP 2: Verify OTP */}
+        {step === 2 && (
+          <>
+            <h2 className="text-2xl font-black text-gray-900 mb-1">
+              Verify <span className="text-[#0437cc]">OTP</span>
+            </h2>
+            <p className="text-sm text-gray-500 mb-6">
+              Enter the OTP sent to <b className="text-gray-800">{data.email}</b>
+            </p>
+
+            <form className="space-y-4" onSubmit={handleVerifyOtp}>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700">OTP Code</label>
+                <div 
+                  style={{ backgroundColor: "#f9fafb", border: "1px solid #e5e7eb" }}
+                  className="flex items-center rounded-xl px-3 py-2.5 transition-colors focus-within:border-[#0437cc]"
+                >
+                  <span className="text-gray-400 mr-2.5 flex items-center"><MailIcon /></span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    name="otp"
+                    placeholder="Enter 6-digit OTP"
+                    value={data.otp}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "transparent", color: "#111827", border: "none" }}
+                    className="w-full text-sm focus:outline-none placeholder:text-gray-400"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <Buttons 
+                  text={loading ? "Verifying..." : "Verify OTP"}
+                  variant="primary"
+                  className="w-full !mt-2"
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="text-center text-xs text-gray-600 pt-2">
+                Wrong account?{" "}
+                <button 
+                  type="button"
+                  onClick={() => {
+                    sessionStorage.removeItem("forgotResetId");
+                    sessionStorage.removeItem("forgotResetToken");
+                    setResetId("");
+                    setResetToken("");
+                    setStep(1);
+                  }}
+                  className="text-[#0437cc] font-bold hover:underline cursor-pointer"
+                >
+                  Start again
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+
+        {/* STEP 3: Reset Password */}
+        {step === 3 && (
+          <>
+            <h2 className="text-2xl font-black text-gray-900 mb-1">
+              Set <span className="text-[#0437cc]">New Password</span>
+            </h2>
+            <p className="text-sm text-gray-500 mb-6">
+              Create a new password for account <b className="text-gray-800">{data.user_code}</b>.
+            </p>
+
+            <form className="space-y-4" onSubmit={handleResetPassword}>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700">New Password</label>
+                <div 
+                  style={{ backgroundColor: "#f9fafb", border: "1px solid #e5e7eb" }}
+                  className="flex items-center rounded-xl px-3 py-2.5 transition-colors relative focus-within:border-[#0437cc]"
+                >
+                  <span className="text-gray-400 mr-2.5 flex items-center"><LockIcon /></span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="newPassword"
+                    placeholder="New password"
+                    value={data.newPassword}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "transparent", color: "#111827", border: "none" }}
+                    className="w-full text-sm focus:outline-none pr-8 placeholder:text-gray-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                   </button>
+                </div>
+              </div>
 
-                  <div className="footer-link">
-                    Back to{" "}
-                    <button type="button" onClick={() => navigate("/login")}>
-                      Login
-                    </button>
-                  </div>
-                </form>
-              </>
-            )}
-
-            {step === 2 && (
-              <>
-                <h2 className="auth-heading">
-                  Verify <span className="accent">OTP</span>
-                </h2>
-                <p className="auth-subtitle">
-                  OTP sent to <b>{data.email}</b>
-                </p>
-
-                <form className="auth-form" onSubmit={handleVerifyOtp}>
-                  <div className="field">
-                    <label>OTP</label>
-                    <div className="input-shell">
-                      <span className="input-icon">
-                        <MailIcon />
-                      </span>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        name="otp"
-                        placeholder="Enter OTP"
-                        value={data.otp}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-
-                  <button className="primary-btn" type="submit" disabled={loading}>
-                    {loading ? "Verifying..." : "Verify OTP"}
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700">Confirm New Password</label>
+                <div 
+                  style={{ backgroundColor: "#f9fafb", border: "1px solid #e5e7eb" }}
+                  className="flex items-center rounded-xl px-3 py-2.5 transition-colors relative focus-within:border-[#0437cc]"
+                >
+                  <span className="text-gray-400 mr-2.5 flex items-center"><LockIcon /></span>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    value={data.confirmPassword}
+                    onChange={handleChange}
+                    style={{ backgroundColor: "transparent", color: "#111827", border: "none" }}
+                    className="w-full text-sm focus:outline-none pr-8 placeholder:text-gray-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    className="absolute right-3 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
                   </button>
+                </div>
+              </div>
 
-                  <div className="footer-link">
-                    Wrong account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        sessionStorage.removeItem("forgotResetId");
-                        sessionStorage.removeItem("forgotResetToken");
-                        setResetId("");
-                        setResetToken("");
-                        setStep(1);
-                      }}
-                    >
-                      Start again
-                    </button>
-                  </div>
-                </form>
-              </>
-            )}
+              <div className="pt-2">
+                <Buttons 
+                  text={loading ? "Updating..." : "Update Password"}
+                  variant="primary"
+                  className="w-full !mt-2"
+                  disabled={loading}
+                />
+              </div>
+            </form>
+          </>
+        )}
 
-            {step === 3 && (
-              <>
-                <h2 className="auth-heading">
-                  Set <span className="accent">New Password</span>
-                </h2>
-                <p className="auth-subtitle">
-                  Create a new password for <b>{data.user_code}</b>.
-                </p>
-
-                <form className="auth-form" onSubmit={handleResetPassword}>
-                  <div className="field">
-                    <label>New Password</label>
-                    <div className="input-shell">
-                      <span className="input-icon">
-                        <LockIcon />
-                      </span>
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        name="newPassword"
-                        placeholder="New password"
-                        value={data.newPassword}
-                        onChange={handleChange}
-                      />
-                      <button
-                        type="button"
-                        className="password-toggle"
-                        onClick={() => setShowPassword((v) => !v)}
-                      >
-                        {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <label>Confirm Password</label>
-                    <div className="input-shell">
-                      <span className="input-icon">
-                        <LockIcon />
-                      </span>
-                      <input
-                        type={showConfirmPassword ? "text" : "password"}
-                        name="confirmPassword"
-                        placeholder="Confirm password"
-                        value={data.confirmPassword}
-                        onChange={handleChange}
-                      />
-                      <button
-                        type="button"
-                        className="password-toggle"
-                        onClick={() => setShowConfirmPassword((v) => !v)}
-                      >
-                        {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <button className="primary-btn" type="submit" disabled={loading}>
-                    {loading ? "Updating..." : "Update Password"}
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );

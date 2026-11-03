@@ -59,6 +59,7 @@ import Otp from "./pages/Otp";
 import ForgotPassword from "./pages/ForgotPassword";
 import BannerImage from "./pages/BannerImage";
 import UserDirectReferralReward from "./pages/UserDirectReferralReward";
+import Website from "./pages/Website";
 
 function App() {
   return (
@@ -80,10 +81,10 @@ function App() {
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* PUBLIC WEBSITE */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
+        {/* <Route element={<PublicLayout />}> */}
+          <Route path="/" element={<Website />} />
           {/* <Route path="/auth/register" element={<Home />} /> */}
-        </Route>
+        {/* </Route> */}
 
         {/* DASHBOARD (PROTECTED) */}
         <Route element={<AdminRoute />}>

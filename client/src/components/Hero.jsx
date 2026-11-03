@@ -1,205 +1,140 @@
-// Hero.jsx
-import { useEffect, useRef, useState } from "react";
-// import "./Hero.css";
-import hero from "../assets/hero.png"; // your right-side image
-import logo from "../assets/logo.png"; // import your logo for favicon
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { ShieldCheck, TrendingUp, Sparkles, Lock, Building2, Users, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Buttons from './Buttons'; // Adjust import path if needed
 
-const Hero = ({ onLoginClick }) => {
-  const heroRef = useRef(null);
-  const glowRef = useRef(null);
-  const [showLogin, setShowLogin] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // Set favicon dynamically using the logo
-    const setFavicon = () => {
-      // Remove existing favicons
-      const existingFavicons = document.querySelectorAll("link[rel*='icon'], link[rel*='apple-touch-icon']");
-      existingFavicons.forEach(favicon => favicon.remove());
-
-      // Create new favicon - Use the imported logo
-      const link = document.createElement('link');
-      link.rel = 'icon';
-      link.type = 'image/png';
-      link.href = logo; // Using your logo as favicon
-      document.head.appendChild(link);
-
-      // Add apple touch icon for iOS devices
-      const appleLink = document.createElement('link');
-      appleLink.rel = 'apple-touch-icon';
-      appleLink.href = logo;
-      document.head.appendChild(appleLink);
-
-      // Set document title
-      document.title = 'Avg Stake';
-    };
-
-    setFavicon();
-
-    // Parallax effect on mouse move
-    const handleMouseMove = (e) => {
-      if (!heroRef.current || window.innerWidth < 768) return;
-      
-      const { clientX, clientY } = e;
-      const { left, top, width, height } = heroRef.current.getBoundingClientRect();
-      
-      const x = (clientX - left - width / 2) / 25;
-      const y = (clientY - top - height / 2) / 25;
-      
-      if (glowRef.current) {
-        glowRef.current.style.transform = `translate(${x}px, ${y}px)`;
-      }
-    };
-
-    // Prevent body scroll when modal is open
-    if (showLogin) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    // Escape key to close modal
-    const handleEscKey = (e) => {
-      if (e.key === 'Escape' && showLogin) {
-        setShowLogin(false);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('keydown', handleEscKey);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('keydown', handleEscKey);
-      document.body.style.overflow = 'unset';
-      
-      // Optional: Clean up favicon on unmount
-      const favicons = document.querySelectorAll("link[rel*='icon'], link[rel*='apple-touch-icon']");
-      favicons.forEach(favicon => favicon.remove());
-    };
-  }, [showLogin]); // Added showLogin dependency
-
-  const handleSignInClick = () => {
-    setShowLogin(true);
-    if (onLoginClick) onLoginClick();
-  };
-
-  const handleCloseModal = () => {
-    setShowLogin(false);
-  };
-
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      handleCloseModal();
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your login logic here
-    console.log('Login submitted');
-  };
-
+const Hero = () => {
+  const Navigate = useNavigate();
   return (
-    <section className="hero" ref={heroRef}>
-      <div className="hero-container">
-        {/* LEFT CONTENT */}
-        <div className="hero-left">
-          <h1 className="hero-title">
-            TRUSTED GLOBAL <br />
-            <span>AVG</span>
+    <section className="relative bg-white overflow-hidden pt-42 pb-16 px-4 sm:px-8">
+      
+      {/* Background Soft Multi-Color Glows */}
+      {/* <div className="absolute top-24 left-1/4 -translate-x-1/2 w-[500px] h-[300px] bg-[#0437cc]/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-36 right-1/4 w-[400px] h-[250px] bg-[#f77704]/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[450px] h-[200px] bg-[#a6e71c]/15 blur-[100px] rounded-full pointer-events-none" /> */}
+
+      <div className="max-w-7xl mx-auto w-full relative z-10">
+        
+        {/* Hero Title & Subtitle */}
+        <div className="text-center max-w-4xl mx-auto space-y-6">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.12]">
+            Unlock Global Staking Rewards &{' '}
+            <span className="bg-gradient-to-r from-[#0437cc] via-[#f77704] to-[#7bb310] bg-clip-text text-transparent">
+              Real Estate Assets
+            </span>
           </h1>
 
-          <p className="hero-description">
-            Stake Your Crypto. Earn Rewards Effortlessly. High-Yield Plans
-            Designed for Every Investor. Track Your Earnings in Real-Time,
-            Anytime. Maximum Security for Your Digital Assets. Start Staking
-            Today and Watch Your Crypto Grow.
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed font-normal">
+            A transparent, level-based staking and compensation ecosystem offering direct referral commissions, luxury travel packages, real estate security, and high-value rewards.
           </p>
 
-          <button className="hero-btn" onClick={() => navigate('/auth/login')}>
-            <span className="btn-text"
-            >Sign In</span>
-            <span className="btn-icon">↗</span>
-          </button>
-        </div>
-
-        {/* RIGHT CONTENT */}
-        <div className="hero-right">
-          <div className="hero-glow" ref={glowRef} />
-          <div className="image-wrapper">
-            <img 
-              src={hero} 
-              alt="AVG Illustration" 
-              className="floating-image"
-              loading="eager"
+          {/* Integrated Custom Buttons Component */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Buttons 
+              text="Get Started Now" 
+              onClick={() => Navigate('/auth/register')} 
             />
           </div>
-          
-          {/* Floating orbs for premium effect */}
-          <div className="orb orb-1"></div>
-          <div className="orb orb-2"></div>
-          <div className="orb orb-3"></div>
         </div>
-      </div>
 
-      {/* LOGIN MODAL */}
-      {showLogin && (
-        <div className="modal-overlay" onClick={handleBackdropClick}>
-          <div className="login-modal">
-            <button className="modal-close" onClick={handleCloseModal}>×</button>
-            
-            <div className="modal-header">
-              {/* Logo and Brand Section - Fixed: Logo left of AVG text */}
-              <div className="brand-container">
-                <img src={logo} alt="AVG Logo" className="modal-logo" />
-                <h2 className="modal-title">AVG</h2>
+        {/* Floating Interactive Visual Showcase Card */}
+        <div className="mt-14 max-w-4xl mx-auto bg-white border border-gray-100 shadow-2xl rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-full pointer-events-none -z-0" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="p-3 rounded-xl bg-blue-100 text-[#0437cc]">
+                <TrendingUp className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-500 font-medium">Direct Commission</div>
+                <div className="text-lg font-bold text-gray-900">5% Instant Payout</div>
               </div>
             </div>
 
-            <div className="modal-content">
-              <h3 className="welcome-text">Welcome to AVG Staking</h3>
-              <p className="signin-text">Sign in to continue</p>
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="p-3 rounded-xl bg-orange-100 text-[#f77704]">
+                <Building2 className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-500 font-medium">Security Backing</div>
+                <div className="text-lg font-bold text-gray-900">Property Surety Plan</div>
+              </div>
+            </div>
 
-              <form className="login-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="userCode">User Code</label>
-                  <input 
-                    type="text" 
-                    id="userCode" 
-                    placeholder="Enter your user code"
-                    className="form-input"
-                    required
-                  />
-                </div>
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="p-3 rounded-xl bg-lime-100 text-[#7bb310]">
+                <Lock className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-xs text-gray-500 font-medium">Withdrawal Fee</div>
+                <div className="text-lg font-bold text-gray-900">0% ($0 Fee)</div>
+              </div>
+            </div>
+          </div>
 
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <input 
-                    type="password" 
-                    id="password" 
-                    placeholder="Enter password"
-                    className="form-input"
-                    required
-                  />
-                </div>
-
-                <div className="forgot-password">
-                  <a href="#">Forgot password?</a>
-                </div>
-
-                <button type="submit" className="continue-btn">
-                  Continue
-                </button>
-              </form>
+          <div className="mt-6 pt-6 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4 text-xs text-gray-500 font-medium">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-[#0437cc]" />
+              <span>Fixed Exchange Rate: $1 = ₹100</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-[#f77704]" />
+              <span>48-Hour Processing Window</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-[#7bb310]" />
+              <span>7-Level Deep Commission Structure</span>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Bottom Feature Badges */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-5xl mx-auto">
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 transition-colors">
+            <div className="p-2 rounded-xl bg-blue-50 text-[#0437cc]">
+              <Users className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-900">7-Level Income</div>
+              <div className="text-[11px] text-gray-500">Sequential structures</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-orange-200 transition-colors">
+            <div className="p-2 rounded-xl bg-orange-50 text-[#f77704]">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-900">100% Secure</div>
+              <div className="text-[11px] text-gray-500">Verified contracts</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-lime-200 transition-colors">
+            <div className="p-2 rounded-xl bg-lime-50 text-[#7bb310]">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-900">Milestone Tours</div>
+              <div className="text-[11px] text-gray-500">40:30:30 trips</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-blue-200 transition-colors">
+            <div className="p-2 rounded-xl bg-blue-50 text-[#0437cc]">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-900">Global Deposits</div>
+              <div className="text-[11px] text-gray-500">Staking 3.0 scale</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
   );
 };
 
 export default Hero;
-

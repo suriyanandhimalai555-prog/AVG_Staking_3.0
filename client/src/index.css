@@ -4579,7 +4579,7 @@ section {
 
 /* Optional: Add some spacing between sections */
 section:not(:last-child) {
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 }
 
 /* Active nav item styling */
