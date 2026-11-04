@@ -1,282 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  FiUsers,
+  FiTrendingUp,
+  FiLayers,
+  FiCreditCard,
+  FiArrowDownLeft,
+  FiArrowUpRight,
+  FiPieChart,
+  FiZap,
+  FiAward,
+  FiCheckCircle,
+  FiBell,
+  FiX,
+} from "react-icons/fi";
+import toast from "react-hot-toast";
 
 import Sidebar from "../components/user/UserSidebar";
 import Topbar from "../components/user/UserTopbar";
 
-import {
-  FaChartLine,
-  FaLayerGroup,
-  FaWallet,
-  FaMoneyBill,
-  FaArrowDown,
-  FaArrowUp,
-  FaUsers,
-  FaBolt,
-  FaTrophy,
-} from "react-icons/fa";
-
-const StatCard = ({ title, value, icon }) => {
-  return (
-    <div className="card">
-      <div className="card-left">
-        <p className="card-title">{title}</p>
-        <h3>{value}</h3>
-      </div>
-      <div className="card-icon">{icon}</div>
-    </div>
-  );
-};
-
-const AvgAchieversCard = () => {
-  const [slides, setSlides] = useState([]);
-  const [loadingSlides, setLoadingSlides] = useState(true);
-
-  useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        setLoadingSlides(true);
-        const res = await axios.get(
-          `${import.meta.env.VITE_APP_BASE_URL}/api/banner-slides/public`
-        );
-        setSlides(res.data || []);
-      } catch (error) {
-        console.error("Hero banner fetch error:", error);
-        setSlides([]);
-      } finally {
-        setLoadingSlides(false);
-      }
-    };
-
-    fetchSlides();
-  }, []);
-
-  if (loadingSlides) {
-    return (
-      <div className="mb-6 flex h-[300px] items-center justify-center text-white">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!slides.length) return null;
-
-  return (
-    <section className="relative overflow-hidden px-0 py-0">
-      <style>{`
-        @keyframes avgScrollLeft {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
-      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2 text-white">
-        <span className="text-yellow-500"><FaTrophy /></span>
-        <span>AVG Achievers</span>  
-      </h1>
-
-      <div className="overflow-hidden">
-        <div
-          className="flex gap-4 md:gap-6"
-          style={{
-            width: "max-content",
-            animation: "avgScrollLeft 15s linear infinite",
-          }}
-        >
-          {[...slides, ...slides].map((item, index) => (
-            <div
-              key={`top-${index}`}
-              className="
-                flex
-                w-[92vw]
-                sm:w-[560px]
-                lg:w-[650px]
-                overflow-hidden
-                rounded-[20px]
-                lg:rounded-[28px]
-                bg-white
-                border
-                border-slate-100
-                shadow-[0_15px_40px_rgba(0,0,0,0.12)]
-                transition-all
-                duration-500
-                hover:-translate-y-2
-                hover:shadow-[0_25px_60px_rgba(0,0,0,0.18)]
-              "
-            >
-              <div
-                className="
-                  relative
-                  w-[120px]
-                  sm:w-[180px]
-                  lg:w-[220px]
-                  flex-shrink-0
-                "
-              >
-                <img
-                  src={item.imageUrl}
-                  alt={item.username}
-                  className="
-                    h-full
-                    min-h-[180px]
-                    sm:min-h-[220px]
-                    w-full
-                    object-cover
-                  "
-                />
-
-                <div
-                  className="
-                    absolute
-                    left-2
-                    top-2
-                    rounded-full
-                    bg-yellow-500
-                    px-2
-                    py-1
-                    text-[10px]
-                    sm:text-xs
-                    font-bold
-                    text-white
-                  "
-                >
-                  🏆 ACHIEVER
-                </div>
-              </div>
-
-              <div
-                className="
-                  flex
-                  flex-1
-                  flex-col
-                  justify-center
-                  p-3
-                  sm:p-4
-                  lg:p-5
-                "
-              >
-                <span
-                  className="
-                    w-fit
-                    rounded-full
-                    bg-green-100
-                    px-2
-                    py-1
-                    text-[10px]
-                    sm:text-xs
-                    font-semibold
-                    text-green-700
-                  "
-                >
-                  Target Completed
-                </span>
-
-                <h3
-                  className="
-                    mt-2
-                    text-lg
-                    sm:text-xl
-                    lg:text-2xl
-                    font-bold
-                    text-slate-900
-                    truncate
-                  "
-                >
-                  {item.username}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-slate-500">
-                  AVG Elite Achiever
-                </p>
-
-                <div
-                  className="
-                    mt-3
-                    grid
-                    grid-cols-2
-                    gap-2
-                    lg:gap-3
-                  "
-                >
-                  <div
-                    className="
-                      rounded-lg
-                      lg:rounded-xl
-                      bg-slate-100
-                      p-2
-                      lg:p-3
-                    "
-                  >
-                    <p className="text-[10px] sm:text-xs text-slate-500">
-                      Target
-                    </p>
-
-                    <h4 className="mt-1 text-xs sm:text-sm lg:text-base font-bold text-slate-900">
-                      ${Number(item.target_amount || 0).toLocaleString()}
-                    </h4>
-                  </div>
-
-                  <div
-                    className="
-                      rounded-lg
-                      lg:rounded-xl
-                      bg-green-50
-                      p-2
-                      lg:p-3
-                    "
-                  >
-                    <p className="text-[10px] sm:text-xs text-green-600">
-                      Achieved
-                    </p>
-
-                    <h4 className="mt-1 text-xs sm:text-sm lg:text-base font-bold text-green-700">
-                      ${Number(item.progress || 0).toLocaleString()}
-                    </h4>
-                  </div>
-                </div>
-
-                <div
-                  className="
-                    mt-2
-                    rounded-lg
-                    lg:rounded-xl
-                    bg-amber-50
-                    p-2
-                    lg:p-3
-                  "
-                >
-                  <p className="text-[10px] sm:text-xs text-amber-600">
-                    Reward Earned
-                  </p>
-
-                  <h4
-                    className="
-                      mt-1
-                      text-xs
-                      sm:text-sm
-                      lg:text-base
-                      font-bold
-                      text-slate-900
-                      line-clamp-2
-                    "
-                  >
-                    {item.reward}
-                  </h4>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const UserDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   // ✅ WALLET (AFTER DEDUCTION)
   const [wallet, setWallet] = useState({
@@ -308,11 +54,22 @@ const UserDashboard = () => {
     todayBusiness: 0,
   });
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  const [slides, setSlides] = useState([]);
+  const [loadingSlides, setLoadingSlides] = useState(true);
 
+  useEffect(() => {
+    // Check dashboard notification preference
+    const hideDashboardPopup = localStorage.getItem("hide_dashboard_announcement");
+    if (!hideDashboardPopup) {
+      const timer = setTimeout(() => setShowPopup(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const token = localStorage.getItem("token");
+      try {
         const [
           summaryRes,
           withdrawRes,
@@ -320,6 +77,7 @@ const UserDashboard = () => {
           networkRes,
           depositRes,
           teamBusinessRes,
+          bannerRes,
         ] = await Promise.all([
           axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/withdrawals/summary`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -339,6 +97,7 @@ const UserDashboard = () => {
           axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/users/my-team-business`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
+          axios.get(`${import.meta.env.VITE_APP_BASE_URL}/api/banner-slides/public`).catch(() => ({ data: [] })),
         ]);
 
         // ✅ WALLET (DEDUCTED)
@@ -387,20 +146,16 @@ const UserDashboard = () => {
         // ✅ TEAM COUNT
         const calcCount = (node) => {
           if (!node || !node.children) return 0;
-
           let count = node.children.length;
           node.children.forEach((child) => {
             count += calcCount(child);
           });
-
           return count;
         };
 
         const teamCount = calcCount(networkRes.data);
-
         const totalStaking = Number(depositRes.data.total_staking || 0);
 
-        // ✅ FINAL STATS
         setStats({
           staking: totalStaking,
           totalDeposits,
@@ -417,92 +172,349 @@ const UserDashboard = () => {
           todayBusiness: teamBusinessRes.data.todayBusiness,
         });
 
+        setSlides(bannerRes.data || []);
       } catch (err) {
         console.error("Dashboard error:", err);
+        toast.error("Failed to load user dashboard information");
+      } finally {
+        setLoading(false);
+        setLoadingSlides(false);
       }
     };
 
-    fetchDashboard();
+    fetchDashboardData();
   }, []);
 
-  return (
-    <div className="dashboard">
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+  const handleIgnore = () => {
+    setShowPopup(false);
+  };
 
-      <div className="main">
-        <Topbar isOpen={isOpen} setIsOpen={setIsOpen} />
+  const handleDontShowAgain = () => {
+    localStorage.setItem("hide_dashboard_announcement", "true");
+    setShowPopup(false);
+  };
 
-        <div className="content">
-          {/* <AvgAchieversCard /> */}
-
-          <h2 className="page-title">Dashboard</h2>
-          <span>Overview of your account activity</span>
-
-          {/* ✅ WALLET BALANCE */}
-          <h4 className="section-title">Wallet Balance</h4>
-          <div className="grid grid-3">
-            <StatCard title="ROI Income" value={`$${wallet.roi}`} icon={<FaChartLine />} />
-            <StatCard title="Level Income" value={`$${wallet.level}`} icon={<FaLayerGroup />} />
-            <StatCard title="Direct Income" value={`$${wallet.direct}`} icon={<FaWallet />} />
-          </div>
-
-          {/* ✅ EARNINGS (NO DEDUCTION) */}
-          <h4 className="section-title">Earnings</h4>
-          <div className="grid grid-4">
-            <StatCard
-              title="Total AVG Staking Balance"
-              value={`${Number(stats.staking).toFixed(2)}`}
-              icon={<FaMoneyBill />}
-            />
-            <StatCard title="ROI Income" value={`$${earnings.roi}`} icon={<FaChartLine />} />
-            <StatCard title="Level Income" value={`$${earnings.level}`} icon={<FaLayerGroup />} />
-            <StatCard title="Direct Income" value={`$${earnings.direct}`} icon={<FaWallet />} />
-          </div>
-
-          {/* TRANSACTIONS */}
-          <h4 className="section-title">Transactions Overview</h4>
-          <div className="grid grid-2">
-            <div className="box">
-              <div className="box-header">
-                <h3>Deposits Overview</h3>
-                <FaArrowDown />
-              </div>
-
-              <div className="mini-grid">
-                <div className="mini-card"><p>Total Deposits</p><h4>{stats.totalDeposits}</h4></div>
-                <div className="mini-card"><p>Total Amount</p><h4>${stats.totalDepositAmount}</h4></div>
-                <div className="mini-card"><p>Today Deposits</p><h4>{stats.todayDeposits}</h4></div>
-                <div className="mini-card"><p>Today Amount</p><h4>${stats.todayDepositAmount}</h4></div>
-              </div>
-            </div>
-
-            <div className="box">
-              <div className="box-header">
-                <h3>Withdraw Overview</h3>
-                <FaArrowUp />
-              </div>
-
-              <div className="mini-grid">
-                <div className="mini-card"><p>Total Withdraw</p><h4>{stats.totalWithdraw}</h4></div>
-                <div className="mini-card"><p>Total Amount</p><h4>${stats.totalWithdrawAmount}</h4></div>
-                <div className="mini-card"><p>Today Withdraw</p><h4>{stats.todayWithdraw}</h4></div>
-                <div className="mini-card"><p>Today Amount</p><h4>${stats.todayWithdrawAmount}</h4></div>
-              </div>
-            </div>
-          </div>
-
-          {/* TEAM */}
-          <h4 className="section-title">Business & Team</h4>
-          <div className="grid grid-4">
-            <StatCard title="Direct Referrals" value={stats.directCount} icon={<FaUsers />} />
-            <StatCard title="Team Count" value={stats.teamCount} icon={<FaUsers />} />
-            <StatCard title="Team Business" value={`$${stats.teamBusiness}`} icon={<FaBolt />} />
-            <StatCard title="Today Business" value={`$${stats.todayBusiness}`} icon={<FaBolt />} />
-          </div>
+  if (loading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50 text-slate-500 font-medium">
+        <div className="flex items-center gap-3">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#0437cc] border-t-transparent" />
+          <span className="animate-pulse tracking-wide text-sm font-semibold text-slate-600">
+            Loading User Dashboard...
+          </span>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="flex bg-slate-100 rounded-lg min-h-screen relative">
+      {/* <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* <Topbar isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+
+        <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-8">
+          
+          {/* Header Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xs">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+                Dashboard
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                Overview of your account activity, earnings, and team performance
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 shadow-xs self-start sm:self-auto">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              Account Active
+            </div>
+          </div>
+
+          {/* AVG ACHIEVERS SLIDER CARD */}
+          {!loadingSlides && slides.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-6 bg-amber-500 rounded-full" />
+                <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500 flex items-center gap-1.5">
+                  <FiAward className="text-amber-500 text-sm" /> AVG Achievers
+                </h2>
+              </div>
+              
+              <div className="overflow-hidden rounded-2xl">
+                <style>{`
+                  @keyframes avgScrollLeft {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                  }
+                `}</style>
+                <div
+                  className="flex gap-4 md:gap-6 py-2"
+                  style={{
+                    width: "max-content",
+                    animation: "avgScrollLeft 25s linear infinite",
+                  }}
+                >
+                  {[...slides, ...slides].map((item, index) => (
+                    <div
+                      key={`achiever-${index}`}
+                      className="flex w-[90vw] sm:w-[480px] overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition-all duration-300"
+                    >
+                      <div className="relative w-[130px] sm:w-[160px] flex-shrink-0 bg-slate-100">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.username}
+                          className="h-full min-h-[160px] w-full object-cover"
+                        />
+                        <div className="absolute left-2 top-2 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
+                          🏆 ACHIEVER
+                        </div>
+                      </div>
+
+                      <div className="flex flex-1 flex-col justify-center p-4 space-y-2">
+                        <span className="w-fit rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                          Target Completed
+                        </span>
+
+                        <h3 className="text-base font-bold text-slate-900 truncate">
+                          {item.username}
+                        </h3>
+
+                        <div className="grid grid-cols-2 gap-2 pt-1">
+                          <div className="rounded-xl bg-slate-50 border border-slate-100 p-2">
+                            <p className="text-[10px] text-slate-400 font-semibold">Target</p>
+                            <h4 className="text-xs font-bold text-slate-800">
+                              ${Number(item.target_amount || 0).toLocaleString()}
+                            </h4>
+                          </div>
+
+                          <div className="rounded-xl bg-emerald-50/60 border border-emerald-100 p-2">
+                            <p className="text-[10px] text-emerald-600 font-semibold">Achieved</p>
+                            <h4 className="text-xs font-bold text-emerald-700">
+                              ${Number(item.progress || 0).toLocaleString()}
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* WALLET BALANCE */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-6 bg-[#0437cc] rounded-full" />
+              <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">
+                Wallet Balance
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <StatCard title="ROI Income" value={`$${wallet.roi}`} icon={<FiTrendingUp />} accent="green" badge="Withdrawable" />
+              <StatCard title="Level Income" value={`$${wallet.level}`} icon={<FiLayers />} accent="purple" badge="Withdrawable" />
+              <StatCard title="Direct Income" value={`$${wallet.direct}`} icon={<FiCreditCard />} accent="blue" badge="Withdrawable" />
+            </div>
+          </div>
+
+          {/* EARNINGS */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-6 bg-[#f77704] rounded-full" />
+              <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">
+                Total Earnings & Staking
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-gradient-to-r from-[#eef2fc] via-white to-white border border-blue-100 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Staking Balance</p>
+                    <h3 className="text-2xl font-black mt-1 text-[#0437cc] tracking-tight">
+                      {Number(stats.staking).toFixed(2)} <span className="text-sm font-bold text-[#f77704]">AVG</span>
+                    </h3>
+                  </div>
+                  <div className="h-10 w-10 rounded-xl bg-[#0437cc] text-white flex items-center justify-center text-lg shadow-sm">
+                    <FiPieChart />
+                  </div>
+                </div>
+              </div>
+              <StatCard title="Total ROI Income" value={`$${earnings.roi}`} icon={<FiTrendingUp />} accent="green" badge="Gross" />
+              <StatCard title="Total Level Income" value={`$${earnings.level}`} icon={<FiLayers />} accent="purple" badge="Gross" />
+              <StatCard title="Total Direct Income" value={`$${earnings.direct}`} icon={<FiCreditCard />} accent="blue" badge="Gross" />
+            </div>
+          </div>
+
+          {/* TRANSACTIONS SECTION */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-6 bg-emerald-500 rounded-full" />
+              <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">
+                Transactions Overview
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SectionBlock title="Deposits Overview" icon={<FiArrowDownLeft className="text-emerald-600 text-lg" />}>
+                <MiniStat title="Total Deposits" value={stats.totalDeposits} />
+                <MiniStat title="Total Amount" value={`$${stats.totalDepositAmount}`} highlight="emerald" />
+                <MiniStat title="Today Deposits" value={stats.todayDeposits} />
+                <MiniStat title="Today Amount" value={`$${stats.todayDepositAmount}`} highlight="emerald" />
+              </SectionBlock>
+
+              <SectionBlock title="Withdrawal Overview" icon={<FiArrowUpRight className="text-rose-600 text-lg" />}>
+                <MiniStat title="Total Withdrawals" value={stats.totalWithdraw} />
+                <MiniStat title="Total Amount" value={`$${stats.totalWithdrawAmount}`} highlight="rose" />
+                <MiniStat title="Today Withdrawals" value={stats.todayWithdraw} />
+                <MiniStat title="Today Amount" value={`$${stats.todayWithdrawAmount}`} highlight="rose" />
+              </SectionBlock>
+            </div>
+          </div>
+
+          {/* TEAM & BUSINESS */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-6 bg-purple-500 rounded-full" />
+              <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">
+                Business & Team Network
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <StatCard title="Direct Referrals" value={stats.directCount} icon={<FiUsers />} accent="blue" badge="Network" />
+              <StatCard title="Team Count" value={stats.teamCount} icon={<FiUsers />} accent="purple" badge="Network" />
+              <StatCard title="Team Business" value={`$${stats.teamBusiness}`} icon={<FiZap />} accent="orange" badge="Volume" />
+              <StatCard title="Today Business" value={`$${stats.todayBusiness}`} icon={<FiCheckCircle />} accent="green" badge="Volume" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* DASHBOARD WELCOME / NOTIFICATION POPUP */}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 animate-in fade-in duration-300">
+          <div className="bg-white border border-slate-200 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden p-6 sm:p-8 space-y-6 relative">
+            
+            {/* Close Button */}
+            <button
+              onClick={handleIgnore}
+              className="absolute top-5 right-5 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition cursor-pointer"
+            >
+              <FiX className="text-sm" />
+            </button>
+
+            {/* Icon & Heading */}
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-xl shrink-0 shadow-inner">
+                <FiBell />
+              </div>
+              <div>
+                <span className="inline-block px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider mb-1">
+                  Dashboard Notice
+                </span>
+                <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                  Welcome to your Portal!
+                </h3>
+              </div>
+            </div>
+
+            {/* Message Body */}
+            <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+              Welcome to the upgraded dashboard! Your session is active and securely connected. Easily track your ROI earnings, monitor your team network volume, and manage your staking portfolio all from one place. Enjoy the improved experience!
+            </p>
+
+            {/* Action Buttons */}
+            <div className="space-y-2.5 pt-2">
+              <button
+                onClick={handleDontShowAgain}
+                className="w-full py-3 rounded-xl bg-[#0437cc] hover:bg-[#032da6] text-white text-xs sm:text-sm font-bold shadow-sm transition active:scale-95 cursor-pointer"
+              >
+                Don't show me again
+              </button>
+              <button
+                onClick={handleIgnore}
+                className="w-full py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs sm:text-sm font-bold transition cursor-pointer"
+              >
+                Ignore
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
 
 export default UserDashboard;
+
+/* UI HELPER COMPONENTS */
+
+const StatCard = ({ title, value, icon, badge = "Stat", accent = "blue" }) => {
+  const accentStyles = {
+    blue: "border-l-4 border-l-[#0437cc]",
+    green: "border-l-4 border-l-emerald-500",
+    orange: "border-l-4 border-l-[#f77704]",
+    purple: "border-l-4 border-l-purple-500",
+  };
+
+  const iconStyles = {
+    blue: "bg-[#eef2fc] text-[#0437cc]",
+    green: "bg-emerald-50 text-emerald-600",
+    orange: "bg-orange-50 text-[#f77704]",
+    purple: "bg-purple-50 text-purple-600",
+  };
+
+  return (
+    <div
+      className={`bg-white border border-slate-200/90 rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 shadow-xs hover:shadow-md ${
+        accentStyles[accent] || accentStyles.blue
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+          {badge}
+        </span>
+        <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-lg ${iconStyles[accent]}`}>
+          {icon}
+        </div>
+      </div>
+      <div className="mt-3">
+        <p className="text-xs font-semibold text-slate-500">{title}</p>
+        <h3 className="text-2xl font-black text-slate-900 tracking-tight mt-0.5">{value}</h3>
+      </div>
+    </div>
+  );
+};
+
+const SectionBlock = ({ title, children, icon }) => {
+  return (
+    <div className="border border-slate-200 bg-white rounded-2xl p-5 space-y-4 shadow-xs">
+      <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+        <div className="p-1.5 rounded-lg bg-slate-100">{icon}</div>
+        <h3 className="font-bold text-sm text-slate-800 tracking-wide">{title}</h3>
+      </div>
+      <div className="grid grid-cols-2 gap-3.5">{children}</div>
+    </div>
+  );
+};
+
+const MiniStat = ({ title, value, highlight }) => {
+  const getHighlightClass = () => {
+    if (highlight === "emerald") return "text-emerald-600 font-black";
+    if (highlight === "rose") return "text-rose-600 font-black";
+    return "text-slate-900";
+  };
+
+  return (
+    <div className="bg-slate-50 border border-slate-200/70 rounded-xl p-3.5 space-y-1">
+      <p className="text-[11px] font-semibold text-slate-500 tracking-wide">{title}</p>
+      <h4 className={`text-base font-bold tracking-tight ${getHighlightClass()}`}>
+        {value}
+      </h4>
+    </div>
+  );
+};

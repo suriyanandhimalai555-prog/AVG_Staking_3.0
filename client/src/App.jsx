@@ -60,6 +60,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import BannerImage from "./pages/BannerImage";
 import UserDirectReferralReward from "./pages/UserDirectReferralReward";
 import Website from "./pages/Website";
+import UserDashboardLayout from "./layouts/UserDashboardLayout";
 
 function App() {
   return (
@@ -126,25 +127,30 @@ function App() {
           </Route>
         </Route>
 
+        {/* USER DASHBOARD (PROTECTED) */}
         <Route element={<UserRoute />}>
+          <Route element={<UserDashboardLayout />}>
+            
+            {/* Index route renders at /user-dashboard if you want it as base, or keep paths relative */}
+            <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route path="/all-plans" element={<AllPlans />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/user-deposit" element={<UserDeposit />} />
+            <Route path="/user-withdraw" element={<UserWithdraw />} />
+            <Route path="/user-transaction" element={<UserTransaction />} />
+            <Route path="/user-roi" element={<UserROI />} />
+            <Route path="/user-direct" element={<UserDirect />} />
+            <Route path="/user-level" element={<UserLevel />} />
+            <Route path="/referrals" element={<MyReffral />} />
+            <Route path="/network" element={<MyNetwork />} />
+            <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/user-support" element={<UserSupportTicket />} />
+            <Route path="/user-bank" element={<UserBank />} />
+            <Route path="/user-rewards" element={<UserReward />} />
+            <Route path="/user-monthly-claims" element={<UserRewardClaims />} />
+            <Route path="/direct-reward" element={<UserDirectReferralReward />} />
 
-          <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/all-plans" element={<AllPlans />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/user-deposit" element={<UserDeposit />} />
-          <Route path="/user-withdraw" element={<UserWithdraw />} />
-          <Route path="/user-transaction" element={<UserTransaction />} />
-          <Route path="/user-roi" element={<UserROI />} />
-          <Route path="/user-direct" element={<UserDirect />} />
-          <Route path="/user-level" element={<UserLevel />} />
-          <Route path="/referrals" element={<MyReffral />} />
-          <Route path="/network" element={<MyNetwork />} />
-          <Route path="/user-profile" element={<UserProfile />} />
-          <Route path="/user-support" element={<UserSupportTicket />} />
-          <Route path="/user-bank" element={<UserBank />} />
-          <Route path="/user-rewards" element={<UserReward />} />
-          <Route path="/user-monthly-claims" element={<UserRewardClaims />} />
-          <Route path="/direct-reward" element={<UserDirectReferralReward />} />
+          </Route>
         </Route>
 
       </Routes>
