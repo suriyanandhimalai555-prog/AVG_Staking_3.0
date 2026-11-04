@@ -102,13 +102,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-[#02185c] text-white transition-transform duration-300 ease-out md:translate-x-0 ${
+        className={`fixed left-0 top-0 z-50 flex h-full max-h-screen w-[260px] flex-col bg-[#02185c] text-white transition-transform duration-300 ease-out md:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        <div className="flex h-full flex-col py-6">
+        <div className="flex h-full min-h-0 flex-col py-6">
           {/* Header Brand Logo */}
-          <div className="flex items-center justify-between px-6 mb-6">
+          <div className="flex items-center justify-between px-6 mb-6 shrink-0">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 shadow-inner">
                 <img src={Logo} alt="logo" className="h-6 w-6 object-contain" />
@@ -135,7 +135,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           {/* Mobile Logout Button */}
-          <div className="px-6 pb-4 md:hidden border-b border-white/10 mb-2">
+          <div className="px-6 pb-4 md:hidden border-b border-white/10 mb-2 shrink-0">
             <button
               className="w-full py-2 bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-bold text-xs rounded-xl transition cursor-pointer"
               onClick={handleLogout}
@@ -146,7 +146,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           {/* Navigation Menu Links */}
-          <div className="flex-1 overflow-y-auto space-y-1.5 no-scrollbar pr-0 select-none">
+          <div className="flex-1 min-h-0 overflow-y-auto space-y-1.5 no-scrollbar pr-0 select-none">
             <p className="mb-2 px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">
               Main
             </p>
