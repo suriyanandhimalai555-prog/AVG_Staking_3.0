@@ -3,13 +3,13 @@ import axios from "axios";
 import Sidebar from "../components/user/UserSidebar";
 import Topbar from "../components/user/UserTopbar";
 import { toast } from "react-hot-toast";
-import { 
-  FiLayers, 
-  FiDollarSign, 
-  FiTrendingUp, 
-  FiAward, 
-  FiCalendar, 
-  FiCheckCircle, 
+import {
+  FiLayers,
+  FiDollarSign,
+  FiTrendingUp,
+  FiAward,
+  FiCalendar,
+  FiCheckCircle,
   FiClock,
   FiDownload,
   FiX
@@ -242,7 +242,7 @@ const Portfolio = () => {
         {/* <Topbar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} /> */}
 
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-8 bg-slate-100">
-          
+
           {/* Header Banner */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xs">
             <div>
@@ -344,23 +344,30 @@ const Portfolio = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2.5">
+                          {/* Action Button with Icon & Text */}
                           <button
+                            type="button"
                             onClick={() => handleOpenCelebration(plan)}
-                            title="Download Certificate"
-                            className="h-8 w-8 rounded-xl bg-[#f77704]/10 hover:bg-[#f77704]/20 text-[#f77704] flex items-center justify-center transition cursor-pointer shadow-2xs"
+                            className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-[#f77704]/10 text-[#f77704] text-xs font-semibold transition-all duration-200 hover:bg-[#f77704] hover:text-white hover:shadow-md hover:shadow-[#f77704]/20 active:scale-95 focus:outline-hidden focus:ring-2 focus:ring-[#f77704]/30 cursor-pointer"
                           >
-                            <FiAward className="text-sm" />
+                            <FiDownload className="h-3.5 w-3.5 shrink-0" />
+                            <span>Download</span>
                           </button>
+
+                          {/* Status Badge */}
                           <span
-                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${
-                              isCompleted
-                                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                                : "bg-amber-50 text-amber-700 border border-amber-200"
-                            }`}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide shadow-xs ${isCompleted
+                                ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20"
+                                : "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20"
+                              }`}
                           >
-                            {isCompleted ? <FiCheckCircle /> : <FiClock />}
-                            {isCompleted ? "Completed" : "Ongoing"}
+                            {isCompleted ? (
+                              <FiCheckCircle className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                            ) : (
+                              <FiClock className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+                            )}
+                            <span>{isCompleted ? "Completed" : "Ongoing"}</span>
                           </span>
                         </div>
                       </div>
@@ -388,7 +395,7 @@ const Portfolio = () => {
 
                       {/* Progress Sections */}
                       <div className="space-y-4 pt-2">
-                        
+
                         {/* ROI Progress */}
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center text-xs font-semibold">
@@ -480,7 +487,7 @@ const Portfolio = () => {
       {showCelebrationModal && selectedPlan && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
           <div className="bg-white border border-slate-200 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col">
-            
+
             <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 bg-slate-50">
               <h3 className="text-sm font-bold text-slate-900">Elite Portfolio Certificate</h3>
               <button
@@ -493,7 +500,7 @@ const Portfolio = () => {
 
             {/* PREVIEW CARD (Matches Certificate Layout + User Name & Code) */}
             <div className="p-6 flex justify-center bg-slate-100">
-              <div 
+              <div
                 className="w-full bg-[#02185c] border-4 border-[#f77704] rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden flex flex-col items-center text-center space-y-4"
               >
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f77704]/20 border border-[#f77704]/40 text-[#f77704] text-[10px] font-black uppercase tracking-widest">
