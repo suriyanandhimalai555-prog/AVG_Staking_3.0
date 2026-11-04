@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate  } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "./pages/ScrollToTop";
 
@@ -83,8 +83,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* PUBLIC WEBSITE */}
         {/* <Route element={<PublicLayout />}> */}
-          <Route path="/" element={<Website />} />
-          {/* <Route path="/auth/register" element={<Home />} /> */}
+        <Route path="/" element={<Website />} />
+        {/* <Route path="/auth/register" element={<Home />} /> */}
         {/* </Route> */}
 
         {/* DASHBOARD (PROTECTED) */}
@@ -130,7 +130,7 @@ function App() {
         {/* USER DASHBOARD (PROTECTED) */}
         <Route element={<UserRoute />}>
           <Route element={<UserDashboardLayout />}>
-            
+
             {/* Index route renders at /user-dashboard if you want it as base, or keep paths relative */}
             <Route path="/user-dashboard" element={<UserDashboard />} />
             <Route path="/all-plans" element={<AllPlans />} />
@@ -160,10 +160,26 @@ function App() {
         toastOptions={{
           duration: 3000,
           style: {
-            background: "#1e293b",
-            color: "#fff",
-            borderRadius: "10px",
+            background: "#ffffff",
+            color: "#0f172a",
+            border: "1px solid #e2e8f0",
+            borderRadius: "14px",
             padding: "12px 16px",
+            fontSize: "13px",
+            fontWeight: "600",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05)",
+          },
+          success: {
+            iconTheme: {
+              primary: "#10b981",
+              secondary: "#ffffff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#f43f5e",
+              secondary: "#ffffff",
+            },
           },
         }}
       />
