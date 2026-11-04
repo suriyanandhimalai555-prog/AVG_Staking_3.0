@@ -223,52 +223,52 @@ const RankRewards = () => {
   const getStatusStyle = (status) => {
     switch ((status || "").toLowerCase()) {
       case "approved":
-        return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+        return "bg-emerald-50 text-emerald-600 border-emerald-200";
       case "rejected":
-        return "bg-rose-500/10 text-rose-400 border-rose-500/20";
+        return "bg-rose-50 text-rose-600 border-rose-200";
       default:
-        return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+        return "bg-amber-50 text-amber-700 border-amber-200";
     }
   };
 
   return (
-    <div className="p-6 bg-slate-900 min-h-screen text-slate-100 relative rounded-2xl shadow-2xl">
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
       
       {/* HEADER PANELS */}
-      <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl mb-8">
+      <div className="bg-white border border-slate-200/90 p-6 rounded-2xl shadow-xs space-y-6">
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
           <div>
-            <h2 className="text-2xl font-bold tracking-wide text-white flex items-center gap-2">
-              <FaTrophy className="text-amber-400" size={22} />
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+              <FaTrophy className="text-amber-500" size={22} />
               Rank Milestone Rewards
             </h2>
-            <p className="text-sm text-slate-400 mt-1">Manage global target metrics, processing checkpoints, and audit distributions</p>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Manage global target metrics, processing checkpoints, and audit distributions</p>
           </div>
 
           {/* EXCEL ACTION CONTROL MATRIX */}
           <div className="flex flex-wrap gap-2.5">
             <button
               onClick={() => handleDownloadExcel("pending")}
-              className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-950 border border-amber-500/30 hover:border-amber-500 text-amber-400 hover:text-amber-300 text-xs font-semibold rounded-xl transition-all"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-amber-300 hover:border-amber-500 text-amber-700 text-xs font-semibold rounded-xl transition-all shadow-2xs cursor-pointer active:scale-95"
             >
-              <FaFileExcel size={13} /> Export Pending
+              <FaFileExcel size={13} className="text-amber-600" /> Export Pending
             </button>
             <button
               onClick={() => handleDownloadExcel("approved")}
-              className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-950 border border-emerald-500/30 hover:border-emerald-500 text-emerald-400 hover:text-emerald-300 text-xs font-semibold rounded-xl transition-all"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-emerald-300 hover:border-emerald-500 text-emerald-700 text-xs font-semibold rounded-xl transition-all shadow-2xs cursor-pointer active:scale-95"
             >
-              <FaFileExcel size={13} /> Export Approved
+              <FaFileExcel size={13} className="text-emerald-600" /> Export Approved
             </button>
             <button
               onClick={() => handleDownloadExcel("rejected")}
-              className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-950 border border-rose-500/30 hover:border-rose-500 text-rose-400 hover:text-rose-300 text-xs font-semibold rounded-xl transition-all"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-rose-300 hover:border-rose-500 text-rose-700 text-xs font-semibold rounded-xl transition-all shadow-2xs cursor-pointer active:scale-95"
             >
-              <FaFileExcel size={13} /> Export Rejected
+              <FaFileExcel size={13} className="text-rose-600" /> Export Rejected
             </button>
           </div>
         </div>
 
-        <hr className="my-5 border-slate-700/60" />
+        <hr className="border-slate-200" />
 
         {/* INPUT FILTERS CONTROL BAR */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -276,20 +276,20 @@ const RankRewards = () => {
             <input
               type="text"
               placeholder="Search users, phone tags, status arrays..."
-              className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
+              className="w-full bg-white border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] shadow-xs transition duration-200"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-            <span className="text-slate-400 text-xs flex items-center gap-1.5 whitespace-nowrap">
-              <FaFilter size={12} className="text-slate-500" /> Segment Status:
+            <span className="text-slate-500 text-xs flex items-center gap-1.5 whitespace-nowrap font-medium">
+              <FaFilter size={12} className="text-slate-400" /> Segment Status:
             </span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full md:w-44 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:border-amber-500 cursor-pointer"
+              className="w-full md:w-44 bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0437cc] cursor-pointer"
             >
               <option value="all">All</option>
               <option value="approved">Approved</option>
@@ -301,12 +301,12 @@ const RankRewards = () => {
       </div>
 
       {/* REWARDS LEDGER CARD */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse whitespace-nowrap">
             <thead>
-              <tr className="bg-slate-900 text-slate-400 uppercase text-xs tracking-wider font-semibold border-b border-slate-700">
-                <th className="py-4 px-5 w-16">S.No</th>
+              <tr className="bg-slate-50/70 text-slate-600 uppercase text-xs tracking-wider font-bold border-b border-slate-200">
+                <th className="py-4 px-5 w-16 text-center">S.No</th>
                 <th className="py-4 px-5">User Identification Profile</th>
                 <th className="py-4 px-5">Phone Link</th>
                 <th className="py-4 px-5">Target Progression Track</th>
@@ -315,13 +315,13 @@ const RankRewards = () => {
                 <th className="py-4 px-5 text-center w-24">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/50 text-sm text-slate-300">
+            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
               {loading ? (
                 <tr>
                   <td colSpan="7" className="text-center py-20">
                     <div className="flex flex-col items-center justify-center gap-3">
-                      <div className="w-8 h-8 border-4 border-amber-500/20 border-t-amber-400 rounded-full animate-spin"></div>
-                      <span className="text-xs text-slate-400">Extracting profile bonus matrices...</span>
+                      <div className="w-8 h-8 border-4 border-[#0437cc] border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-xs text-slate-500 font-medium">Extracting profile bonus matrices...</span>
                     </div>
                   </td>
                 </tr>
@@ -333,23 +333,23 @@ const RankRewards = () => {
                 </tr>
               ) : (
                 pageItems.map((reward, i) => (
-                  <tr key={reward.sno} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="py-4 px-5 text-slate-500 font-medium">{startIndex + i + 1}</td>
+                  <tr key={reward.sno} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-4 px-5 text-center text-slate-500 font-medium">{startIndex + i + 1}</td>
                     <td className="py-4 px-5">
                       <div className="flex flex-col">
-                        <span className="font-semibold text-slate-100">{reward.username}</span>
-                        <span className="text-xs text-slate-500 font-mono mt-0.5">{reward.userCode}</span>
+                        <span className="font-bold text-slate-900">{reward.username}</span>
+                        <span className="text-xs text-slate-500 font-mono mt-0.5 font-bold">{reward.userCode}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 text-slate-300 font-medium">{reward.phoneNo}</td>
+                    <td className="py-4 px-5 text-slate-700 font-medium">{reward.phoneNo}</td>
                     <td className="py-4 px-5">
-                      <span className="text-amber-400 font-medium bg-amber-500/5 border border-amber-500/10 px-2.5 py-1 rounded-lg text-xs">
+                      <span className="text-amber-700 font-semibold bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg text-xs">
                         {reward.reward}
                       </span>
                     </td>
-                    <td className="py-4 px-5 text-xs text-slate-400">{reward.achievedDate}</td>
+                    <td className="py-4 px-5 text-xs text-slate-500 font-medium">{reward.achievedDate}</td>
                     <td className="py-4 px-5">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getStatusStyle(reward.status)}`}>
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold border ${getStatusStyle(reward.status)}`}>
                         {reward.status.toUpperCase()}
                       </span>
                     </td>
@@ -357,7 +357,7 @@ const RankRewards = () => {
                     <td className="py-4 px-5 text-center relative">
                       <button
                         onClick={() => setActiveMenuId(activeMenuId === reward.sno ? null : reward.sno)}
-                        className="p-2 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition-all"
+                        className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-all cursor-pointer"
                       >
                         <FaEllipsisV size={14} />
                       </button>
@@ -368,33 +368,33 @@ const RankRewards = () => {
                             className="fixed inset-0 z-10" 
                             onClick={() => setActiveMenuId(null)}
                           />
-                          <div className="absolute right-6 mt-1 w-48 bg-slate-950 border border-slate-700 rounded-xl shadow-2xl z-20 overflow-hidden text-left py-1 animate-fadeIn">
+                          <div className="absolute right-6 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-20 overflow-hidden text-left py-1">
                             <button
                               onClick={() => handleActionClick(reward, "view")}
-                              className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                              className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
                             >
-                              <FaEye size={12} className="text-cyan-400" /> View Profiles
+                              <FaEye size={12} className="text-[#0437cc]" /> View Profiles
                             </button>
                             <button
                               onClick={() => handleActionClick(reward, "edit")}
-                              className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                              className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
                             >
-                              <FaEdit size={12} className="text-amber-400" /> Adjust Parameters
+                              <FaEdit size={12} className="text-amber-600" /> Adjust Parameters
                             </button>
 
                             {reward.status === "pending" && (
                               <>
                                 <button
                                   onClick={() => handleUpdateStatus(reward, "approved")}
-                                  className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+                                  className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 hover:text-emerald-600 transition-colors cursor-pointer"
                                 >
-                                  <FaCheckCircle size={12} className="text-emerald-500" /> Verify Approval
+                                  <FaCheckCircle size={12} className="text-emerald-600" /> Verify Approval
                                 </button>
                                 <button
                                   onClick={() => handleUpdateStatus(reward, "rejected")}
-                                  className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-rose-400 transition-colors"
+                                  className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 hover:text-rose-600 transition-colors cursor-pointer"
                                 >
-                                  <FaTimesCircle size={12} className="text-rose-500" /> Terminate Reject
+                                  <FaTimesCircle size={12} className="text-rose-600" /> Terminate Reject
                                 </button>
                               </>
                             )}
@@ -403,15 +403,15 @@ const RankRewards = () => {
                               <>
                                 <button
                                   onClick={() => handleUpdateStatus(reward, "pending")}
-                                  className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition-colors"
+                                  className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 hover:text-amber-600 transition-colors cursor-pointer"
                                 >
-                                  <FaUndo size={12} className="text-amber-500" /> Revert to Pending
+                                  <FaUndo size={12} className="text-amber-600" /> Revert to Pending
                                 </button>
                                 <button
                                   onClick={() => handleUpdateStatus(reward, "rejected")}
-                                  className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-rose-400 transition-colors"
+                                  className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 hover:text-rose-600 transition-colors cursor-pointer"
                                 >
-                                  <FaTimesCircle size={12} className="text-rose-500" /> Modify to Reject
+                                  <FaTimesCircle size={12} className="text-rose-600" /> Modify to Reject
                                 </button>
                               </>
                             )}
@@ -420,23 +420,23 @@ const RankRewards = () => {
                               <>
                                 <button
                                   onClick={() => handleUpdateStatus(reward, "pending")}
-                                  className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition-colors"
+                                  className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 hover:text-amber-600 transition-colors cursor-pointer"
                                 >
-                                  <FaUndo size={12} className="text-amber-500" /> Revert to Pending
+                                  <FaUndo size={12} className="text-amber-600" /> Revert to Pending
                                 </button>
                                 <button
                                   onClick={() => handleUpdateStatus(reward, "approved")}
-                                  className="w-full px-4 py-2 text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+                                  className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-100 hover:text-emerald-600 transition-colors cursor-pointer"
                                 >
-                                  <FaCheckCircle size={12} className="text-emerald-500" /> Force Approve
+                                  <FaCheckCircle size={12} className="text-emerald-600" /> Force Approve
                                 </button>
                               </>
                             )}
 
-                            <div className="border-t border-slate-800 my-1" />
+                            <div className="border-t border-slate-100 my-1" />
                             <button
                               onClick={() => handleActionClick(reward, "delete")}
-                              className="w-full px-4 py-2 text-xs flex items-center gap-2 text-rose-400 hover:bg-rose-950/40 hover:text-rose-300 transition-colors"
+                              className="w-full px-4 py-2 text-xs font-semibold flex items-center gap-2 text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                             >
                               <FaTrashAlt size={12} /> Purge Deletion
                             </button>
@@ -452,13 +452,13 @@ const RankRewards = () => {
         </div>
 
         {/* PAGINATION CONTROL MATRIX */}
-        <div className="p-4 bg-slate-900/40 border-t border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <div className="flex items-center gap-2">
+        <div className="p-5 bg-slate-50/50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500">
+          <div className="flex items-center gap-2.5">
             <span>Grid Display Viewport:</span>
             <select
               value={rowsPerPage}
               onChange={(e) => setRowsPerPage(Number(e.target.value))}
-              className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-slate-300 focus:outline-none focus:border-amber-500 cursor-pointer"
+              className="bg-white border border-slate-300 rounded-lg py-1 px-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0437cc] cursor-pointer"
             >
               <option value={10}>10 records</option>
               <option value={25}>25 records</option>
@@ -466,26 +466,26 @@ const RankRewards = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1">
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded disabled:opacity-40 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
             >
               {"<"}
             </button>
 
             {getPagination().map((p, i) =>
               p === "..." ? (
-                <span key={i} className="px-1.5 text-slate-600 font-bold">...</span>
+                <span key={i} className="px-2 text-slate-400 text-sm tracking-wider">...</span>
               ) : (
                 <button
                   key={i}
                   onClick={() => setCurrentPage(p)}
-                  className={`px-2.5 py-1.5 rounded font-semibold border transition-all ${
+                  className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 cursor-pointer ${
                     currentPage === p
-                      ? "bg-amber-600 border-amber-500 text-white shadow-md shadow-amber-600/20"
-                      : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                      ? "bg-[#0437cc] text-white shadow-xs"
+                      : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   {p}
@@ -496,7 +496,7 @@ const RankRewards = () => {
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded disabled:opacity-40 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
             >
               {">"}
             </button>
@@ -506,27 +506,27 @@ const RankRewards = () => {
 
       {/* POPUP MODAL ARCHITECTURE */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-lg bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
             
-            <div className="px-6 py-4 bg-slate-900 border-b border-slate-700 flex items-center justify-between">
-              <h3 className="font-bold text-base text-white tracking-wide">
+            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="font-bold text-base text-slate-900 tracking-wide">
                 {modalType === "delete" && "Confirm Core System Purge"}
                 {modalType === "edit" && "Modify Structural Threshold"}
                 {modalType === "view" && "Comprehensive Reward Scope"}
               </h3>
-              <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white transition-colors">
+              <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-700 transition cursor-pointer">
                 <FaTimes size={16} />
               </button>
             </div>
 
-            <div className="p-6 space-y-4 text-sm text-slate-300 max-h-[60vh] overflow-y-auto">
+            <div className="p-6 space-y-4 text-sm text-slate-700 max-h-[60vh] overflow-y-auto">
               {modalType === "delete" && (
-                <div className="p-4 bg-rose-500/5 border border-rose-500/20 rounded-xl flex items-start gap-3">
-                  <FaTrashAlt className="text-rose-400 shrink-0 mt-0.5" size={16} />
+                <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-3">
+                  <FaTrashAlt className="text-rose-600 shrink-0 mt-0.5" size={16} />
                   <div>
-                    <p className="text-slate-200 font-medium">Are you sure you want to delete this log layer?</p>
-                    <p className="text-xs text-slate-400 mt-1">Purging the milestone tracker for user node <b className="text-slate-300">{selectedReward?.username}</b> cannot be reverted.</p>
+                    <p className="text-slate-900 font-bold">Are you sure you want to delete this log layer?</p>
+                    <p className="text-xs text-slate-500 mt-1 font-medium">Purging the milestone tracker for user node <b className="text-slate-800">{selectedReward?.username}</b> cannot be reverted.</p>
                   </div>
                 </div>
               )}
@@ -534,16 +534,16 @@ const RankRewards = () => {
               {modalType === "edit" && (
                 <div className="space-y-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Username Alias</label>
-                    <input type="text" defaultValue={selectedReward?.username} className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-amber-500" />
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Username Alias</label>
+                    <input type="text" defaultValue={selectedReward?.username} className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-[#0437cc]" />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Network Link</label>
-                    <input type="text" defaultValue={selectedReward?.phoneNo} className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-amber-500" />
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Phone Network Link</label>
+                    <input type="text" defaultValue={selectedReward?.phoneNo} className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-[#0437cc]" />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Reward Parameters Metrics</label>
-                    <input type="text" defaultValue={selectedReward?.reward} className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-amber-500" />
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Reward Parameters Metrics</label>
+                    <input type="text" defaultValue={selectedReward?.reward} className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-[#0437cc]" />
                   </div>
                 </div>
               )}
@@ -555,44 +555,44 @@ const RankRewards = () => {
                     {Object.entries(selectedReward)
                       .filter(([key]) => key !== "bankDetails")
                       .map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1')}</span>
-                          <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{String(value)}</span>
+                        <div key={key} className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1')}</span>
+                          <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{String(value)}</span>
                         </div>
                       ))}
                   </div>
 
                   {/* Bank Details Section */}
-                  <div className="border-t border-slate-700/60 pt-3">
-                    <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2.5">Bank Account Information</h4>
+                  <div className="border-t border-slate-200 pt-3">
+                    <h4 className="text-xs font-bold text-[#0437cc] uppercase tracking-wider mb-2.5">Bank Account Information</h4>
                     <div className="grid grid-cols-1 gap-2.5">
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Account Holder Name</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.accountHolderName || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Account Holder Name</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.accountHolderName || "-"}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Bank Name</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.bankName || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Bank Name</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.bankName || "-"}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Account Number</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.accountNumber || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Account Number</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.accountNumber || "-"}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">IFSC Code</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.ifscCode || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">IFSC Code</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.ifscCode || "-"}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Branch</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.branch || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Branch</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.branch || "-"}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">UPI ID</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.upiId || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">UPI ID</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.upiId || "-"}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 bg-slate-900/40 border border-slate-700/40 rounded-xl">
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">GPay Number</span>
-                        <span className="text-sm font-medium text-slate-200 truncate max-w-xs">{selectedReward.bankDetails?.gpayNumber || "-"}</span>
+                      <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">GPay Number</span>
+                        <span className="text-sm font-semibold text-slate-900 truncate max-w-xs">{selectedReward.bankDetails?.gpayNumber || "-"}</span>
                       </div>
                     </div>
                   </div>
@@ -600,17 +600,17 @@ const RankRewards = () => {
               )}
             </div>
 
-            <div className="px-6 py-4 bg-slate-900/60 border-t border-slate-700 flex justify-end gap-2.5">
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-2.5">
               <button
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors"
+                className="px-5 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer"
                 onClick={() => setShowModal(false)}
               >
                 Abort
               </button>
               {(modalType === "delete" || modalType === "edit") && (
                 <button 
-                  className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all text-white ${
-                    modalType === "delete" ? "bg-rose-600 hover:bg-rose-500" : "bg-amber-600 hover:bg-amber-500"
+                  className={`px-5 py-2 text-xs font-semibold rounded-xl transition text-white shadow-xs cursor-pointer ${
+                    modalType === "delete" ? "bg-rose-600 hover:bg-rose-700" : "bg-[#0437cc] hover:bg-blue-800"
                   }`} 
                   onClick={handleModalConfirm}
                 >
@@ -624,9 +624,9 @@ const RankRewards = () => {
 
       {/* TOAST SYSTEM POPUP CARD */}
       {showPopup && (
-        <div className="fixed bottom-5 right-5 z-50 bg-slate-950 border-l-4 border-amber-500 text-slate-200 px-5 py-3.5 rounded-xl shadow-2xl flex items-center justify-between gap-4 max-w-md animate-slideUp">
-          <span className="text-xs font-medium tracking-wide">{popupMessage}</span>
-          <button onClick={() => setShowPopup(false)} className="text-slate-500 hover:text-white transition-colors">
+        <div className="fixed bottom-5 right-5 z-[100] bg-white border border-slate-200 border-l-4 border-l-[#0437cc] text-slate-800 px-5 py-3.5 rounded-xl shadow-xl flex items-center justify-between gap-4 max-w-md">
+          <span className="text-xs font-semibold tracking-wide">{popupMessage}</span>
+          <button onClick={() => setShowPopup(false)} className="text-slate-400 hover:text-slate-700 transition cursor-pointer">
             <FaTimes size={12} />
           </button>
         </div>

@@ -20,11 +20,9 @@ const Users = () => {
 
     const dropdownRef = useRef(null);
 
-    // Global click listener modified to ignore clicks inside valid action menus
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                // Only close if we didn't click an ellipsis menu trigger element
                 if (!event.target.closest(".action-trigger")) {
                     setMenuOpen(null);
                 }
@@ -252,279 +250,269 @@ const Users = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#070b1e] text-slate-100 p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none rounded-2xl shadow-xl">
-            {/* Background Glows */}
-            <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none" />
-
-            <div className="relative z-10 max-w-[1600px] mx-auto space-y-6">
-
-                {/* Header Card */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-xl">
-                    <div>
-                        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">User Management</h2>
-                        <p className="text-xs text-slate-400 mt-1">Manage platform authorization profiles and records</p>
-                    </div>
-
-                    <div className="relative w-full sm:w-72 lg:w-96">
-                        {/* <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
-                            <FaSearch className="text-sm" />
-                        </span> */}
-                        <input
-                            type="text"
-                            placeholder="Search by Name, Email, Phone or User Code..."
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value);
-                                setPage(1);
-                            }}
-                            className="w-full bg-[#0d153a]/60 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-purple-500/80 focus:ring-2 focus:ring-purple-500/20 transition duration-200"
-                        />
-                    </div>
+        <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
+            {/* Header Card */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
+                <div>
+                    <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">User Management</h2>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Manage platform authorization profiles and records</p>
                 </div>
 
-                {/* Table Layout */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="overflow-x-auto w-full">
-                        <table className="w-full min-w-[1000px] border-collapse text-left text-sm">
-                            <thead>
-                                <tr className="border-b border-white/10 bg-[#0d153a]/40 text-slate-300 font-semibold tracking-wider text-xs uppercase">
-                                    <th className="py-4 px-5 w-16 text-center">S.No</th>
-                                    <th className="py-4 px-6">Username</th>
-                                    <th className="py-4 px-6">Email</th>
-                                    <th className="py-4 px-5 text-center">Active</th>
-                                    <th className="py-4 px-6">Phone</th>
-                                    <th className="py-4 px-6">Wallet</th>
-                                    <th className="py-4 px-5 text-center">Status</th>
-                                    <th className="py-4 px-6">Created</th>
-                                    <th className="py-4 px-6 text-center w-24">Actions</th>
-                                </tr>
-                            </thead>
+                <div className="relative w-full sm:w-72 lg:w-96">
+                    <input
+                        type="text"
+                        placeholder="Search by Name, Email, Phone or User Code..."
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            setPage(1);
+                        }}
+                        className="w-full bg-white border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white shadow-xs transition duration-200"
+                    />
+                </div>
+            </div>
 
-                            <tbody className="divide-y divide-white/5">
-                                {loading ? (
-                                    <tr>
-                                        <td colSpan="9" className="py-12 text-center text-slate-400">
-                                            <div className="flex flex-col items-center gap-3">
-                                                <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                                                <span>Fetching profiles data...</span>
+            {/* Table Layout */}
+            <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+                <div className="overflow-x-auto w-full">
+                    <table className="w-full min-w-[1000px] border-collapse text-left text-sm">
+                        <thead>
+                            <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-600 font-bold tracking-wider text-xs uppercase">
+                                <th className="py-4 px-5 w-16 text-center">S.No</th>
+                                <th className="py-4 px-6">Username</th>
+                                <th className="py-4 px-6">Email</th>
+                                <th className="py-4 px-5 text-center">Active</th>
+                                <th className="py-4 px-6">Phone</th>
+                                <th className="py-4 px-6">Wallet</th>
+                                <th className="py-4 px-5 text-center">Status</th>
+                                <th className="py-4 px-6">Created</th>
+                                <th className="py-4 px-6 text-center w-24">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody className="divide-y divide-slate-100">
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="9" className="py-12 text-center text-slate-500">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className="w-8 h-8 border-4 border-[#0437cc] border-t-transparent rounded-full animate-spin"></div>
+                                            <span>Fetching profiles data...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : paginatedUsers.length === 0 ? (
+                                <tr>
+                                    <td colSpan="9" className="py-12 text-center text-slate-500">
+                                        No matching profiles records found.
+                                    </td>
+                                </tr>
+                            ) : (
+                                paginatedUsers.map((user, index) => (
+                                    <tr key={user.id} onClick={() => setViewUser(user)} className="hover:bg-slate-50/80 transition duration-150 group cursor-pointer">
+                                        <td className="py-4 px-5 text-center font-medium text-slate-500">
+                                            {(page - 1) * rowsPerPage + index + 1}
+                                        </td>
+                                        <td className="py-4 px-6 font-bold text-slate-900">
+                                            <div className="flex flex-col">
+                                                <span className="group-hover:text-[#0437cc] transition-colors">{user.username}</span>
+                                                <span className="text-xs font-mono font-medium text-slate-400 mt-0.5">{user.userCode || "N/A"}</span>
                                             </div>
                                         </td>
-                                    </tr>
-                                ) : paginatedUsers.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="9" className="py-12 text-center text-slate-400">
-                                            No matching profiles records found.
+                                        <td className="py-4 px-6 text-slate-600 max-w-[200px] truncate">{user.email}</td>
+                                        <td className="py-4 px-5 text-center">
+                                            <span className={`inline-flex px-2.5 py-1 text-xs font-bold rounded-md ${user.active
+                                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                                                    : "bg-amber-50 text-amber-600 border border-amber-200"
+                                                }`}>
+                                                {user.active ? "Active" : "Inactive"}
+                                            </span>
+                                        </td>
+                                        <td className="py-4 px-6 text-slate-700 font-medium">{user.phone}</td>
+                                        <td className="py-4 px-6 text-emerald-600 font-bold">{user.wallet}</td>
+                                        <td className="py-4 px-5 text-center"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <label className="relative inline-flex items-center cursor-pointer justify-center select-none">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={user.status}
+                                                    onChange={() => toggleStatus(user.id)}
+                                                    className="sr-only peer"
+                                                />
+                                                <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0437cc] shadow-xs"></div>
+                                            </label>
+                                        </td>
+                                        <td className="py-4 px-6 text-slate-500 text-xs font-medium">{user.created}</td>
+
+                                        {/* DROPDOWN MENU CELL */}
+                                        <td className="py-4 px-6 text-center relative overflow-visible"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setMenuOpen(menuOpen === user.id ? null : user.id);
+                                                }}
+                                                className="action-trigger p-2 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition duration-150 focus:outline-none cursor-pointer"
+                                            >
+                                                <FaEllipsisV className="pointer-events-none" />
+                                            </button>
+
+                                            {menuOpen === user.id && (
+                                                <div
+                                                    ref={dropdownRef}
+                                                    className="absolute right-12 top-2 w-36 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-slate-100 text-left"
+                                                >
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); setViewUser(user); setMenuOpen(null); }}
+                                                        className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                                                    >
+                                                        View Profile
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); setEditUser(user); setMenuOpen(null); }}
+                                                        className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                                                    >
+                                                        Edit Info
+                                                    </button>
+                                                    <button
+                                                        onClick={async (e) => { e.stopPropagation(); setMenuOpen(null); await handleLoginAsUser(user.id); }}
+                                                        className="w-full text-left px-4 py-2.5 text-xs font-semibold text-[#0437cc] hover:bg-[#eef2fc] transition cursor-pointer"
+                                                    >
+                                                        Login System
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); setDeleteUserId(user.id); setMenuOpen(null); }}
+                                                        className="w-full text-left px-4 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                                                    >
+                                                        Delete Record
+                                                    </button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
-                                ) : (
-                                    paginatedUsers.map((user, index) => (
-                                        <tr key={user.id} onClick={() => setViewUser(user)} className="hover:bg-white/[0.02] transition duration-150 group">
-                                            <td className="py-4 px-5 text-center font-medium text-slate-400">
-                                                {(page - 1) * rowsPerPage + index + 1}
-                                            </td>
-                                            <td className="py-4 px-6 font-semibold text-white">
-                                                <div className="flex flex-col">
-                                                    <span className="group-hover:text-purple-400 transition-colors">{user.username}</span>
-                                                    <span className="text-xs font-mono font-medium text-slate-500 mt-0.5">{user.userCode || "N/A"}</span>
-                                                </div>
-                                            </td>
-                                            <td className="py-4 px-6 text-slate-300 max-w-[200px] truncate">{user.email}</td>
-                                            <td className="py-4 px-5 text-center">
-                                                <span className={`inline-flex px-2.5 py-1 text-xs font-bold rounded-md ${user.active
-                                                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                                        : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                                                    }`}>
-                                                    {user.active ? "Active" : "Inactive"}
-                                                </span>
-                                            </td>
-                                            <td className="py-4 px-6 text-slate-300 font-medium">{user.phone}</td>
-                                            <td className="py-4 px-6 text-emerald-400 font-semibold">{user.wallet}</td>
-                                            <td className="py-4 px-5 text-center"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                <label className="relative inline-flex items-center cursor-pointer justify-center select-none">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={user.status}
-                                                        onChange={() => toggleStatus(user.id)}
-                                                        className="sr-only peer"
-                                                    />
-                                                    <div className="w-10 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-indigo-500 shadow-sm shadow-black/50"></div>
-                                                </label>
-                                            </td>
-                                            <td className="py-4 px-6 text-slate-400 text-xs font-medium">{user.created}</td>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
 
-                                            {/* DROPDOWN MENU CELL */}
-                                            <td className="py-4 px-6 text-center relative overflow-visible"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setMenuOpen(menuOpen === user.id ? null : user.id);
-                                                    }}
-                                                    className="action-trigger p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition duration-150 focus:outline-none"
-                                                >
-                                                    <FaEllipsisV className="pointer-events-none" />
-                                                </button>
-
-                                                {menuOpen === user.id && (
-                                                    <div
-                                                        ref={dropdownRef}
-                                                        className="absolute right-12 top-2 w-36 bg-[#0f1631] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-white/5"
-                                                    >
-                                                        <button
-                                                            onClick={(e) => { e.stopPropagation(); setViewUser(user); setMenuOpen(null); }}
-                                                            className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-200 hover:bg-white/5 hover:text-white transition"
-                                                        >
-                                                            View Profile
-                                                        </button>
-                                                        <button
-                                                            onClick={(e) => { e.stopPropagation(); setEditUser(user); setMenuOpen(null); }}
-                                                            className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-200 hover:bg-white/5 hover:text-white transition"
-                                                        >
-                                                            Edit Info
-                                                        </button>
-                                                        <button
-                                                            onClick={async (e) => { e.stopPropagation(); setMenuOpen(null); await handleLoginAsUser(user.id); }}
-                                                            className="w-full text-left px-4 py-2.5 text-xs font-semibold text-sky-400 hover:bg-sky-500/10 transition"
-                                                        >
-                                                            Login System
-                                                        </button>
-                                                        <button
-                                                            onClick={(e) => { e.stopPropagation(); setDeleteUserId(user.id); setMenuOpen(null); }}
-                                                            className="w-full text-left px-4 py-2.5 text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition"
-                                                        >
-                                                            Delete Record
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                {/* Pagination Bottom */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 p-5 bg-slate-50/50">
+                    <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500">
+                        <span>Rows per page</span>
+                        <select
+                            value={rowsPerPage}
+                            onChange={(e) => {
+                                setRowsPerPage(Number(e.target.value));
+                                setPage(1);
+                            }}
+                            className="bg-white border border-slate-300 rounded-lg py-1 px-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0437cc] transition"
+                        >
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                        </select>
                     </div>
 
-                    {/* Pagination Bottom */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 p-5 bg-[#0d153a]/20">
-                        <div className="flex items-center gap-2.5 text-xs font-medium text-slate-400">
-                            <span>Rows per page</span>
-                            <select
-                                value={rowsPerPage}
-                                onChange={(e) => {
-                                    setRowsPerPage(Number(e.target.value));
-                                    setPage(1);
-                                }}
-                                className="bg-[#0f1631] border border-white/10 rounded-lg py-1 px-2.5 text-slate-200 focus:outline-none focus:border-purple-500 transition"
-                            >
-                                <option value={10}>10</option>
-                                <option value={25}>25</option>
-                                <option value={50}>50</option>
-                            </select>
-                        </div>
+                    <div className="flex items-center gap-1">
+                        <button
+                            disabled={page === 1}
+                            onClick={() => setPage((p) => Math.max(1, p - 1))}
+                            className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
+                        >
+                            {"<"}
+                        </button>
 
-                        <div className="flex items-center gap-1">
-                            <button
-                                disabled={page === 1}
-                                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                                className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-white/5 bg-white/5 text-sm text-slate-300 transition hover:bg-white/10 disabled:opacity-30 disabled:pointer-events-none active:scale-95"
-                            >
-                                {"<"}
-                            </button>
+                        {getPagination().map((p, i) =>
+                            p === "..." ? (
+                                <span key={i} className="px-2 text-slate-400 text-sm tracking-wider">...</span>
+                            ) : (
+                                <button
+                                    key={i}
+                                    onClick={() => setPage(p)}
+                                    className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 cursor-pointer ${page === p
+                                            ? "bg-[#0437cc] text-white shadow-xs"
+                                            : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                                        }`}
+                                >
+                                    {p}
+                                </button>
+                            )
+                        )}
 
-                            {getPagination().map((p, i) =>
-                                p === "..." ? (
-                                    <span key={i} className="px-2 text-slate-500 text-sm tracking-wider">...</span>
-                                ) : (
-                                    <button
-                                        key={i}
-                                        onClick={() => setPage(p)}
-                                        className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 ${page === p
-                                                ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md shadow-purple-950/50"
-                                                : "border border-white/5 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
-                                            }`}
-                                    >
-                                        {p}
-                                    </button>
-                                )
-                            )}
-
-                            <button
-                                disabled={page === totalPages}
-                                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                                className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-white/5 bg-white/5 text-sm text-slate-300 transition hover:bg-white/10 disabled:opacity-30 disabled:pointer-events-none active:scale-95"
-                            >
-                                {">"}
-                            </button>
-                        </div>
+                        <button
+                            disabled={page === totalPages}
+                            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                            className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
+                        >
+                            {">"}
+                        </button>
                     </div>
                 </div>
             </div>
 
             {/* VIEW PROFILE MODAL */}
             {viewUser && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-                    <div className="w-full max-w-lg bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-                        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0d153a]/40">
-                            <h3 className="text-base font-bold text-white tracking-wide">User Account Profile</h3>
-                            <button onClick={() => setViewUser(null)} className="text-slate-400 hover:text-white transition text-sm">✕</button>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+                    <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+                            <h3 className="text-base font-bold text-slate-900 tracking-wide">User Account Profile</h3>
+                            <button onClick={() => setViewUser(null)} className="text-slate-400 hover:text-slate-700 transition text-sm cursor-pointer">✕</button>
                         </div>
 
                         <div className="p-6 space-y-4">
-                            <div className="flex items-center gap-3.5 bg-white/5 border border-white/5 px-4 py-3 rounded-xl">
-                                <FaUser className="text-purple-400 text-base flex-shrink-0" />
+                            <div className="flex items-center gap-3.5 bg-slate-50 border border-slate-200/80 px-4 py-3 rounded-xl">
+                                <FaUser className="text-[#0437cc] text-base flex-shrink-0" />
                                 <div className="flex flex-col">
-                                    <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Username</span>
-                                    <span className="text-sm font-semibold text-white mt-0.5">{viewUser.username}</span>
-                                    <span className="text-xs text-slate-400 font-mono mt-0.5">Code: {viewUser.userCode || "N/A"}</span>
+                                    <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Username</span>
+                                    <span className="text-sm font-semibold text-slate-900 mt-0.5">{viewUser.username}</span>
+                                    <span className="text-xs text-slate-500 font-mono mt-0.5">Code: {viewUser.userCode || "N/A"}</span>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3.5 bg-white/5 border border-white/5 px-4 py-3 rounded-xl">
-                                <FaEnvelope className="text-indigo-400 text-base flex-shrink-0" />
+                            <div className="flex items-center gap-3.5 bg-slate-50 border border-slate-200/80 px-4 py-3 rounded-xl">
+                                <FaEnvelope className="text-[#3b52d4] text-base flex-shrink-0" />
                                 <div className="flex flex-col">
-                                    <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Email Address</span>
-                                    <span className="text-sm font-medium text-slate-200 mt-0.5">{viewUser.email}</span>
+                                    <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Email Address</span>
+                                    <span className="text-sm font-medium text-slate-800 mt-0.5">{viewUser.email}</span>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3.5 bg-white/5 border border-white/5 px-4 py-3 rounded-xl">
-                                <FaPhone className="text-emerald-400 text-base flex-shrink-0" />
+                            <div className="flex items-center gap-3.5 bg-slate-50 border border-slate-200/80 px-4 py-3 rounded-xl">
+                                <FaPhone className="text-emerald-600 text-base flex-shrink-0" />
                                 <div className="flex flex-col">
-                                    <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Phone Number</span>
-                                    <span className="text-sm font-medium text-slate-200 mt-0.5">{viewUser.phone}</span>
+                                    <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Phone Number</span>
+                                    <span className="text-sm font-medium text-slate-800 mt-0.5">{viewUser.phone}</span>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-3 bg-white/5 border border-white/5 px-4 py-3 rounded-xl">
-                                    <FaWallet className="text-amber-400 text-sm flex-shrink-0" />
+                                <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 px-4 py-3 rounded-xl">
+                                    <FaWallet className="text-amber-500 text-sm flex-shrink-0" />
                                     <div className="flex flex-col">
-                                        <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Wallet Bal</span>
-                                        <span className="text-sm font-bold text-emerald-400 mt-0.5">{viewUser.wallet}</span>
+                                        <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Wallet Bal</span>
+                                        <span className="text-sm font-bold text-emerald-600 mt-0.5">{viewUser.wallet}</span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 bg-white/5 border border-white/5 px-4 py-3 rounded-xl">
-                                    <div className={`w-2.5 h-2.5 rounded-full ${viewUser.active ? "bg-emerald-400" : "bg-amber-400"} flex-shrink-0`} />
+                                <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 px-4 py-3 rounded-xl">
+                                    <div className={`w-2.5 h-2.5 rounded-full ${viewUser.active ? "bg-emerald-500" : "bg-amber-500"} flex-shrink-0`} />
                                     <div className="flex flex-col">
-                                        <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Plan Status</span>
-                                        <span className="text-sm font-bold text-slate-200 mt-0.5">{viewUser.active ? "Active" : "Inactive"}</span>
+                                        <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Plan Status</span>
+                                        <span className="text-sm font-bold text-slate-800 mt-0.5">{viewUser.active ? "Active" : "Inactive"}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3.5 bg-white/5 border border-white/5 px-4 py-3 rounded-xl">
+                            <div className="flex items-center gap-3.5 bg-slate-50 border border-slate-200/80 px-4 py-3 rounded-xl">
                                 <FaCalendarAlt className="text-slate-400 text-base flex-shrink-0" />
                                 <div className="flex flex-col">
-                                    <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">Created System timestamp</span>
-                                    <span className="text-xs text-slate-400 font-medium mt-0.5">{viewUser.created}</span>
+                                    <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Created System timestamp</span>
+                                    <span className="text-xs text-slate-600 font-medium mt-0.5">{viewUser.created}</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="px-6 py-4 bg-[#0d153a]/20 border-t border-white/10 flex justify-end">
+                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
                             <button
                                 onClick={() => setViewUser(null)}
-                                className="px-5 py-2 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white transition active:scale-95"
+                                className="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer"
                             >
                                 Close View
                             </button>
@@ -535,55 +523,55 @@ const Users = () => {
 
             {/* EDIT MODAL */}
             {editUser && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-                    <div className="w-full max-w-lg bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-                        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0d153a]/40">
-                            <h3 className="text-base font-bold text-white tracking-wide">Modify Member Account</h3>
-                            <button onClick={() => setEditUser(null)} className="text-slate-400 hover:text-white transition text-sm">✕</button>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+                    <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+                            <h3 className="text-base font-bold text-slate-900 tracking-wide">Modify Member Account</h3>
+                            <button onClick={() => setEditUser(null)} className="text-slate-400 hover:text-slate-700 transition text-sm cursor-pointer">✕</button>
                         </div>
 
                         <div className="p-6 space-y-4">
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-400">Username Profile Name</label>
+                                <label className="text-xs font-semibold text-slate-600">Username Profile Name</label>
                                 <input
                                     name="username"
                                     value={editUser.username}
                                     onChange={handleEditChange}
-                                    className="w-full bg-[#0d153a]/60 border border-white/10 rounded-xl py-2.5 px-4 text-sm text-white focus:outline-none focus:border-purple-500 transition duration-200"
+                                    className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition duration-200"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-400">Email Address Contact</label>
+                                <label className="text-xs font-semibold text-slate-600">Email Address Contact</label>
                                 <input
                                     name="email"
                                     value={editUser.email}
                                     onChange={handleEditChange}
-                                    className="w-full bg-[#0d153a]/60 border border-white/10 rounded-xl py-2.5 px-4 text-sm text-white focus:outline-none focus:border-purple-500 transition duration-200"
+                                    className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition duration-200"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-slate-400">Mobile Phone Number</label>
+                                <label className="text-xs font-semibold text-slate-600">Mobile Phone Number</label>
                                 <input
                                     name="phone"
                                     value={editUser.phone}
                                     onChange={handleEditChange}
-                                    className="w-full bg-[#0d153a]/60 border border-white/10 rounded-xl py-2.5 px-4 text-sm text-white focus:outline-none focus:border-purple-500 transition duration-200"
+                                    className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition duration-200"
                                 />
                             </div>
                         </div>
 
-                        <div className="px-6 py-4 bg-[#0d153a]/20 border-t border-white/10 flex items-center justify-end gap-3">
+                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3">
                             <button
                                 onClick={() => setEditUser(null)}
-                                className="px-4 py-2.5 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition active:scale-95"
+                                className="px-4 py-2.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={saveEdit}
-                                className="px-5 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white shadow-md shadow-purple-950/40 transition active:scale-95"
+                                className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#0437cc] hover:bg-[#3b52d4] text-white shadow-xs transition active:scale-95 cursor-pointer"
                             >
                                 Save Changes
                             </button>
@@ -594,15 +582,15 @@ const Users = () => {
 
             {/* DELETE MODAL */}
             {deleteUserId && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-                    <div className="w-full max-w-md bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl p-6 space-y-5 text-center">
-                        <div className="w-12 h-12 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+                    <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl p-6 space-y-5 text-center">
+                        <div className="w-12 h-12 bg-rose-50 text-rose-600 border border-rose-200 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
                             ⚠️
                         </div>
 
                         <div className="space-y-1.5">
-                            <h3 className="text-base font-bold text-white">Permanently Delete Record?</h3>
-                            <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                            <h3 className="text-base font-bold text-slate-900">Permanently Delete Record?</h3>
+                            <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
                                 Are you sure you want to drop this user profile from active data sets? This operation cannot be rolled back.
                             </p>
                         </div>
@@ -610,13 +598,13 @@ const Users = () => {
                         <div className="flex items-center justify-center gap-3 pt-2">
                             <button
                                 onClick={() => setDeleteUserId(null)}
-                                className="w-28 py-2.5 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition active:scale-95"
+                                className="w-28 py-2.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer"
                             >
-                                Cancel Action
+                                Cancel
                             </button>
                             <button
                                 onClick={confirmDelete}
-                                className="w-28 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-md shadow-red-950/40 transition active:scale-95"
+                                className="w-28 py-2.5 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-500 text-white shadow-xs transition active:scale-95 cursor-pointer"
                             >
                                 Confirm Delete
                             </button>

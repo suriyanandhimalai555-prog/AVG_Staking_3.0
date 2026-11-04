@@ -62,62 +62,62 @@ const SupportTicket = () => {
         }
     };
 
-    // Helper to determine status switch visual state
     const isTicketActive = (status) => {
         if (!status) return false;
         return status.toLowerCase() !== "resolved";
     };
 
     return (
-        <div className="min-h-screen bg-[#070b19] p-6 text-slate-300 selection:bg-purple-500 selection:text-white rounded-2xl shadow-2xl">
-            {/* Main Wrapper Panel */}
-            <div className="max-w-7xl mx-auto bg-[#0f162a] border border-slate-800 rounded-xl shadow-2xl overflow-hidden">
+        <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
+            
+            {/* Top Header Panel Card */}
+            <div className="bg-white border border-slate-200/90 p-6 rounded-2xl shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div className="flex items-center gap-2.5">
+                        <span className="text-xl">🎫</span>
+                        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+                            Support Ticket Configuration
+                        </h2>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                        Configure user-submitted support tickets, monitor response timelines, and update resolution statuses.
+                    </p>
+                </div>
                 
-                {/* Header Section */}
-                <div className="p-6 border-b border-slate-800 bg-[#131c36] flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <div className="flex items-center gap-2 text-2xl font-bold text-white tracking-wide">
-                            <span>🎫</span>
-                            <h2>Support Ticket Configuration</h2>
-                        </div>
-                        <p className="text-xs text-slate-400 mt-1">
-                            Configure user-submitted support tickets, monitor response timelines, and update resolution statuses.
-                        </p>
+                <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                    {/* Search Input */}
+                    <div className="relative w-full sm:w-72 lg:w-80">
+                        <input
+                            type="text"
+                            placeholder="Search by user, ID or description..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-white border border-slate-300 rounded-xl py-2.5 pl-4 pr-10 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] shadow-xs transition duration-200"
+                        />
+                        <span className="absolute right-3.5 top-3 text-slate-400 text-sm">🔍</span>
                     </div>
                     
-                    <div className="flex items-center gap-3">
-                        {/* Search Input */}
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="Search by user, ID or description..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-64 bg-[#0a0f24] text-xs text-slate-200 pl-4 pr-10 py-2.5 rounded-md border border-slate-800 focus:outline-none focus:border-purple-500 placeholder-slate-500 transition-all"
-                            />
-                            <span className="absolute right-3 top-2.5 text-slate-500 text-sm">🔍</span>
-                        </div>
-                        
-                        {/* Primary Action Button */}
-                        <button className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-xs font-semibold px-4 py-2.5 rounded-md shadow-lg shadow-purple-900/20 transition-all flex items-center gap-1.5">
-                            <span className="text-sm font-bold">+</span> Add Ticket
-                        </button>
-                    </div>
+                    {/* Primary Action Button */}
+                    <button className="w-full sm:w-auto bg-[#0437cc] hover:bg-blue-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition cursor-pointer active:scale-95 flex items-center justify-center gap-1.5 shrink-0">
+                        <span className="text-sm font-bold">+</span> Add Ticket
+                    </button>
                 </div>
+            </div>
 
-                {/* Content Sub-Header */}
-                <div className="px-6 py-4 bg-[#111931] border-b border-slate-800">
-                    <h3 className="text-xs font-bold tracking-wider text-purple-400 uppercase">
+            {/* Primary Table Ledger Card */}
+            <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+                <div className="border-b border-slate-200 bg-slate-50/70 px-6 py-4">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
                         Active Support Queue
                     </h3>
                 </div>
 
                 {/* Table Layout */}
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left border-collapse whitespace-nowrap">
                         <thead>
-                            <tr className="border-b border-slate-800 text-[11px] font-bold tracking-wider text-slate-400 uppercase bg-[#0d1429]">
-                                <th className="py-4 px-6 w-16">S.No</th>
+                            <tr className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-600">
+                                <th className="py-4 px-6 w-16 text-center">S.No</th>
                                 <th className="py-4 px-4">User</th>
                                 <th className="py-4 px-4">Ticket ID</th>
                                 <th className="py-4 px-4">Title / Topic</th>
@@ -128,36 +128,31 @@ const SupportTicket = () => {
                             </tr>
                         </thead>
 
-                        <tbody className="divide-y divide-slate-800/60 bg-[#0f162a]">
+                        <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
                             {currentTickets.length > 0 ? (
                                 currentTickets.map((t, i) => (
-                                    <tr key={t.id} className="hover:bg-[#151e38]/40 transition-colors group">
-                                        {/* S.No */}
-                                        <td className="py-4 px-6 text-xs text-slate-500 font-mono">
+                                    <tr key={t.id} className="hover:bg-slate-50/80 transition-colors group">
+                                        <td className="py-4 px-6 text-xs text-slate-500 font-mono text-center font-medium">
                                             {String(startIndex + i + 1).padStart(2, '0')}
                                         </td>
                                         
-                                        {/* Username */}
-                                        <td className="py-4 px-4 text-xs font-semibold text-slate-200">
+                                        <td className="py-4 px-4 text-xs font-bold text-slate-900">
                                             {t.username || "N/A"}
                                         </td>
                                         
-                                        {/* Ticket ID */}
-                                        <td className="py-4 px-4 text-xs font-mono text-emerald-400 font-medium">
+                                        <td className="py-4 px-4 text-xs font-mono text-[#0437cc] font-bold">
                                             #{t.ticket_id || "000000"}
                                         </td>
                                         
-                                        {/* Title */}
-                                        <td className="py-4 px-4 text-xs text-slate-300 font-medium max-w-[160px] truncate">
+                                        <td className="py-4 px-4 text-xs text-slate-800 font-semibold max-w-[160px] truncate">
                                             {t.short_desc || "No Title"}
                                         </td>
                                         
-                                        {/* Description */}
-                                        <td className="py-4 px-4 text-xs text-slate-400 max-w-[240px] truncate">
+                                        <td className="py-4 px-4 text-xs text-slate-500 font-medium max-w-[240px] truncate">
                                             {t.short_desc || "No Description Provided"}
                                         </td>
 
-                                        {/* Status Toggle Switch styled like image */}
+                                        {/* Status Toggle Switch */}
                                         <td className="py-4 px-4 text-center">
                                             <label className="inline-flex items-center cursor-pointer relative group">
                                                 <input 
@@ -166,36 +161,33 @@ const SupportTicket = () => {
                                                     onChange={() => updateStatus(t.id, isTicketActive(t.status) ? "resolved" : "open")}
                                                     className="sr-only peer"
                                                 />
-                                                <div className="w-11 h-6 bg-slate-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#a855f7]"></div>
+                                                <div className="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0437cc]"></div>
                                             </label>
                                         </td>
 
-                                        {/* Date */}
-                                        <td className="py-4 px-4 text-xs text-slate-500 font-mono">
+                                        <td className="py-4 px-4 text-xs text-slate-500 font-mono font-medium">
                                             {t.created_at ? new Date(t.created_at).toISOString().replace('T', ' ').substring(0, 19) : "Recent"}
                                         </td>
 
-                                        {/* Interactive Quick-Select Action */}
                                         <td className="py-4 px-4 text-right pr-6">
                                             <div className="flex items-center justify-end gap-2">
                                                 <select
                                                     value={t.status || "open"}
                                                     onChange={(e) => updateStatus(t.id, e.target.value)}
-                                                    className={`text-[11px] font-semibold px-2.5 py-1 rounded border transition-all cursor-pointer outline-none capitalize ${
+                                                    className={`text-[11px] font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer outline-none capitalize ${
                                                         t.status?.toLowerCase() === "resolved" 
-                                                            ? "bg-slate-900 border-slate-700 text-slate-400"
+                                                            ? "bg-slate-100 border-slate-300 text-slate-600"
                                                             : t.status?.toLowerCase() === "in progress"
-                                                            ? "bg-amber-950/40 border-amber-800/60 text-amber-400"
-                                                            : "bg-purple-950/40 border-purple-800/60 text-purple-400"
+                                                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                                                            : "bg-blue-50 border-blue-200 text-[#0437cc]"
                                                     }`}
                                                 >
-                                                    <option value="open" className="bg-[#0f162a] text-slate-300">Open</option>
-                                                    <option value="in progress" className="bg-[#0f162a] text-slate-300">In Progress</option>
-                                                    <option value="resolved" className="bg-[#0f162a] text-slate-300">Resolved</option>
+                                                    <option value="open" className="bg-white text-slate-800">Open</option>
+                                                    <option value="in progress" className="bg-white text-slate-800">In Progress</option>
+                                                    <option value="resolved" className="bg-white text-slate-800">Resolved</option>
                                                 </select>
                                                 
-                                                {/* More Options Trigger */}
-                                                <button className="text-slate-500 hover:text-white p-1 rounded transition-colors">
+                                                <button className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition cursor-pointer">
                                                     ⋮
                                                 </button>
                                             </div>
@@ -204,7 +196,7 @@ const SupportTicket = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="8" className="py-12 text-center text-xs text-slate-500 tracking-wide bg-[#0f162a]">
+                                    <td colSpan="8" className="py-12 text-center text-xs text-slate-500 font-medium bg-white">
                                         No support tickets matched your current layout criteria.
                                     </td>
                                 </tr>
@@ -214,14 +206,14 @@ const SupportTicket = () => {
                 </div>
 
                 {/* Pagination Controls */}
-                <div className="p-4 bg-[#0d1429] border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                <div className="p-5 bg-slate-50/50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500">
                     <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-2.5">
                             <span>Rows:</span>
                             <select
                                 value={rowsPerPage}
                                 onChange={(e) => setRowsPerPage(Number(e.target.value))}
-                                className="bg-[#0a0f24] text-slate-300 border border-slate-800 rounded px-2 py-1 focus:outline-none cursor-pointer"
+                                className="bg-white text-slate-700 border border-slate-300 rounded-lg px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-[#0437cc] cursor-pointer"
                             >
                                 <option value={5}>5</option>
                                 <option value={10}>10</option>
@@ -237,35 +229,32 @@ const SupportTicket = () => {
                     </div>
 
                     <div className="flex items-center gap-1">
-                        {/* Prev Button */}
                         <button
                             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                             disabled={currentPage === 1}
-                            className="px-3 py-1.5 rounded bg-[#151e38] text-slate-300 hover:bg-[#1e294b] disabled:opacity-30 disabled:pointer-events-none transition-colors font-medium"
+                            className="h-8 px-3 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
                         >
                             Prev
                         </button>
 
-                        {/* Page Numbers */}
                         {[...Array(totalPages)].map((_, i) => (
                             <button
                                 key={i}
                                 onClick={() => setCurrentPage(i + 1)}
-                                className={`px-3 py-1.5 rounded font-mono font-medium transition-colors ${
+                                className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition active:scale-95 cursor-pointer ${
                                     currentPage === i + 1
-                                        ? "bg-[#7c3aed] text-white"
-                                        : "bg-[#151e38] text-slate-400 hover:bg-[#1e294b]"
+                                        ? "bg-[#0437cc] text-white shadow-xs"
+                                        : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
                                 }`}
                             >
                                 {i + 1}
                             </button>
                         ))}
 
-                        {/* Next Button */}
                         <button
                             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                             disabled={currentPage === totalPages || totalPages === 0}
-                            className="px-3 py-1.5 rounded bg-[#151e38] text-slate-300 hover:bg-[#1e294b] disabled:opacity-30 disabled:pointer-events-none transition-colors font-medium"
+                            className="h-8 px-3 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
                         >
                             Next
                         </button>

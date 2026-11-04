@@ -42,7 +42,6 @@ const RankConfig = () => {
     setTimeout(() => setShowPopup(false), 2500);
   };
 
-  // ✅ FETCH DATA
   const fetchData = async () => {
     try {
       const res = await axios.get(API, getAuthConfig());
@@ -66,13 +65,11 @@ const RankConfig = () => {
   useEffect(() => {
     fetchData();
 
-    // Close action dropdowns on clicking anywhere outside
     const closeDropdown = () => setActiveDropdownId(null);
     window.addEventListener("click", closeDropdown);
     return () => window.removeEventListener("click", closeDropdown);
   }, []);
 
-  // ✅ TOGGLE
   const toggleStatus = async (item) => {
     try {
       await axios.put(`${API}/${item.id}/toggle`, {}, getAuthConfig());
@@ -83,7 +80,6 @@ const RankConfig = () => {
     }
   };
 
-  // ✅ ACTIONS
   const handleView = (item) => {
     setSelectedItem(item);
     setModalType("view");
@@ -112,7 +108,6 @@ const RankConfig = () => {
     setShowModal(true);
   };
 
-  // ✅ CONFIRM
   const confirmModal = async () => {
     try {
       if (modalType === "delete") {
@@ -153,7 +148,6 @@ const RankConfig = () => {
     }
   };
 
-  // ✅ SEARCH
   const filtered = useMemo(() => {
     const q = searchTerm.toLowerCase();
     return data.filter(
@@ -163,95 +157,88 @@ const RankConfig = () => {
     );
   }, [searchTerm, data]);
 
-  // ✅ PAGINATION
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
   const indexOfLastItem = currentPage * rowsPerPage;
   const indexOfFirstItem = indexOfLastItem - rowsPerPage;
   const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] p-6 text-slate-100 antialiased selection:bg-purple-500 selection:text-white rounded-2xl shadow-2xl">
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
       
       {/* Page Header Card */}
-      <div className="mb-6 rounded-2xl border border-slate-800/60 bg-[#111625] p-6 shadow-xl backdrop-blur-md">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xl">🏆</span>
-              <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
-                Rank Configuration
-              </h1>
-            </div>
-            <p className="mt-1 text-sm text-slate-400">
-              Configure business volume milestone targets and corresponding rank rewards
-            </p>
+      <div className="bg-white border border-slate-200/90 p-6 rounded-2xl shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">🏆</span>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+              Rank Configuration
+            </h1>
+          </div>
+          <p className="mt-1 text-xs sm:text-sm text-slate-500 font-medium">
+            Configure business volume milestone targets and corresponding rank rewards
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+          <div className="relative w-full sm:w-72 lg:w-80">
+            <input
+              type="text"
+              placeholder="Search by amount or reward..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="w-full bg-white border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] shadow-xs transition duration-200"
+            />
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            {/* Search Input Box */}
-            <div className="relative min-w-[260px]">
-              <input
-                type="text"
-                placeholder="Search by amount or reward..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="w-full rounded-lg border border-slate-800 bg-[#0a0d16] py-2 pl-4 pr-4 text-sm text-slate-200 placeholder-slate-500 outline-none transition-all focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
-              />
-            </div>
-
-            <button 
-              className="inline-flex items-center justify-center rounded-lg bg-[#8b5cf6] px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[#7c3aed] active:scale-[0.98]"
-              onClick={openAdd}
-            >
-              + Add Configuration
-            </button>
-          </div>
+          <button 
+            className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-[#0437cc] px-4 py-2.5 text-xs font-bold text-white shadow-xs transition hover:bg-blue-800 active:scale-95 cursor-pointer"
+            onClick={openAdd}
+          >
+            + Add Configuration
+          </button>
         </div>
       </div>
 
       {/* Main Ledger Table Card */}
-      <div className="rounded-2xl border border-slate-800/60 bg-[#111625] shadow-xl overflow-hidden">
-        <div className="border-b border-slate-800/60 bg-[#131a2e]/40 px-6 py-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div className="border-b border-slate-200 bg-slate-50/70 px-6 py-4">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
             Rank Achievement Milestones
           </h2>
         </div>
 
-        {/* Responsive Table Layout */}
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left">
+          <table className="w-full border-collapse text-left whitespace-nowrap">
             <thead>
-              <tr className="border-b border-slate-800/60 bg-[#0d1220]/50 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                <th className="px-6 py-4">S.No</th>
-                <th className="px-6 py-4 text-purple-400">Target Amount</th>
+              <tr className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-600">
+                <th className="px-6 py-4 w-16 text-center">S.No</th>
+                <th className="px-6 py-4">Target Amount</th>
                 <th className="px-6 py-4">Reward Asset</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4">Created At</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/40 text-sm">
+            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
               {currentItems.map((item, index) => (
-                <tr key={item.id} className="transition-colors duration-150 hover:bg-[#161d30]/40">
-                  {/* Formatted Number Index Code */}
-                  <td className="whitespace-nowrap px-6 py-4.5 font-mono text-xs text-slate-500">
+                <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
+                  <td className="px-6 py-4.5 font-mono text-xs text-slate-500 text-center font-medium">
                     {String(indexOfFirstItem + index + 1).padStart(2, '0')}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4.5 font-mono font-bold text-[#10b981]">
+                  <td className="px-6 py-4.5 font-mono font-bold text-emerald-600">
                     {item.targetAmount}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4.5 font-bold text-slate-200">
+                  <td className="px-6 py-4.5 font-bold text-slate-900">
                     {item.reward}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4.5">
-                    {/* iOS/Crypto Style Toggle Slide Switch */}
+                  <td className="px-6 py-4.5">
                     <button
                       onClick={() => toggleStatus(item)}
                       className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        item.status ? "bg-purple-600" : "bg-slate-700"
+                        item.status ? "bg-[#0437cc]" : "bg-slate-300"
                       }`}
                     >
                       <span
@@ -261,36 +248,35 @@ const RankConfig = () => {
                       />
                     </button>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4.5 font-mono text-xs text-slate-400">
+                  <td className="px-6 py-4.5 font-mono text-xs text-slate-500 font-medium">
                     {item.createdAt || "-"}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4.5 text-right text-slate-400">
+                  <td className="px-6 py-4.5 text-right text-slate-600">
                     <div className="relative inline-block text-left" onClick={(e) => e.stopPropagation()}>
                       <button 
                         onClick={() => setActiveDropdownId(activeDropdownId === item.id ? null : item.id)}
-                        className="rounded p-1 hover:bg-slate-800 hover:text-white transition-colors"
+                        className="rounded-lg p-1.5 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer"
                       >
                         <span className="text-lg leading-none block px-1">⋮</span>
                       </button>
 
-                      {/* Dropdown Operational Overlay */}
                       {activeDropdownId === item.id && (
-                        <div className="absolute right-0 mt-2 w-36 origin-top-right rounded-lg border border-slate-800 bg-[#161d30] p-1 shadow-xl ring-1 ring-black ring-opacity-5 z-20">
+                        <div className="absolute right-0 mt-2 w-36 origin-top-right rounded-xl border border-slate-200 bg-white p-1 shadow-xl z-20">
                           <button
                             onClick={() => { handleView(item); setActiveDropdownId(null); }}
-                            className="flex w-full items-center px-3 py-2 text-xs rounded-md text-slate-300 hover:bg-slate-800 hover:text-white"
+                            className="flex w-full items-center px-3 py-2 text-xs font-semibold rounded-lg text-slate-700 hover:bg-slate-100 cursor-pointer"
                           >
                             👁️ <span className="ml-2">View</span>
                           </button>
                           <button
                             onClick={() => { handleEdit(item); setActiveDropdownId(null); }}
-                            className="flex w-full items-center px-3 py-2 text-xs rounded-md text-slate-300 hover:bg-slate-800 hover:text-white"
+                            className="flex w-full items-center px-3 py-2 text-xs font-semibold rounded-lg text-slate-700 hover:bg-slate-100 cursor-pointer"
                           >
                             ✏️ <span className="ml-2">Edit</span>
                           </button>
                           <button
                             onClick={() => { handleDelete(item); setActiveDropdownId(null); }}
-                            className="flex w-full items-center px-3 py-2 text-xs rounded-md text-red-400 hover:bg-red-500/10"
+                            className="flex w-full items-center px-3 py-2 text-xs font-semibold rounded-lg text-rose-600 hover:bg-rose-50 cursor-pointer"
                           >
                             🗑️ <span className="ml-2">Delete</span>
                           </button>
@@ -303,7 +289,7 @@ const RankConfig = () => {
 
               {currentItems.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-sm text-slate-500">
+                  <td colSpan="6" className="px-6 py-12 text-center text-sm text-slate-500 font-medium">
                     No data configurations found
                   </td>
                 </tr>
@@ -313,8 +299,8 @@ const RankConfig = () => {
         </div>
 
         {/* Pagination Controls Footer */}
-        <div className="flex flex-col gap-4 border-t border-slate-800/60 bg-[#0d1220]/30 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 bg-slate-50/50 px-6 py-4 text-xs font-medium text-slate-500">
+          <div className="flex items-center gap-2.5">
             <span>Rows:</span>
             <select
               value={rowsPerPage}
@@ -322,7 +308,7 @@ const RankConfig = () => {
                 setRowsPerPage(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className="rounded border border-slate-800 bg-[#0a0d16] px-2 py-1 text-slate-300 outline-none focus:border-purple-500/50"
+              className="rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-slate-700 outline-none focus:ring-1 focus:ring-[#0437cc] cursor-pointer"
             >
               <option value={10}>10</option>
               <option value={25}>25</option>
@@ -334,11 +320,11 @@ const RankConfig = () => {
             </span>
           </div>
 
-          <div className="flex items-center justify-end gap-1.5">
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="rounded-lg border border-slate-800 bg-[#111625] px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-800 disabled:opacity-40 disabled:hover:bg-transparent"
+              className="h-8 px-3 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
             >
               Previous
             </button>
@@ -348,10 +334,10 @@ const RankConfig = () => {
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-mono font-medium transition-all ${
+                  className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition active:scale-95 cursor-pointer ${
                     currentPage === i + 1
-                      ? "bg-purple-600 text-white shadow-md"
-                      : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                      ? "bg-[#0437cc] text-white shadow-xs"
+                      : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   {i + 1}
@@ -362,7 +348,7 @@ const RankConfig = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="rounded-lg border border-slate-800 bg-[#111625] px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-800 disabled:opacity-40 disabled:hover:bg-transparent"
+              className="h-8 px-3 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
             >
               Next
             </button>
@@ -372,24 +358,22 @@ const RankConfig = () => {
 
       {/* Styled Centered Backdrop Modals */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Glass Blurry Backdrop */}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
           <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0"
             onClick={() => { setShowModal(false); setSelectedItem(null); }}
           />
           
-          {/* Main Modal Panel Body Wrapper */}
-          <div className="relative w-full max-w-md transform rounded-2xl border border-slate-800 bg-[#111625] p-6 shadow-2xl transition-all">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-lg font-semibold text-white">
+          <div className="relative w-full max-w-md transform rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl transition-all">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-lg font-bold text-slate-900">
                 {modalType === "add" && "Add Configuration"}
                 {modalType === "edit" && "Edit Configuration"}
                 {modalType === "delete" && "Confirm Delete"}
                 {modalType === "view" && "Details"}
               </h3>
               <button
-                className="text-slate-400 hover:text-white text-xl font-medium transition-colors"
+                className="text-slate-400 hover:text-slate-700 text-xl font-medium transition cursor-pointer"
                 onClick={() => { setShowModal(false); setSelectedItem(null); }}
               >
                 &times;
@@ -397,35 +381,33 @@ const RankConfig = () => {
             </div>
 
             <div className="mt-4">
-              {/* DISPLAY VIEW CARD DATA */}
               {modalType === "view" && selectedItem && (
-                <div className="space-y-3 rounded-xl bg-[#0a0d16] p-4 text-sm font-mono">
-                  <div className="flex justify-between border-b border-slate-800/50 pb-2">
-                    <span className="text-slate-400 font-sans">Target Amount:</span>
-                    <span className="text-[#10b981] font-bold">{selectedItem.targetAmount}</span>
+                <div className="space-y-3 rounded-xl bg-slate-50 border border-slate-200 p-4 text-sm font-mono">
+                  <div className="flex justify-between border-b border-slate-200 pb-2">
+                    <span className="text-slate-500 font-sans font-semibold text-xs uppercase">Target Amount:</span>
+                    <span className="text-emerald-600 font-bold">{selectedItem.targetAmount}</span>
                   </div>
-                  <div className="flex justify-between border-b border-slate-800/50 pb-2">
-                    <span className="text-slate-400 font-sans">Reward Asset:</span>
-                    <span className="text-white font-bold">{selectedItem.reward}</span>
+                  <div className="flex justify-between border-b border-slate-200 pb-2">
+                    <span className="text-slate-500 font-sans font-semibold text-xs uppercase">Reward Asset:</span>
+                    <span className="text-slate-900 font-bold">{selectedItem.reward}</span>
                   </div>
-                  <div className="flex justify-between border-b border-slate-800/50 pb-2">
-                    <span className="text-slate-400 font-sans">Status:</span>
-                    <span className={selectedItem.status ? "text-purple-400" : "text-slate-500"}>
+                  <div className="flex justify-between border-b border-slate-200 pb-2">
+                    <span className="text-slate-500 font-sans font-semibold text-xs uppercase">Status:</span>
+                    <span className={selectedItem.status ? "text-[#0437cc] font-bold" : "text-slate-400 font-bold"}>
                       {selectedItem.status ? "Active" : "Inactive"}
                     </span>
                   </div>
                   <div className="flex justify-between pt-1">
-                    <span className="text-slate-400 font-sans">Created At:</span>
-                    <span className="text-slate-300 text-xs">{selectedItem.createdAt || "-"}</span>
+                    <span className="text-slate-500 font-sans font-semibold text-xs uppercase">Created At:</span>
+                    <span className="text-slate-700 text-xs font-semibold">{selectedItem.createdAt || "-"}</span>
                   </div>
                 </div>
               )}
 
-              {/* ACTION: ADDING NEW CONFIG ENTRY */}
               {modalType === "add" && (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                       Target Amount ($)
                     </label>
                     <input
@@ -433,11 +415,11 @@ const RankConfig = () => {
                       placeholder="Enter target volume amount"
                       value={addForm.targetAmount}
                       onChange={(e) => setAddForm({ ...addForm, targetAmount: e.target.value })}
-                      className="w-full rounded-lg border border-slate-800 bg-[#0a0d16] px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 outline-none transition-all focus:border-purple-500/50"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 outline-none transition focus:ring-1 focus:ring-[#0437cc]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                       Reward Description
                     </label>
                     <input
@@ -445,62 +427,59 @@ const RankConfig = () => {
                       placeholder="Enter reward assets / tier name"
                       value={addForm.reward}
                       onChange={(e) => setAddForm({ ...addForm, reward: e.target.value })}
-                      className="w-full rounded-lg border border-slate-800 bg-[#0a0d16] px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 outline-none transition-all focus:border-purple-500/50"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 outline-none transition focus:ring-1 focus:ring-[#0437cc]"
                     />
                   </div>
                 </div>
               )}
 
-              {/* ACTION: EDIT EXISTING CONFIG ENTRY */}
               {modalType === "edit" && (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                       Target Amount ($)
                     </label>
                     <input
                       type="text"
                       value={editForm.targetAmount}
                       onChange={(e) => setEditForm({ ...editForm, targetAmount: e.target.value })}
-                      className="w-full rounded-lg border border-slate-800 bg-[#0a0d16] px-4 py-2.5 text-sm text-slate-200 outline-none transition-all focus:border-purple-500/50"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition focus:ring-1 focus:ring-[#0437cc]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                       Reward Description
                     </label>
                     <input
                       type="text"
                       value={editForm.reward}
                       onChange={(e) => setEditForm({ ...editForm, reward: e.target.value })}
-                      className="w-full rounded-lg border border-slate-800 bg-[#0a0d16] px-4 py-2.5 text-sm text-slate-200 outline-none transition-all focus:border-purple-500/50"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition focus:ring-1 focus:ring-[#0437cc]"
                     />
                   </div>
                 </div>
               )}
 
-              {/* ACTION: DELETE WARNING TEXT */}
               {modalType === "delete" && (
-                <p className="text-sm text-slate-300">
+                <p className="text-sm text-slate-600 font-medium">
                   Are you sure you want to delete this configuration milestone data permanently? This action cannot be undone.
                 </p>
               )}
             </div>
 
-            {/* Action Buttons Footer layout panel */}
-            <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-800 pt-4">
+            <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-200 pt-4">
               <button 
                 onClick={() => setShowModal(false)}
-                className="rounded-lg border border-slate-800 bg-[#161d30] px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800"
+                className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-100 cursor-pointer"
               >
                 Cancel
               </button>
               <button 
                 onClick={confirmModal}
-                className={`rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-md transition-all active:scale-95 ${
+                className={`rounded-xl px-5 py-2 text-xs font-bold text-white shadow-xs transition active:scale-95 cursor-pointer ${
                   modalType === "delete" 
-                    ? "bg-red-600 hover:bg-red-500" 
-                    : "bg-purple-600 hover:bg-purple-500"
+                    ? "bg-rose-600 hover:bg-rose-700" 
+                    : "bg-[#0437cc] hover:bg-blue-800"
                 }`}
               >
                 Confirm
@@ -512,11 +491,9 @@ const RankConfig = () => {
 
       {/* Dynamic Toast Alerts Popup Layout */}
       {showPopup && (
-        <div className="fixed bottom-5 right-5 z-50 transform animate-bounce rounded-xl border border-slate-800 bg-[#131929] px-5 py-3 text-sm font-medium text-purple-300 shadow-2xl backdrop-blur">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
-            {popupMessage}
-          </div>
+        <div className="fixed bottom-5 right-5 z-[100] bg-white border border-slate-200 border-l-4 border-l-[#0437cc] text-slate-800 px-5 py-3.5 rounded-xl shadow-xl flex items-center gap-3">
+          <span className="h-2 w-2 rounded-full bg-[#0437cc] animate-pulse" />
+          <span className="text-xs font-semibold tracking-wide">{popupMessage}</span>
         </div>
       )}
     </div>

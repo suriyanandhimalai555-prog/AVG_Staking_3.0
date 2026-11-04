@@ -3,21 +3,21 @@ import axios from 'axios';
 import { toast } from "react-hot-toast";
 import * as XLSX from 'xlsx';
 import { 
-  FaEllipsisV, 
-  FaSearch, 
-  FaChevronLeft, 
-  FaChevronRight, 
-  FaEye, 
-  FaToggleOn, 
-  FaToggleOff, 
-  FaTrashAlt, 
-  FaCheck, 
-  FaTimes, 
-  FaCalendarAlt, 
-  FaUser, 
-  FaLayerGroup,
-  FaFileExcel
-} from "react-icons/fa";
+  FiMoreVertical, 
+  FiSearch, 
+  FiChevronLeft, 
+  FiChevronRight, 
+  FiEye, 
+  FiToggleLeft, 
+  FiToggleRight, 
+  FiTrash2, 
+  FiCheck, 
+  FiX, 
+  FiCalendar, 
+  FiUser, 
+  FiLayers,
+  FiDownload
+} from "react-icons/fi";
 
 const ActivePlans = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -139,7 +139,6 @@ const ActivePlans = () => {
       return;
     }
 
-    // Format clean objects for Excel export
     const excelData = dataToExport.map((item, index) => {
       if (showRequests) {
         return {
@@ -171,7 +170,6 @@ const ActivePlans = () => {
 
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
 
-    // Dynamic filename based on active tab and timestamp
     const dateStr = new Date().toISOString().slice(0, 10);
     const fileName = `${showRequests ? 'Plan_Requests' : 'Active_Plans'}_${dateStr}.xlsx`;
 
@@ -318,19 +316,19 @@ const ActivePlans = () => {
     if (!showModal) return null;
 
     return (
-      <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-        <div className="w-full max-w-md bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden transform scale-100 transition-all">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0d153a]/40">
-            <h3 className="text-sm font-bold text-white tracking-wide">
+      <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in">
+        <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden transform scale-100 transition-all">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+            <h3 className="text-sm font-bold text-slate-900 tracking-wide">
               {modalType === 'delete' ? 'Revoke Allocations' : 'Inspecting Master Node'}
             </h3>
-            <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white text-lg focus:outline-none">×</button>
+            <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-700 text-lg focus:outline-none cursor-pointer">×</button>
           </div>
 
           <div className="p-6 space-y-4">
             {modalType === 'delete' && (
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Are you certain you want to purge the current plan subscription linked to account <span className="text-purple-400 font-bold">{selectedPlan?.user}</span>? This structural modification cannot be undone.
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Are you certain you want to purge the current plan subscription linked to account <span className="text-[#0437cc] font-bold">{selectedPlan?.user}</span>? This structural modification cannot be undone.
               </p>
             )}
 
@@ -339,9 +337,9 @@ const ActivePlans = () => {
                 {Object.entries(selectedPlan).map(([k, v]) => {
                   if (typeof v === 'object' || k.includes('Value')) return null;
                   return (
-                    <div key={k} className="flex justify-between items-center bg-[#0d1433] px-3.5 py-2.5 border border-white/5 rounded-xl text-xs">
-                      <span className="text-slate-400 font-medium capitalize">{k.replace(/([A-Z])/g, ' $1')}</span>
-                      <span className="text-slate-100 font-bold tracking-wide">{String(v)}</span>
+                    <div key={k} className="flex justify-between items-center bg-slate-50 px-3.5 py-2.5 border border-slate-200/70 rounded-xl text-xs">
+                      <span className="text-slate-500 font-medium capitalize">{k.replace(/([A-Z])/g, ' $1')}</span>
+                      <span className="text-slate-900 font-bold tracking-wide">{String(v)}</span>
                     </div>
                   );
                 })}
@@ -349,12 +347,12 @@ const ActivePlans = () => {
             )}
           </div>
 
-          <div className="px-6 py-4 bg-[#0d153a]/20 border-t border-white/10 flex items-center justify-end gap-3">
-            <button onClick={() => setShowModal(false)} className="px-4 py-2 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition">
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3">
+            <button onClick={() => setShowModal(false)} className="px-4 py-2 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition cursor-pointer">
               Dismiss
             </button>
             {modalType === 'delete' && (
-              <button onClick={handleModalConfirm} className="px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-950/40 hover:brightness-110 transition">
+              <button onClick={handleModalConfirm} className="px-5 py-2 text-xs font-bold rounded-xl bg-rose-600 text-white shadow-xs hover:bg-rose-500 transition cursor-pointer">
                 Confirm Purge
               </button>
             )}
@@ -365,241 +363,235 @@ const ActivePlans = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b1e] text-slate-100 p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none rounded-2xl shadow-2xl">
-      {/* Ambient Visual Atmosphere */}
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="relative z-10 max-w-[1600px] mx-auto space-y-6">
-        
-        {/* Dynamic Navigation & Filtering Header Panel */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-xl">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-              <FaLayerGroup className="text-purple-400 text-base" />
-              {showRequests ? 'Subscription Authorization Ledger' : 'Active Portfolio Management'}
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">
-              {showRequests ? 'Approve or dismiss incoming tier purchase protocols' : 'Live operational tracking of premium contract variables'}
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {/* Search Input */}
-            <div className="relative flex items-center min-w-[240px]">
-              <input
-                type="text"
-                placeholder="Search index metadata..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#0a0f2b] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/60 transition"
-              />
-            </div>
-
-            {/* Export Excel Button */}
-            <button
-              type="button"
-              onClick={exportToExcel}
-              className="px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600/30 hover:text-emerald-300 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
-            >
-              <FaFileExcel className="text-sm" /> Export Excel
-            </button>
-
-            {/* Toggle Mode Button */}
-            <button
-              type="button"
-              onClick={() => setShowRequests((prev) => !prev)}
-              className={`px-5 py-2.5 text-xs font-bold rounded-xl shadow-lg border transition-all duration-200 active:scale-95 ${
-                showRequests 
-                  ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white border-transparent' 
-                  : 'bg-white/5 border-white/10 hover:bg-white/10 text-slate-200'
-              }`}
-            >
-              {showRequests ? "Active Plans" : "Requests Plans"}
-            </button>
-          </div>
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
+      
+      {/* Dynamic Navigation & Filtering Header Panel */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+            <FiLayers className="text-[#0437cc] text-lg" />
+            {showRequests ? 'Subscription Authorization Ledger' : 'Active Portfolio Management'}
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+            {showRequests ? 'Approve or dismiss incoming tier purchase protocols' : 'Live operational tracking of premium contract variables'}
+          </p>
         </div>
 
-        {/* Table Wrapper */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden">
-          <div className="w-full overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[900px]">
-              <thead>
-                <tr className="border-b border-white/10 bg-[#0c1233]/50 text-slate-400 uppercase tracking-wider text-[10px] font-bold">
-                  <th className="py-4.5 px-6 w-16 text-center">Index</th>
-                  <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaUser className="text-[9px] text-purple-400" /> Account Owner</span></th>
-                  <th className="py-4.5 px-6">Selected Tier</th>
-                  <th className="py-4.5 px-6">Principal Input</th>
-                  {!showRequests && <th className="py-4.5 px-6">Accrued Yield (ROI)</th>}
-                  <th className="py-4.5 px-6">Status Anchor</th>
-                  <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaCalendarAlt className="text-[9px] text-indigo-400" /> Timestamp</span></th>
-                  <th className="py-4.5 px-6 text-center">Operations</th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-white/5 text-xs text-slate-300 font-medium">
-                {currentItems.length > 0 ? (
-                  currentItems.map((plan, index) => (
-                    <tr 
-                      key={plan.id} 
-                      onClick={() => {
-                        if (!showRequests) {
-                          handleView(plan);
-                        }
-                      }} 
-                      className="hover:bg-white/[0.02] transition duration-150 cursor-pointer"
-                    >
-                      <td className="py-4 px-6 text-center text-slate-500 font-mono">
-                        {String((currentPage - 1) * rowsPerPage + index + 1).padStart(2, '0')}
-                      </td>
-                      <td className="py-4 px-6">
-                        <div className="flex flex-col gap-0.5">
-                          <span className="text-white font-bold tracking-wide">{plan.user}</span>
-                          <span className="font-mono text-[10px] text-slate-500">{plan.userCode}</span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 text-purple-300 font-semibold">{plan.planName}</td>
-                      <td className="py-4 px-6 font-mono font-bold text-slate-200">
-                        {showRequests ? plan.amount : plan.depositAmount}
-                      </td>
-                      {!showRequests && (
-                        <td className="py-4 px-6 font-mono font-bold text-emerald-400">
-                          {plan.dailyROI}
-                        </td>
-                      )}
-                      <td className="py-4 px-6">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
-                          plan.status === "Active" 
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
-                            : plan.status === "Pending"
-                            ? 'bg-amber-500/10 text-amber-400 border-amber-500/20 animate-pulse'
-                            : 'bg-slate-500/10 text-slate-400 border-white/5'
-                        }`}>
-                          {plan.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-6 text-slate-400 text-[11px] font-mono">{plan.createdAt}</td>
-                      <td className="py-4 px-6 text-center relative" onClick={(e) => e.stopPropagation()}>
-                        {showRequests ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <button 
-                              onClick={() => handleApproveRequest(plan.id)}
-                              title="Approve Protocol"
-                              className="p-2 text-emerald-400 hover:text-white bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/20 rounded-xl transition duration-150"
-                            >
-                              <FaCheck className="text-[10px]" />
-                            </button>
-                            <button
-                              onClick={() => handleRejectRequest(plan.id)}
-                              title="Reject Protocol"
-                              className="p-2 text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500 border border-rose-500/20 rounded-xl transition duration-150"
-                            >
-                              <FaTimes className="text-[10px]" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-center">
-                            <button 
-                              onClick={() => setMenuOpen(menuOpen === plan.id ? null : plan.id)}
-                              className={`p-2 rounded-xl transition duration-150 ${menuOpen === plan.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-slate-200'}`}
-                            >
-                              <FaEllipsisV className="text-xs cursor-pointer" />
-                            </button>
-
-                            {/* Dropdown Box Menu */}
-                            {menuOpen === plan.id && (
-                              <div ref={dropdownRef} className="absolute right-14 top-1/2 -translate-y-1/2 z-50 min-w-[150px] bg-[#0c0f28] border border-white/10 rounded-xl shadow-2xl p-1.5 space-y-0.5 text-left animate-fade-in">
-                                <button onClick={() => handleView(plan)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-300 hover:bg-white/5 hover:text-white transition">
-                                  <FaEye className="text-[10px] text-purple-400" /> View Plan
-                                </button>
-                                <button onClick={() => handleStatusChange(plan)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-300 hover:bg-white/5 hover:text-white transition">
-                                  {plan.status === 'Active' ? (
-                                    <>
-                                      <FaToggleOff className="text-[10px] text-amber-400" /> Deactivate
-                                    </>
-                                  ) : (
-                                    <>
-                                      <FaToggleOn className="text-[10px] text-emerald-400" /> Activate
-                                    </>
-                                  )}
-                                </button>
-                                <hr className="border-white/5 my-1" />
-                                <button onClick={() => handleDelete(plan)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-rose-400 hover:bg-rose-500/10 transition">
-                                  <FaTrashAlt className="text-[10px]" /> Delete Plan
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={showRequests ? "7" : "8"} className="py-20 text-center text-slate-500 font-medium tracking-wide">
-                      No system parameters identified matching standard criteria.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          {/* Search Input */}
+          <div className="relative flex items-center min-w-[240px]">
+            <input
+              type="text"
+              placeholder="Search index metadata..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] shadow-xs transition"
+            />
           </div>
 
-          {/* Matrix Pagination Footer */}
-          <div className="bg-[#0b102e]/50 border-t border-white/10 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5 text-xs text-slate-400">
-              <span>Rows visible per frame</span>
-              <div className="relative">
-                <select
-                  value={rowsPerPage}
-                  onChange={(e) => setRowsPerPage(Number(e.target.value))}
-                  className="bg-[#060a22] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 outline-none focus:border-purple-500 transition cursor-pointer appearance-none pr-6"
-                >
-                  <option value={10}>10</option>
-                  <option value={25}>25</option>
-                  <option value={50}>50</option>
-                </select>
-                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[8px] text-slate-400">▼</div>
-              </div>
+          {/* Export Excel Button */}
+          <button
+            type="button"
+            onClick={exportToExcel}
+            className="px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-all flex items-center justify-center gap-2 shadow-xs active:scale-95 cursor-pointer"
+          >
+            <FiDownload className="text-sm" /> Export Excel
+          </button>
+
+          {/* Toggle Mode Button */}
+          <button
+            type="button"
+            onClick={() => setShowRequests((prev) => !prev)}
+            className={`px-5 py-2.5 text-xs font-bold rounded-xl shadow-xs border transition-all duration-200 active:scale-95 cursor-pointer ${
+              showRequests 
+                ? 'bg-[#0437cc] text-white border-transparent' 
+                : 'bg-white border-slate-300 hover:bg-slate-100 text-slate-700'
+            }`}
+          >
+            {showRequests ? "Active Plans" : "Requests Plans"}
+          </button>
+        </div>
+      </div>
+
+      {/* Table Wrapper */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[900px]">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-600 uppercase tracking-wider text-[10px] font-bold">
+                <th className="py-4.5 px-6 w-16 text-center">Index</th>
+                <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FiUser className="text-[11px] text-[#0437cc]" /> Account Owner</span></th>
+                <th className="py-4.5 px-6">Selected Tier</th>
+                <th className="py-4.5 px-6">Principal Input</th>
+                {!showRequests && <th className="py-4.5 px-6">Accrued Yield (ROI)</th>}
+                <th className="py-4.5 px-6">Status Anchor</th>
+                <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FiCalendar className="text-[11px] text-[#3b52d4]" /> Timestamp</span></th>
+                <th className="py-4.5 px-6 text-center">Operations</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
+              {currentItems.length > 0 ? (
+                currentItems.map((plan, index) => (
+                  <tr 
+                    key={plan.id} 
+                    onClick={() => {
+                      if (!showRequests) {
+                        handleView(plan);
+                      }
+                    }} 
+                    className="hover:bg-slate-50/80 transition duration-150 cursor-pointer"
+                  >
+                    <td className="py-4 px-6 text-center text-slate-400 font-mono">
+                      {String((currentPage - 1) * rowsPerPage + index + 1).padStart(2, '0')}
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-slate-900 font-bold tracking-wide">{plan.user}</span>
+                        <span className="font-mono text-[10px] text-slate-400">{plan.userCode}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-[#0437cc] font-bold">{plan.planName}</td>
+                    <td className="py-4 px-6 font-mono font-bold text-slate-900">
+                      {showRequests ? plan.amount : plan.depositAmount}
+                    </td>
+                    {!showRequests && (
+                      <td className="py-4 px-6 font-mono font-bold text-emerald-600">
+                        {plan.dailyROI}
+                      </td>
+                    )}
+                    <td className="py-4 px-6">
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                        plan.status === "Active" 
+                          ? 'bg-emerald-50 text-emerald-600 border-emerald-200' 
+                          : plan.status === "Pending"
+                          ? 'bg-amber-50 text-amber-600 border-amber-200 animate-pulse'
+                          : 'bg-slate-100 text-slate-500 border-slate-200'
+                      }`}>
+                        {plan.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-slate-500 text-[11px] font-mono">{plan.createdAt}</td>
+                    <td className="py-4 px-6 text-center relative" onClick={(e) => e.stopPropagation()}>
+                      {showRequests ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <button 
+                            onClick={() => handleApproveRequest(plan.id)}
+                            title="Approve Protocol"
+                            className="p-2 text-emerald-600 hover:text-white bg-emerald-50 hover:bg-emerald-600 border border-emerald-200 rounded-xl transition duration-150 cursor-pointer"
+                          >
+                            <FiCheck className="text-[10px]" />
+                          </button>
+                          <button
+                            onClick={() => handleRejectRequest(plan.id)}
+                            title="Reject Protocol"
+                            className="p-2 text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 rounded-xl transition duration-150 cursor-pointer"
+                          >
+                            <FiX className="text-[10px]" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center">
+                          <button 
+                            onClick={() => setMenuOpen(menuOpen === plan.id ? null : plan.id)}
+                            className={`p-2 rounded-xl transition duration-150 cursor-pointer ${menuOpen === plan.id ? 'bg-slate-100 text-slate-900' : 'text-slate-400 hover:text-slate-700'}`}
+                          >
+                            <FiMoreVertical className="text-xs" />
+                          </button>
+
+                          {/* Dropdown Box Menu */}
+                          {menuOpen === plan.id && (
+                            <div ref={dropdownRef} className="absolute right-14 top-1/2 -translate-y-1/2 z-50 min-w-[150px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5 space-y-0.5 text-left animate-fade-in">
+                              <button onClick={() => handleView(plan)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-700 hover:bg-slate-50 transition cursor-pointer">
+                                <FiEye className="text-[10px] text-[#0437cc]" /> View Plan
+                              </button>
+                              <button onClick={() => handleStatusChange(plan)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-700 hover:bg-slate-50 transition cursor-pointer">
+                                {plan.status === 'Active' ? (
+                                  <>
+                                    <FiToggleLeft className="text-[10px] text-amber-500" /> Deactivate
+                                  </>
+                                ) : (
+                                  <>
+                                    <FiToggleRight className="text-[10px] text-emerald-600" /> Activate
+                                  </>
+                                )}
+                              </button>
+                              <hr className="border-slate-100 my-1" />
+                              <button onClick={() => handleDelete(plan)} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-rose-600 hover:bg-rose-50 transition cursor-pointer">
+                                <FiTrash2 className="text-[10px]" /> Delete Plan
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={showRequests ? "7" : "8"} className="py-20 text-center text-slate-400 font-medium tracking-wide">
+                    No system parameters identified matching standard criteria.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Matrix Pagination Footer */}
+        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5 text-xs text-slate-500">
+            <span>Rows visible per frame</span>
+            <div className="relative">
+              <select
+                value={rowsPerPage}
+                onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-700 outline-none focus:ring-1 focus:ring-[#0437cc] transition cursor-pointer appearance-none pr-6"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+              <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[8px] text-slate-400">▼</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              className="p-2 rounded-lg border border-slate-300 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition disabled:opacity-20 disabled:pointer-events-none cursor-pointer"
+            >
+              <FiChevronLeft className="text-xs" />
+            </button>
+
+            <div className="flex items-center gap-1">
+              {getPagination().map((p, i) =>
+                p === "..." ? (
+                  <span key={i} className="px-2.5 text-slate-400 font-mono text-xs">...</span>
+                ) : (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(p)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
+                      currentPage === p 
+                        ? 'bg-[#0437cc] text-white shadow-xs' 
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-300 bg-white'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                )
+              )}
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="p-2 rounded-lg border border-white/5 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition disabled:opacity-20 disabled:pointer-events-none"
-              >
-                <FaChevronLeft className="text-[9px]" />
-              </button>
-
-              <div className="flex items-center gap-1">
-                {getPagination().map((p, i) =>
-                  p === "..." ? (
-                    <span key={i} className="px-2.5 text-slate-500 font-mono text-xs">...</span>
-                  ) : (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentPage(p)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-                        currentPage === p 
-                          ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md shadow-purple-950/40' 
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  )
-                )}
-              </div>
-
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="p-2 rounded-lg border border-white/5 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition disabled:opacity-20 disabled:pointer-events-none"
-              >
-                <FaChevronRight className="text-[9px]" />
-              </button>
-            </div>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              className="p-2 rounded-lg border border-slate-300 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition disabled:opacity-20 disabled:pointer-events-none cursor-pointer"
+            >
+              <FiChevronRight className="text-xs" />
+            </button>
           </div>
         </div>
       </div>

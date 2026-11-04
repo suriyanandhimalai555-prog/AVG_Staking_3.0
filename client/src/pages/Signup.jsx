@@ -136,7 +136,9 @@ const Signup = () => {
         <div className="flex items-center gap-3 mb-6">
           <img src={logo} alt="AVG Staking Logo" className="w-10 h-10 object-contain" />
           <span className="text-xl font-bold tracking-tight text-gray-900 flex items-center gap-1.5">
-            AVG Staking
+            AVG Staking<span className="rounded bg-[#f77704] px-1.5 py-0.2 text-[9px] font-black uppercase text-white tracking-wider">
+                    3.0
+                  </span>
           </span>
         </div>
 

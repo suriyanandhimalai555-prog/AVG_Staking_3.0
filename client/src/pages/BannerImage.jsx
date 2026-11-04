@@ -17,44 +17,44 @@ const getInitials = (name = "") => {
 };
 
 const DetailRow = ({ label, value }) => (
-  <div className="rounded-xl border border-white/[0.06] bg-slate-900/40 px-4 py-3 shadow-inner">
-    <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-amber-400/70">
+  <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-2xs">
+    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0437cc]">
       {label}
     </p>
-    <p className="mt-1 break-words text-sm font-medium text-slate-200">{value}</p>
+    <p className="mt-1 break-words text-sm font-semibold text-slate-900">{value}</p>
   </div>
 );
 
 const StatCard = ({ label, value, accent }) => (
-  <div className="rounded-2xl border border-white/[0.06] bg-gradient-to-b from-slate-900/80 to-slate-950/80 p-5 shadow-2xl backdrop-blur-xl">
+  <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
     <div className="flex items-center justify-between gap-6">
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
           {label}
         </p>
-        <p className="mt-1 text-3xl font-light tracking-tight text-white">{value}</p>
+        <p className="mt-1 text-3xl font-black tracking-tight text-slate-900">{value}</p>
       </div>
-      <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${accent} opacity-90 shadow-lg`} />
+      <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${accent} opacity-90 shadow-sm`} />
     </div>
   </div>
 );
 
 const StatusBadge = ({ hasImage }) => (
   <span
-    className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-[11px] font-medium tracking-wide ${
+    className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-[11px] font-bold tracking-wide ${
       hasImage
-        ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400"
-        : "border-amber-500/20 bg-amber-500/5 text-amber-400"
+        ? "border-emerald-200 bg-emerald-50 text-emerald-600"
+        : "border-amber-200 bg-amber-50 text-amber-700"
     }`}
   >
-    <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${hasImage ? "bg-emerald-400" : "bg-amber-400"}`} />
+    <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${hasImage ? "bg-emerald-500" : "bg-amber-500"}`} />
     {hasImage ? "Verified Asset" : "Pending Action"}
   </span>
 );
 
 const ModalShell = ({ title, subtitle, onClose, children, maxWidth = "max-w-6xl" }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/80 p-4 backdrop-blur-md">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
       <button
         type="button"
         aria-label="Close modal"
@@ -62,17 +62,16 @@ const ModalShell = ({ title, subtitle, onClose, children, maxWidth = "max-w-6xl"
         className="absolute inset-0 cursor-default"
       />
       <div
-        className={`relative w-full ${maxWidth} overflow-hidden rounded-2xl border border-white/[0.08] bg-[#090d16] shadow-[0_24px_70px_rgba(0,0,0,0.7)]`}
+        className={`relative w-full ${maxWidth} overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl`}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.05),transparent_45%)]" />
         <div className="relative flex max-h-[90vh] flex-col">
-          <div className="flex items-center justify-between gap-4 border-b border-white/[0.06] px-6 py-5">
+          <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-6 py-5 bg-slate-50">
             <div className="min-w-0">
-              <h2 className="text-lg font-medium tracking-tight text-white sm:text-xl">
+              <h2 className="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
                 {title}
               </h2>
               {subtitle ? (
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-1 text-xs text-slate-500 font-medium">
                   {subtitle}
                 </p>
               ) : null}
@@ -80,7 +79,7 @@ const ModalShell = ({ title, subtitle, onClose, children, maxWidth = "max-w-6xl"
 
             <button
               onClick={onClose}
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/5 text-xl font-light text-slate-400 transition hover:bg-white/10 hover:text-white"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-slate-300 bg-white text-xl font-light text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 cursor-pointer"
               aria-label="Close modal"
               type="button"
             >
@@ -93,7 +92,6 @@ const ModalShell = ({ title, subtitle, onClose, children, maxWidth = "max-w-6xl"
               relative overflow-y-auto p-6
               [scrollbar-width:none]
               [-ms-overflow-style:none]
-              `[&::-webkit-scrollbar]:hidden`
             "
           >
             {children}
@@ -261,146 +259,143 @@ const BannerImage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#030712] px-4 py-6 text-slate-100 sm:px-6 lg:px-8 rounded-2xl shadow-2xl">
-      <div className="mx-auto max-w-7xl space-y-6">
-        
-        {/* Header Block */}
-        <div className="relative overflow-hidden rounded-2xl border border-white/[0.05] bg-[#090f1c] p-6 shadow-2xl sm:p-8">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.04),transparent_35%)]" />
-          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <span className="inline-flex rounded-md border border-amber-500/10 bg-amber-500/5 px-3 py-1 text-[10px] font-semibold tracking-[0.25em] text-amber-400">
-                SYSTEM CONSOLE
-              </span>
-              <h1 className="mt-3 text-2xl font-light tracking-tight text-white sm:text-3xl">
-                Premium Reward Inventory
-              </h1>
-              <p className="mt-2 max-w-xl text-xs leading-relaxed text-slate-400">
-                Manage, audit, and provision executive asset banners for verified accounts.
-              </p>
-            </div>
-
-            <div className="flex gap-4">
-              <StatCard
-                label="Premium Profiles"
-                value={users.length}
-                accent="from-amber-500 to-yellow-600"
-              />
-            </div>
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
+      
+      {/* Header Block */}
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-xs sm:p-8">
+        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <span className="inline-flex rounded-md border border-blue-200 bg-blue-50 px-3 py-1 text-[10px] font-bold tracking-[0.2em] text-[#0437cc]">
+              SYSTEM CONSOLE
+            </span>
+            <h1 className="mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+              Premium Reward Inventory
+            </h1>
+            <p className="mt-2 max-w-xl text-xs sm:text-sm leading-relaxed text-slate-500 font-medium">
+              Manage, audit, and provision executive asset banners for verified accounts.
+            </p>
           </div>
-        </div>
 
-        {/* Search Engine Layer */}
-        <div className="rounded-xl border border-white/[0.05] bg-[#090f1c] p-4 shadow-xl">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Filter by account signature, premium asset target, or phone identifier..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-4 py-2.5 text-sm text-slate-200 outline-none transition placeholder:text-slate-600 focus:border-amber-500/30 focus:ring-1 focus:ring-amber-500/10"
+          <div className="flex gap-4">
+            <StatCard
+              label="Premium Profiles"
+              value={users.length}
+              accent="from-[#0437cc] to-blue-700"
             />
-            <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-600 text-lg">
-              &reg;
-            </div>
           </div>
         </div>
+      </div>
 
-        {/* Notification Stream */}
-        {message ? (
-          <div className="rounded-lg border border-emerald-500/10 bg-emerald-500/[0.02] px-4 py-3 text-xs font-medium text-emerald-400 shadow-lg animate-fade-in">
-            {message}
+      {/* Search Engine Layer */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Filter by account signature, premium asset target, or phone identifier..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#0437cc] focus:ring-1 focus:ring-[#0437cc]"
+          />
+          <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400 text-lg">
+            &reg;
           </div>
-        ) : null}
+        </div>
+      </div>
 
-        {/* Grid System */}
-        <div>
-          {loading ? (
-            <div className="rounded-xl border border-white/[0.05] bg-[#090f1c] p-12 text-center text-xs font-medium tracking-widest text-slate-500">
-              SYNCHRONIZING REWARD REGISTRY...
-            </div>
-          ) : filteredUsers.length === 0 ? (
-            <div className="rounded-xl border border-white/[0.05] bg-[#090f1c] p-12 text-center text-xs font-medium tracking-widest text-slate-500">
-              NO COMPLIANT RECORDS FOUND
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredUsers.map((user) => {
-                const hasImage = Boolean(user.image_url);
+      {/* Notification Stream */}
+      {message ? (
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-bold text-emerald-700 shadow-xs">
+          {message}
+        </div>
+      ) : null}
 
-                return (
-                  <div
-                    key={user.userId}
-                    className="group relative flex flex-col justify-between rounded-xl border border-white/[0.05] bg-[#090f1c] p-5 shadow-xl transition-all duration-300 hover:border-amber-500/20 hover:shadow-[0_12px_30px_rgba(245,158,11,0.03)]"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 text-xs font-semibold text-amber-400 border border-white/[0.05]">
-                            {getInitials(user.username)}
-                          </div>
-                          <div className="min-w-0">
-                            <h3 className="truncate text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
-                              {user.username || "-"}
-                            </h3>
-                            <p className="truncate text-[11px] font-mono tracking-wider text-slate-500">
-                              {user.userCode || "-"}
-                            </p>
-                          </div>
+      {/* Grid System */}
+      <div>
+        {loading ? (
+          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center text-xs font-bold tracking-widest text-slate-500 shadow-xs">
+            SYNCHRONIZING REWARD REGISTRY...
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center text-xs font-bold tracking-widest text-slate-500 shadow-xs">
+            NO COMPLIANT RECORDS FOUND
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredUsers.map((user) => {
+              const hasImage = Boolean(user.image_url);
+
+              return (
+                <div
+                  key={user.userId}
+                  className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-300 hover:border-[#0437cc]/40 hover:shadow-md"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-xs font-bold text-[#0437cc] border border-slate-200">
+                          {getInitials(user.username)}
                         </div>
-                        <StatusBadge hasImage={hasImage} />
-                      </div>
-
-                      <div className="mt-4 rounded-lg border border-white/[0.03] bg-slate-950/30 p-3.5">
-                        <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-amber-400/60">
-                          Allocated Luxury Tier
-                        </p>
-                        <p className="mt-1 text-xs font-medium text-slate-300 truncate">
-                          {user.reward || "-"}
-                        </p>
-                      </div>
-
-                      <div className="mt-3 space-y-1.5 text-xs">
-                        <div className="flex items-center justify-between gap-3 rounded-lg border border-white/[0.02] bg-slate-950/20 px-3 py-2">
-                          <span className="text-slate-500 text-[11px]">Phone Target</span>
-                          <span className="truncate font-medium text-slate-300">{user.phone || "-"}</span>
-                        </div>
-                        <div className="flex items-center justify-between gap-3 rounded-lg border border-white/[0.02] bg-slate-950/20 px-3 py-2">
-                          <span className="text-slate-500 text-[11px]">Escrow Target</span>
-                          <span className="font-medium text-slate-300">{formatMoney(user.target_amount)}</span>
-                        </div>
-                        <div className="flex items-center justify-between gap-3 rounded-lg border border-white/[0.02] bg-slate-950/20 px-3 py-2">
-                          <span className="text-slate-500 text-[11px]">Cleared Progress</span>
-                          <span className="font-semibold text-amber-400">{formatMoney(user.progress)}</span>
+                        <div className="min-w-0">
+                          <h3 className="truncate text-sm font-bold text-slate-900 group-hover:text-[#0437cc] transition-colors">
+                            {user.username || "-"}
+                          </h3>
+                          <p className="truncate text-[11px] font-mono tracking-wider text-slate-500 font-bold">
+                            {user.userCode || "-"}
+                          </p>
                         </div>
                       </div>
+                      <StatusBadge hasImage={hasImage} />
                     </div>
 
-                    <div className="mt-5 flex gap-2">
-                      <button
-                        onClick={() => openUploadModal(user)}
-                        className="flex-1 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 px-3 py-2 text-xs font-medium text-white shadow-md transition hover:brightness-110 active:scale-[0.98]"
-                        type="button"
-                      >
-                        {hasImage ? "Replace Asset" : "Provision Asset"}
-                      </button>
+                    <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3.5">
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#0437cc]">
+                        Allocated Luxury Tier
+                      </p>
+                      <p className="mt-1 text-xs font-bold text-slate-800 truncate">
+                        {user.reward || "-"}
+                      </p>
+                    </div>
 
-                      {hasImage && (
-                        <button
-                          onClick={() => openViewModal(user)}
-                          className="rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-xs font-medium text-slate-300 transition hover:bg-white/[0.06] active:scale-[0.98]"
-                          type="button"
-                        >
-                          Audit
-                        </button>
-                      )}
+                    <div className="mt-3 space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                        <span className="text-slate-500 text-[11px] font-medium">Phone Target</span>
+                        <span className="truncate font-semibold text-slate-800">{user.phone || "-"}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                        <span className="text-slate-500 text-[11px] font-medium">Escrow Target</span>
+                        <span className="font-bold text-slate-800">{formatMoney(user.target_amount)}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                        <span className="text-slate-500 text-[11px] font-medium">Cleared Progress</span>
+                        <span className="font-bold text-emerald-600">{formatMoney(user.progress)}</span>
+                      </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+
+                  <div className="mt-5 flex gap-2">
+                    <button
+                      onClick={() => openUploadModal(user)}
+                      className="flex-1 rounded-xl bg-[#0437cc] hover:bg-blue-800 px-3 py-2 text-xs font-bold text-white shadow-xs transition active:scale-[0.98] cursor-pointer"
+                      type="button"
+                    >
+                      {hasImage ? "Replace Asset" : "Provision Asset"}
+                    </button>
+
+                    {hasImage && (
+                      <button
+                        onClick={() => openViewModal(user)}
+                        className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] cursor-pointer"
+                        type="button"
+                      >
+                        Audit
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Upload Interface Modal */}
@@ -421,22 +416,22 @@ const BannerImage = () => {
                   <DetailRow label="Current Standing" value={formatMoney(selectedUser.progress)} />
                 </div>
 
-                <div className="rounded-xl border border-white/[0.05] bg-slate-950/40 p-4">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">
                     File System Input
                   </p>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                    className="mt-3 block w-full cursor-pointer rounded-lg border border-white/[0.08] bg-slate-950/80 p-2 text-xs text-slate-400 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-white/20"
+                    className="mt-3 block w-full cursor-pointer rounded-xl border border-slate-300 bg-white p-2.5 text-xs text-slate-600 file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-[#0437cc] file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white hover:file:bg-blue-800"
                   />
                 </div>
 
                 <button
                   onClick={handleUpload}
                   disabled={uploadingId === selectedUser.userId}
-                  className="w-full rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 py-2.5 text-xs font-medium text-slate-950 transition hover:brightness-110 disabled:opacity-40"
+                  className="w-full rounded-xl bg-[#0437cc] hover:bg-blue-800 py-2.5 text-xs font-bold text-white transition disabled:opacity-40 shadow-xs cursor-pointer"
                   type="button"
                 >
                   {uploadingId === selectedUser.userId ? "Synchronizing Asset..." : "Commit Asset Changes"}
@@ -444,17 +439,17 @@ const BannerImage = () => {
               </div>
 
               <div>
-                <div className="rounded-xl border border-white/[0.05] bg-slate-950/40 p-4 h-full flex flex-col justify-between">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-3">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 h-full flex flex-col justify-between">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-3">
                     Active Render Canvas
                   </p>
-                  <div className="flex-1 min-h-[220px] rounded-lg border border-white/[0.04] bg-black/60 overflow-hidden flex items-center justify-center">
+                  <div className="flex-1 min-h-[220px] rounded-xl border border-slate-200 bg-slate-900 overflow-hidden flex items-center justify-center">
                     {uploadPreview ? (
                       <img src={uploadPreview} alt="Staging area" className="h-full w-full object-cover" />
                     ) : selectedUser.image_url ? (
                       <img src={selectedUser.image_url} alt="Current entry" className="h-full w-full object-cover" />
                     ) : (
-                      <span className="text-xs text-slate-600 italic">No asset staged for rendering</span>
+                      <span className="text-xs text-slate-400 italic">No asset staged for rendering</span>
                     )}
                   </div>
                 </div>
@@ -474,15 +469,15 @@ const BannerImage = () => {
             maxWidth="max-w-5xl"
           >
             <div className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
-              <div className="rounded-xl border border-white/[0.05] bg-black/60 overflow-hidden flex items-center justify-center p-2 min-h-[300px]">
+              <div className="rounded-xl border border-slate-200 bg-slate-900 overflow-hidden flex items-center justify-center p-2 min-h-[300px]">
                 {viewUser.image_url ? (
                   <img
                     src={viewUser.image_url}
                     alt="Audited live asset"
-                    className="max-h-[450px] w-full rounded-md object-contain bg-slate-950"
+                    className="max-h-[450px] w-full rounded-lg object-contain bg-slate-950"
                   />
                 ) : (
-                  <span className="text-xs text-slate-600">Asset pointer resolved to null</span>
+                  <span className="text-xs text-slate-400">Asset pointer resolved to null</span>
                 )}
               </div>
 
@@ -490,11 +485,11 @@ const BannerImage = () => {
                 <div className="space-y-2.5">
                   <DetailRow label="Profile Owner" value={viewUser.username || "-"} />
                   <DetailRow label="Assigned Tier Reward" value={viewUser.reward || "-"} />
-                  <div className="rounded-xl border border-white/[0.05] bg-slate-950/40 p-3.5">
-                    <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-500">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">
                       Resolved Asset Link
                     </p>
-                    <p className="mt-1 break-all font-mono text-[11px] text-slate-400 select-all">
+                    <p className="mt-1 break-all font-mono text-[11px] text-[#0437cc] font-semibold select-all">
                       {viewUser.image_url || "-"}
                     </p>
                   </div>
@@ -502,7 +497,7 @@ const BannerImage = () => {
 
                 <button
                   onClick={closeViewModal}
-                  className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] py-2.5 text-xs font-medium text-slate-300 transition hover:bg-white/[0.06]"
+                  className="w-full rounded-xl border border-slate-300 bg-white py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-100 cursor-pointer"
                   type="button"
                 >
                   Dismiss Telemetry

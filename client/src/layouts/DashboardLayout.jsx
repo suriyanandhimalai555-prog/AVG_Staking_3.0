@@ -7,18 +7,18 @@ function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#f8fafc]">
       <Sidebar
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
       />
 
-      <div className="md:ml-[280px] min-h-screen">
+      <div className="md:ml-[260px] min-h-screen flex flex-col bg-[#f8fafc]">
         <Topbar
           onMenuClick={() => setMobileOpen(true)}
         />
 
-        <main className="p-4 md:p-6">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-[#f8fafc]">
           <Outlet />
         </main>
       </div>

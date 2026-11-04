@@ -218,58 +218,58 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#090d16] text-slate-400 font-medium">
-        <div className="animate-pulse">Loading profile…</div>
+      <div className="flex h-screen items-center justify-center bg-transparent text-slate-500 font-bold">
+        <div className="animate-pulse tracking-wide">Loading profile…</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-white p-4 sm:p-6 md:p-8 antialiased selection:bg-purple-500 selection:text-white rounded-2xl shadow-2xl">
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
       
       {/* Dynamic Floating Notification */}
       {popup.show && (
-        <div className={`fixed top-6 right-6 z-50 px-5 py-3 rounded-xl shadow-2xl border text-sm font-medium transition-all transform duration-300 animate-bounce ${
+        <div className={`fixed top-6 right-6 z-[120] px-5 py-3.5 rounded-xl shadow-xl border text-xs font-bold tracking-wide transition-all transform duration-300 animate-bounce ${
           popup.type === "error" 
-            ? "bg-red-950/80 border-red-500 text-red-200" 
-            : "bg-emerald-950/80 border-emerald-500 text-emerald-200"
+            ? "bg-rose-50 border-rose-200 text-rose-700" 
+            : "bg-emerald-50 border-emerald-200 text-emerald-700"
         }`}>
           {popup.message}
         </div>
       )}
 
       {/* Main Container Card */}
-      <div className="max-w-6xl mx-auto bg-[#0f1524] rounded-2xl border border-slate-800/60 shadow-xl overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
         
         {/* Header Block */}
-        <div className="p-6 sm:p-8 bg-gradient-to-b from-slate-900/50 to-transparent flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/50">
+        <div className="p-6 sm:p-8 bg-slate-50/70 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xl">👤</span>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-100">{profileData.username || "—"}</h2>
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">{profileData.username || "—"}</h2>
             </div>
-            <p className="text-sm text-slate-400">{profileData.email || "—"}</p>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">{profileData.email || "—"}</p>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-2.5 w-full sm:w-auto">
             {!isEditing ? (
               <button 
-                className="w-full sm:w-auto px-5 py-2.5 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all shadow-lg shadow-purple-600/10"
+                className="w-full sm:w-auto px-5 py-2.5 bg-[#0437cc] hover:bg-blue-800 active:scale-95 text-white font-bold text-xs rounded-xl transition-all shadow-xs cursor-pointer"
                 onClick={handleEdit}
               >
                 Edit Profile
               </button>
             ) : (
-              <div className="flex gap-2 w-full sm:w-auto">
+              <div className="flex gap-2.5 w-full sm:w-auto">
                 <button 
-                  className="flex-1 sm:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-medium text-sm rounded-xl transition-all disabled:opacity-50"
+                  className="flex-1 sm:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl transition-all disabled:opacity-50 cursor-pointer shadow-xs"
                   onClick={handleSave} 
                   disabled={saving}
                 >
                   {saving ? "Saving…" : "Save"}
                 </button>
                 <button 
-                  className="flex-1 sm:flex-none px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-sm rounded-xl transition-all border border-slate-700"
+                  className="flex-1 sm:flex-none px-5 py-2.5 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-300 cursor-pointer active:scale-95"
                   onClick={handleCancel} 
                   disabled={saving}
                 >
@@ -281,11 +281,11 @@ const Profile = () => {
         </div>
 
         {/* Content Body */}
-        <div className="p-6 sm:p-8 space-y-8">
+        <div className="p-6 sm:p-8 space-y-8 bg-white">
           
           {/* Section 1: Personal Details */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-purple-400 mb-4">Personal Details</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#0437cc] mb-4">Personal Details</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
@@ -294,17 +294,17 @@ const Profile = () => {
                 { label: "Phone", key: "phone", editable: true },
                 { label: "Referral Code", key: "referralCode", editable: false }
               ].map((field) => (
-                <div key={field.key} className="bg-[#141b2d] border border-slate-800/80 rounded-xl p-4 flex flex-col justify-center">
-                  <span className="text-xs text-slate-500 font-medium mb-1.5">{field.label}</span>
+                <div key={field.key} className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-center shadow-2xs">
+                  <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">{field.label}</span>
                   {isEditing && field.editable ? (
                     <input
                       type="text"
-                      className="w-full bg-[#090d16] border border-slate-700 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none transition-all"
+                      className="w-full bg-white border border-slate-300 focus:border-[#0437cc] focus:ring-1 focus:ring-[#0437cc] rounded-xl px-3.5 py-2 text-sm text-slate-800 focus:outline-none transition"
                       value={editData[field.key] ?? ""}
                       onChange={(e) => setEditData({ ...editData, [field.key]: e.target.value })}
                     />
                   ) : (
-                    <span className={`text-sm font-medium ${field.key === 'username' ? 'text-slate-200' : field.key === 'referralCode' ? 'text-emerald-400 font-mono' : 'text-slate-300'}`}>
+                    <span className={`text-sm font-bold ${field.key === 'username' ? 'text-slate-900' : field.key === 'referralCode' ? 'text-[#0437cc] font-mono' : 'text-slate-700'}`}>
                       {profileData[field.key] || "—"}
                     </span>
                   )}
@@ -313,46 +313,46 @@ const Profile = () => {
             </div>
 
             {/* Wallet Row inside Personal Details */}
-            <div className="mt-4 bg-[#141b2d] border border-slate-800/80 rounded-xl p-4">
-              <span className="text-xs text-slate-500 font-medium block mb-1.5">Wallet Address</span>
+            <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-2xs">
+              <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block mb-1.5">Wallet Address</span>
               {isEditing ? (
                 <input 
                   type="text" 
-                  className="w-full bg-[#090d16] border border-slate-700 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none transition-all"
+                  className="w-full bg-white border border-slate-300 focus:border-[#0437cc] focus:ring-1 focus:ring-[#0437cc] rounded-xl px-3.5 py-2 text-sm text-slate-800 focus:outline-none transition"
                   value={editData.walletAddress ?? ""} 
                   onChange={(e) => setEditData({ ...editData, walletAddress: e.target.value })} 
                 />
               ) : (
-                <span className="text-sm font-mono text-emerald-400 break-all">{profileData.walletAddress || "—"}</span>
+                <span className="text-sm font-mono text-emerald-600 font-semibold break-all">{profileData.walletAddress || "—"}</span>
               )}
             </div>
           </div>
 
           {/* Section 2: Security */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-purple-400 mb-4">Security Settings</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#0437cc] mb-4">Security Settings</h3>
             <div className="space-y-3">
               
-              <div className="bg-[#141b2d] border border-slate-800/60 rounded-xl px-5 py-4 flex justify-between items-center">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 flex justify-between items-center shadow-2xs">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-200">Account Password</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">Update your secure login credentials</p>
+                  <h4 className="text-sm font-bold text-slate-900">Account Password</h4>
+                  <p className="text-xs text-slate-500 mt-0.5 font-medium">Update your secure login credentials</p>
                 </div>
                 <button 
-                  className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-lg transition-all border border-slate-700"
+                  className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl transition border border-slate-300 cursor-pointer active:scale-95"
                   onClick={() => setShowPasswordModal(true)}
                 >
                   Edit
                 </button>
               </div>
 
-              <div className="bg-[#141b2d] border border-slate-800/60 rounded-xl px-5 py-4 flex justify-between items-center">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 flex justify-between items-center shadow-2xs">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-200">Bank Details</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">Manage fiat payout routes and settlement options</p>
+                  <h4 className="text-sm font-bold text-slate-900">Bank Details</h4>
+                  <p className="text-xs text-slate-500 mt-0.5 font-medium">Manage fiat payout routes and settlement options</p>
                 </div>
                 <button 
-                  className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-lg transition-all border border-slate-700"
+                  className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl transition border border-slate-300 cursor-pointer active:scale-95"
                   onClick={() => setShowBankModal(true)}
                 >
                   Configure
@@ -363,17 +363,17 @@ const Profile = () => {
           </div>
 
           {/* Section 3: Referral & Earn */}
-          <div className="bg-[#141b2d]/40 border border-purple-900/30 rounded-xl p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-purple-400 mb-3">Referral & Earn</h3>
+          <div className="bg-blue-50/50 border border-blue-200 rounded-xl p-5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#0437cc] mb-3">Referral & Earn</h3>
             <div className="flex flex-col sm:flex-row gap-3">
               <input 
                 readOnly 
                 value={referralLink} 
-                className="flex-1 bg-[#090d16] border border-slate-800 text-slate-400 text-sm rounded-xl px-4 py-2.5 focus:outline-none font-mono tracking-tight select-all"
+                className="flex-1 bg-white border border-slate-300 text-slate-600 text-xs rounded-xl px-4 py-2.5 focus:outline-none font-mono tracking-tight select-all shadow-2xs"
               />
               <button 
                 onClick={handleCopy}
-                className="px-5 py-2.5 bg-purple-600/90 hover:bg-purple-600 active:bg-purple-700 text-white font-medium text-sm rounded-xl transition-all whitespace-nowrap shadow-md shadow-purple-600/5"
+                className="px-5 py-2.5 bg-[#0437cc] hover:bg-blue-800 active:scale-95 text-white font-bold text-xs rounded-xl transition whitespace-nowrap shadow-xs cursor-pointer"
               >
                 Share Now
               </button>
@@ -383,49 +383,47 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Modals Backdrops & Layering */}
-
       {/* Change Password Modal */}
       {showPasswordModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-md bg-[#0f1524] border border-slate-800 rounded-2xl p-6 shadow-2xl transform transition-all">
-            <h3 className="text-lg font-bold text-slate-100 mb-4">Change Password</h3>
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl transform transition-all">
+            <h3 className="text-base font-bold text-slate-900 mb-4">Change Password</h3>
             
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               <input 
                 type="password" 
                 placeholder="Current Password" 
-                className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none transition-all"
+                className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                 value={passwordData.currentPassword} 
                 onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })} 
               />
               <input 
                 type="password" 
                 placeholder="New Password" 
-                className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none transition-all"
+                className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                 value={passwordData.newPassword} 
                 onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })} 
               />
               <input 
                 type="password" 
                 placeholder="Confirm New Password" 
-                className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none transition-all"
+                className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                 value={passwordData.confirmPassword} 
                 onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} 
               />
             </div>
 
-            <div className="mt-6 flex justify-end gap-2">
+            <div className="mt-6 flex justify-end gap-2.5">
               <button 
                 onClick={() => { setShowPasswordModal(false); setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" }); }} 
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-sm rounded-xl border border-slate-700 transition-all"
+                className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 transition cursor-pointer"
                 disabled={changingPassword}
               >
                 Cancel
               </button>
               <button 
                 onClick={handleSavePassword} 
-                className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm rounded-xl shadow-lg shadow-purple-600/10 transition-all disabled:opacity-50"
+                className="px-5 py-2 bg-[#0437cc] hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition disabled:opacity-50 cursor-pointer active:scale-95"
                 disabled={changingPassword}
               >
                 {changingPassword ? "Saving…" : "Save Password"}
@@ -437,53 +435,53 @@ const Profile = () => {
 
       {/* Bank Details Modal */}
       {showBankModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-md bg-[#0f1524] border border-slate-800 rounded-2xl p-6 shadow-2xl transform transition-all">
-            <h3 className="text-lg font-bold text-slate-100 mb-4">Bank Details Configuration</h3>
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl transform transition-all">
+            <h3 className="text-base font-bold text-slate-900 mb-4">Bank Details Configuration</h3>
             
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               <div>
-                <label className="text-xs text-slate-500 mb-1 block pl-1">Account Holder Name *</label>
+                <label className="text-xs text-slate-500 font-bold mb-1 block pl-1">Account Holder Name *</label>
                 <input 
                   placeholder="John Doe" 
-                  className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-700 focus:outline-none transition-all"
+                  className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                   value={bankData.accountHolderName} 
                   onChange={(e) => setBankData({ ...bankData, accountHolderName: e.target.value })} 
                 />
               </div>
               <div>
-                <label className="text-xs text-slate-500 mb-1 block pl-1">Bank Name</label>
+                <label className="text-xs text-slate-500 font-bold mb-1 block pl-1">Bank Name</label>
                 <input 
                   placeholder="Federal International Bank" 
-                  className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-700 focus:outline-none transition-all"
+                  className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                   value={bankData.bankName} 
                   onChange={(e) => setBankData({ ...bankData, bankName: e.target.value })} 
                 />
               </div>
               <div>
-                <label className="text-xs text-slate-500 mb-1 block pl-1">Account Number *</label>
+                <label className="text-xs text-slate-500 font-bold mb-1 block pl-1">Account Number *</label>
                 <input 
                   placeholder="000000000000" 
-                  className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-700 focus:outline-none transition-all"
+                  className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                   value={bankData.accountNumber} 
                   onChange={(e) => setBankData({ ...bankData, accountNumber: e.target.value })} 
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block pl-1">IFSC Code</label>
+                  <label className="text-xs text-slate-500 font-bold mb-1 block pl-1">IFSC Code</label>
                   <input 
                     placeholder="ABCD0123456" 
-                    className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-700 focus:outline-none transition-all"
+                    className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                     value={bankData.ifscCode} 
                     onChange={(e) => setBankData({ ...bankData, ifscCode: e.target.value })} 
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block pl-1">Branch</label>
+                  <label className="text-xs text-slate-500 font-bold mb-1 block pl-1">Branch</label>
                   <input 
                     placeholder="Main Square" 
-                    className="w-full bg-[#090d16] border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-700 focus:outline-none transition-all"
+                    className="w-full bg-white border border-slate-300 focus:border-[#0437cc] rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none transition"
                     value={bankData.branch} 
                     onChange={(e) => setBankData({ ...bankData, branch: e.target.value })} 
                   />
@@ -491,16 +489,16 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end gap-2">
+            <div className="mt-6 flex justify-end gap-2.5">
               <button 
                 onClick={() => { setShowBankModal(false); setBankData({ accountHolderName: "", bankName: "", accountNumber: "", ifscCode: "", branch: "" }); }} 
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-sm rounded-xl border border-slate-700 transition-all"
+                className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 transition cursor-pointer"
               >
                 Cancel
               </button>
               <button 
                 onClick={handleSaveBank} 
-                className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm rounded-xl shadow-lg shadow-purple-600/10 transition-all"
+                className="px-5 py-2 bg-[#0437cc] hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer active:scale-95"
               >
                 Save Details
               </button>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { FaEllipsisV, FaSearch, FaUniversity, FaUser, FaCreditCard, FaCheckCircle, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
+import { FaEllipsisV, FaSearch, FaUniversity, FaCheckCircle, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
 
 const Bank = () => {
@@ -12,7 +12,6 @@ const Bank = () => {
     const dropdownRef = useRef(null);
     const [loading, setLoading] = useState(true);
 
-    // Fetch and sync structure values from API
     useEffect(() => {
         const fetchBanks = async () => {
             try {
@@ -46,7 +45,6 @@ const Bank = () => {
         fetchBanks();
     }, []);
 
-    // Global listener ensures menu interactions stay active and close safely on outside click
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -159,208 +157,199 @@ const Bank = () => {
     const getStatusClass = (status) => {
         switch (status) {
             case "Approved":
-                return "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                return "bg-emerald-50 text-emerald-600 border border-emerald-200";
             case "Rejected":
-                return "bg-rose-500/10 text-rose-400 border border-rose-500/20";
+                return "bg-rose-50 text-rose-600 border border-rose-200";
             default:
-                return "bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                return "bg-amber-50 text-amber-600 border border-amber-200";
         }
     };
 
     return (
-        <div className="min-h-screen bg-[#070b1e] text-slate-100 p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none rounded-2xl shadow-2xl">
-            {/* Ambient Graphic Backdrop Filters */}
-            <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none" />
-
-            <div className="relative z-10 max-w-[1600px] mx-auto space-y-6">
-                
-                {/* Dashboard Control Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-xl">
-                    <div>
-                        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Bank Configuration</h2>
-                        <p className="text-xs text-slate-400 mt-1">Review, authorize and clear settlement bank account attachments</p>
-                    </div>
-
-                    <div className="relative w-full sm:w-72 lg:w-96">
-                        {/* <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
-                            <FaSearch className="text-sm" />
-                        </span> */}
-                        <input
-                            type="text"
-                            placeholder="Search by user, bank, account, status..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-[#0d153a]/60 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-purple-500/80 focus:ring-2 focus:ring-purple-500/20 transition duration-200"
-                        />
-                    </div>
+        <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
+            
+            {/* Dashboard Control Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
+                <div>
+                    <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">Bank Configuration</h2>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Review, authorize and clear settlement bank account attachments</p>
                 </div>
 
-                {/* Secure Data Table Sheet */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="overflow-x-auto w-full">
-                        <table className="w-full min-w-[1150px] border-collapse text-left text-sm">
-                            <thead>
-                                <tr className="border-b border-white/10 bg-[#0d153a]/40 text-slate-300 font-semibold tracking-wider text-xs uppercase">
-                                    <th className="py-4 px-5 w-16 text-center">S.No</th>
-                                    <th className="py-4 px-6">Username</th>
-                                    <th className="py-4 px-6">Bank Name</th>
-                                    <th className="py-4 px-6">Account Number</th>
-                                    <th className="py-4 px-6">IFSC Code</th>
-                                    <th className="py-4 px-6">GPay Linked</th>
-                                    <th className="py-4 px-5 text-center w-32">Status</th>
-                                    <th className="py-4 px-6">Created On</th>
-                                    <th className="py-4 px-6 text-center w-24">Actions</th>
-                                </tr>
-                            </thead>
+                <div className="relative w-full sm:w-72 lg:w-96">
+                    <input
+                        type="text"
+                        placeholder="Search by user, bank, account, status..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full bg-white border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white shadow-xs transition duration-200"
+                    />
+                </div>
+            </div>
 
-                            <tbody className="divide-y divide-white/5">
-                                {loading ? (
-                                    <tr>
-                                        <td colSpan="9" className="py-12 text-center text-slate-400">
-                                            <div className="flex flex-col items-center gap-3">
-                                                <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                                                <span>Fetching bank listings data...</span>
+            {/* Secure Data Table Sheet */}
+            <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+                <div className="overflow-x-auto w-full">
+                    <table className="w-full min-w-[1150px] border-collapse text-left text-sm">
+                        <thead>
+                            <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-600 font-bold tracking-wider text-xs uppercase">
+                                <th className="py-4 px-5 w-16 text-center">S.No</th>
+                                <th className="py-4 px-6">Username</th>
+                                <th className="py-4 px-6">Bank Name</th>
+                                <th className="py-4 px-6">Account Number</th>
+                                <th className="py-4 px-6">IFSC Code</th>
+                                <th className="py-4 px-6">GPay Linked</th>
+                                <th className="py-4 px-5 text-center w-32">Status</th>
+                                <th className="py-4 px-6">Created On</th>
+                                <th className="py-4 px-6 text-center w-24">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody className="divide-y divide-slate-100">
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="9" className="py-12 text-center text-slate-500">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className="w-8 h-8 border-4 border-[#0437cc] border-t-transparent rounded-full animate-spin"></div>
+                                            <span>Fetching bank listings data...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : paginated.length === 0 ? (
+                                <tr>
+                                    <td colSpan="9" className="py-12 text-center text-slate-500">
+                                        No configuration settlement data rows matched.
+                                    </td>
+                                </tr>
+                            ) : (
+                                paginated.map((b, index) => (
+                                    <tr key={b.id} className="hover:bg-slate-50/80 transition duration-150 group">
+                                        <td className="py-4 px-5 text-center font-medium text-slate-500">
+                                            {(page - 1) * rowsPerPage + index + 1}
+                                        </td>
+
+                                        {/* Username column context */}
+                                        <td className="py-4 px-6 font-bold text-slate-900 group-hover:text-[#0437cc] transition-colors">
+                                            {b.username}
+                                        </td>
+
+                                        {/* Bank Identity details */}
+                                        <td className="py-4 px-6 text-slate-800 font-semibold">
+                                            <div className="flex items-center gap-2">
+                                                <FaUniversity className="text-slate-400 text-xs" />
+                                                <span>{b.bank}</span>
                                             </div>
                                         </td>
-                                    </tr>
-                                ) : paginated.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="9" className="py-12 text-center text-slate-400">
-                                            No configuration settlement data rows matched.
+
+                                        <td className="py-4 px-6 text-slate-700 font-mono tracking-wide">{b.account}</td>
+                                        <td className="py-4 px-6 text-slate-700 font-mono text-xs uppercase">{b.ifsc}</td>
+                                        <td className="py-4 px-6 text-slate-600 font-medium">{b.gpay}</td>
+                                        
+                                        {/* Micro Custom Status Glass Badging */}
+                                        <td className="py-4 px-5 text-center">
+                                            <span className={`inline-flex px-2.5 py-1 text-xs font-bold rounded-md uppercase tracking-wider ${getStatusClass(b.status)}`}>
+                                                {b.status}
+                                            </span>
+                                        </td>
+
+                                        <td className="py-4 px-6 text-slate-500 text-xs font-medium">{b.created}</td>
+
+                                        {/* Dropping Action context Menu */}
+                                        <td className="py-4 px-6 text-center relative overflow-visible">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setMenuOpen(menuOpen === b.id ? null : b.id);
+                                                }}
+                                                className="action-trigger p-2 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition duration-150 focus:outline-none cursor-pointer"
+                                            >
+                                                <FaEllipsisV className="pointer-events-none" />
+                                            </button>
+
+                                            {menuOpen === b.id && (
+                                                <div 
+                                                    ref={dropdownRef}
+                                                    className="absolute right-12 top-2 w-36 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-slate-100 text-left"
+                                                >
+                                                    <button 
+                                                        onClick={(e) => { e.stopPropagation(); updateStatus(b.id, "Approved"); }}
+                                                        className="w-full flex items-center gap-2 text-left px-4 py-2.5 text-xs font-medium text-emerald-600 hover:bg-emerald-50 transition cursor-pointer"
+                                                    >
+                                                        <FaCheckCircle className="text-[10px]" /> Approve Account
+                                                    </button>
+                                                    <button 
+                                                        onClick={(e) => { e.stopPropagation(); updateStatus(b.id, "Rejected"); }}
+                                                        className="w-full flex items-center gap-2 text-left px-4 py-2.5 text-xs font-medium text-amber-600 hover:bg-amber-50 transition cursor-pointer"
+                                                    >
+                                                        <FaTimesCircle className="text-[10px]" /> Reject Account
+                                                    </button>
+                                                    <button 
+                                                        onClick={(e) => { e.stopPropagation(); deleteBank(b.id); }}
+                                                        className="w-full flex items-center gap-2 text-left px-4 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                                                    >
+                                                        <FaTrashAlt className="text-[10px]" /> Drop Record
+                                                    </button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
-                                ) : (
-                                    paginated.map((b, index) => (
-                                        <tr key={b.id} className="hover:bg-white/[0.02] transition duration-150 group">
-                                            <td className="py-4 px-5 text-center font-medium text-slate-400">
-                                                {(page - 1) * rowsPerPage + index + 1}
-                                            </td>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
 
-                                            {/* Username column context */}
-                                            <td className="py-4 px-6 font-bold text-white group-hover:text-purple-400 transition-colors">
-                                                {b.username}
-                                            </td>
-
-                                            {/* Bank Identity details */}
-                                            <td className="py-4 px-6 text-slate-200 font-semibold">
-                                                <div className="flex items-center gap-2">
-                                                    <FaUniversity className="text-slate-500 text-xs" />
-                                                    <span>{b.bank}</span>
-                                                </div>
-                                            </td>
-
-                                            <td className="py-4 px-6 text-slate-300 font-mono tracking-wide">{b.account}</td>
-                                            <td className="py-4 px-6 text-slate-300 font-mono text-xs uppercase">{b.ifsc}</td>
-                                            <td className="py-4 px-6 text-slate-400 font-medium">{b.gpay}</td>
-                                            
-                                            {/* Micro Custom Status Glass Badging */}
-                                            <td className="py-4 px-5 text-center">
-                                                <span className={`inline-flex px-2.5 py-1 text-xs font-bold rounded-md uppercase tracking-wider ${getStatusClass(b.status)}`}>
-                                                    {b.status}
-                                                </span>
-                                            </td>
-
-                                            <td className="py-4 px-6 text-slate-400 text-xs font-medium">{b.created}</td>
-
-                                            {/* Dropping Action context Menu */}
-                                            <td className="py-4 px-6 text-center relative overflow-visible">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setMenuOpen(menuOpen === b.id ? null : b.id);
-                                                    }}
-                                                    className="action-trigger p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition duration-150 focus:outline-none"
-                                                >
-                                                    <FaEllipsisV className="pointer-events-none" />
-                                                </button>
-
-                                                {menuOpen === b.id && (
-                                                    <div 
-                                                        ref={dropdownRef}
-                                                        className="absolute right-12 top-2 w-36 bg-[#0f1631] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-white/5"
-                                                    >
-                                                        <button 
-                                                            onClick={(e) => { e.stopPropagation(); updateStatus(b.id, "Approved"); }}
-                                                            className="w-full flex items-center gap-2 text-left px-4 py-2.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 transition"
-                                                        >
-                                                            <FaCheckCircle className="text-[10px]" /> Approve Account
-                                                        </button>
-                                                        <button 
-                                                            onClick={(e) => { e.stopPropagation(); updateStatus(b.id, "Rejected"); }}
-                                                            className="w-full flex items-center gap-2 text-left px-4 py-2.5 text-xs font-medium text-amber-400 hover:bg-amber-500/10 transition"
-                                                        >
-                                                            <FaTimesCircle className="text-[10px]" /> Reject Account
-                                                        </button>
-                                                        <button 
-                                                            onClick={(e) => { e.stopPropagation(); deleteBank(b.id); }}
-                                                            className="w-full flex items-center gap-2 text-left px-4 py-2.5 text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition"
-                                                        >
-                                                            <FaTrashAlt className="text-[10px]" /> Drop Record
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                {/* Integrated Sheet Pagination Footer */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 p-5 bg-slate-50/50">
+                    <div className="flex items-center gap-2.5 text-xs font-medium text-slate-500">
+                        <span>Rows per page</span>
+                        <select
+                            value={rowsPerPage}
+                            onChange={(e) => {
+                                setRowsPerPage(Number(e.target.value));
+                                setPage(1);
+                            }}
+                            className="bg-white border border-slate-300 rounded-lg py-1 px-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0437cc] transition"
+                        >
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                        </select>
                     </div>
 
-                    {/* Integrated Sheet Pagination Footer */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 p-5 bg-[#0d153a]/20">
-                        <div className="flex items-center gap-2.5 text-xs font-medium text-slate-400">
-                            <span>Rows per page</span>
-                            <select
-                                value={rowsPerPage}
-                                onChange={(e) => {
-                                    setRowsPerPage(Number(e.target.value));
-                                    setPage(1);
-                                }}
-                                className="bg-[#0f1631] border border-white/10 rounded-lg py-1 px-2.5 text-slate-200 focus:outline-none focus:border-purple-500 transition"
-                            >
-                                <option value={10}>10</option>
-                                <option value={25}>25</option>
-                                <option value={50}>50</option>
-                            </select>
-                        </div>
+                    <div className="flex items-center gap-1">
+                        <button
+                            disabled={page === 1}
+                            onClick={() => setPage((p) => Math.max(1, p - 1))}
+                            className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
+                        >
+                            {"<"}
+                        </button>
 
-                        <div className="flex items-center gap-1">
-                            <button
-                                disabled={page === 1}
-                                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                                className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-white/5 bg-white/5 text-sm text-slate-300 transition hover:bg-white/10 disabled:opacity-30 disabled:pointer-events-none active:scale-95"
-                            >
-                                {"<"}
-                            </button>
+                        {getPagination().map((p, i) =>
+                            p === "..." ? (
+                                <span key={i} className="px-2 text-slate-400 text-sm tracking-wider">...</span>
+                            ) : (
+                                <button
+                                    key={i}
+                                    onClick={() => setPage(p)}
+                                    className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 cursor-pointer ${
+                                        page === p 
+                                        ? "bg-[#0437cc] text-white shadow-xs" 
+                                        : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                                    }`}
+                                >
+                                    {p}
+                                </button>
+                            )
+                        )}
 
-                            {getPagination().map((p, i) =>
-                                p === "..." ? (
-                                    <span key={i} className="px-2 text-slate-500 text-sm tracking-wider">...</span>
-                                ) : (
-                                    <button
-                                        key={i}
-                                        onClick={() => setPage(p)}
-                                        className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 ${
-                                            page === p 
-                                            ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md shadow-purple-950/50" 
-                                            : "border border-white/5 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
-                                        }`}
-                                    >
-                                        {p}
-                                    </button>
-                                )
-                            )}
-
-                            <button
-                                disabled={page === totalPages}
-                                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                                className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-white/5 bg-white/5 text-sm text-slate-300 transition hover:bg-white/10 disabled:opacity-30 disabled:pointer-events-none active:scale-95"
-                            >
-                                {">"}
-                            </button>
-                        </div>
+                        <button
+                            disabled={page === totalPages}
+                            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                            className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
+                        >
+                            {">"}
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import { FaEllipsisV, FaSearch, FaChevronLeft, FaChevronRight, FaEye, FaEdit, FaTrashAlt, FaPlus, FaTimes, FaCalendarAlt, FaUser, FaWallet, FaLink } from "react-icons/fa";
+import { FaEllipsisV, FaChevronLeft, FaChevronRight, FaEye, FaEdit, FaTrashAlt, FaPlus, FaCalendarAlt, FaUser, FaWallet, FaLink } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
@@ -25,7 +25,6 @@ const DepositTransactions = () => {
 
   const dropdownRef = useRef(null);
 
-  // Close drop-down contextual menu on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -186,186 +185,177 @@ const DepositTransactions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b1e] text-slate-100 p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none rounded-2xl shadow-2xl">
-      {/* Ambient Radial Mesh Background Layer */}
-      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-indigo-900/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="relative z-10 max-w-[1600px] mx-auto space-y-6">
-        
-        {/* Dynamic Navigation & Filtering Header Panel */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-xl">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-              <FaWallet className="text-purple-400 text-base" />
-              Transactions Ledger
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">Audit, trace, and manually deploy cryptographic staking deposits</p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {/* Real-time Filter Field */}
-            <div className="relative flex items-center min-w-[280px]">
-              {/* <FaSearch className="absolute left-4 text-slate-400 text-xs pointer-events-none" /> */}
-              <input
-                type="text"
-                placeholder="Search by user, hash string, or contract..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-[#0a0f2b] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/60 transition"
-              />
-            </div>
-
-            {/* Trigger Manual Flow */}
-            <button
-              onClick={() => setShowManualDeposit(true)}
-              className="px-5 py-2.5 text-xs font-bold rounded-xl shadow-lg border bg-gradient-to-r from-purple-500 to-indigo-500 text-white border-transparent hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5"
-            >
-              <FaPlus className="text-[10px]" /> Manual Deposit
-            </button>
-          </div>
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
+      
+      {/* Dynamic Navigation & Filtering Header Panel */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+            <FaWallet className="text-[#0437cc] text-lg" />
+            Transactions Ledger
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Audit, trace, and manually deploy cryptographic staking deposits</p>
         </div>
 
-        {/* Master Data Grid Table Card */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-white/5 bg-[#0a0f2e]/30">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Deposit Inflow Queue</h3>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          {/* Real-time Filter Field */}
+          <div className="relative flex items-center min-w-[280px]">
+            <input
+              type="text"
+              placeholder="Search by user, hash string, or contract..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] shadow-xs transition"
+            />
           </div>
 
-          <div className="w-full overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[1000px]">
-              <thead>
-                <tr className="border-b border-white/10 bg-[#0c1233]/50 text-slate-400 uppercase tracking-wider text-[10px] font-bold">
-                  <th className="py-4.5 px-6 w-16 text-center">Index</th>
-                  <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaUser className="text-[9px] text-purple-400" /> From User</span></th>
-                  <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaLink className="text-[9px] text-indigo-400" /> Transaction Hash</span></th>
-                  <th className="py-4.5 px-6">Plan Cluster</th>
-                  <th className="py-4.5 px-6">Value Transferred</th>
-                  <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaCalendarAlt className="text-[9px] text-purple-400" /> Log Timestamp</span></th>
-                  <th className="py-4.5 px-6 text-center">Operations</th>
-                </tr>
-              </thead>
+          {/* Trigger Manual Flow */}
+          <button
+            onClick={() => setShowManualDeposit(true)}
+            className="px-5 py-2.5 text-xs font-bold rounded-xl shadow-xs border bg-[#0437cc] text-white border-transparent hover:bg-[#3b52d4] transition active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <FaPlus className="text-[10px]" /> Manual Deposit
+          </button>
+        </div>
+      </div>
 
-              <tbody className="divide-y divide-white/5 text-xs text-slate-300 font-medium">
-                {paginated.length > 0 ? (
-                  paginated.map((d, i) => (
-                    <tr key={d.id} onClick={() => {
-    setViewData(d);
-    setMenu(null);
-  }} className="hover:bg-white/[0.02] transition duration-150">
-                      <td className="py-4 px-6 text-center text-slate-500 font-mono">
-                        {String((page - 1) * rows + i + 1).padStart(2, '0')}
-                      </td>
-                      <td className="py-4 px-6 text-white font-bold tracking-wide">{d.user}</td>
-                      <td className="py-4 px-6 font-mono text-[11px] text-slate-400 max-w-[200px] truncate" title={d.hash}>
-                        {d.hash}
-                      </td>
-                      <td className="py-4 px-6 text-purple-300 font-semibold">{d.plan}</td>
-                      <td className="py-4 px-6 font-mono font-bold text-emerald-400">{d.amount}</td>
-                      <td className="py-4 px-6 text-slate-400 text-[11px] font-mono">{d.created}</td>
-                      <td className="py-4 px-6 text-center relative" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-center">
-                          <button 
-                            onClick={() => setMenu(menu === d.id ? null : d.id)}
-                            className={`p-2 rounded-xl transition duration-150 ${menu === d.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-slate-200'}`}
-                          >
-                            <FaEllipsisV className="text-xs" />
-                          </button>
+      {/* Master Data Grid Table Card */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">Deposit Inflow Queue</h3>
+        </div>
 
-                          {/* Contextual Options Dropdown */}
-                          {menu === d.id && (
-                            <div ref={dropdownRef} className="absolute right-14 top-1/2 -translate-y-1/2 z-50 min-w-[140px] bg-[#0c0f28] border border-white/10 rounded-xl shadow-2xl p-1.5 space-y-0.5 text-left animate-fade-in">
-                              <button
-                                onClick={() => { setViewData(d); setMenu(null); }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-300 hover:bg-white/5 hover:text-white transition"
-                              >
-                                <FaEye className="text-[10px] text-purple-400" /> View Node
-                              </button>
-                              <button
-                                onClick={() => { setEditData(d); setMenu(null); }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-300 hover:bg-white/5 hover:text-white transition"
-                              >
-                                <FaEdit className="text-[10px] text-indigo-400" /> Patch Index
-                              </button>
-                              <hr className="border-white/5 my-1" />
-                              <button
-                                onClick={() => { setDeleteId(d.id); setMenu(null); }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-rose-400 hover:bg-rose-500/10 transition"
-                              >
-                                <FaTrashAlt className="text-[10px]" /> Purge Stack
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="7" className="py-20 text-center text-slate-500 font-medium tracking-wide">
-                      No transactional telemetry patterns matches current indices.
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[1000px]">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-600 uppercase tracking-wider text-[10px] font-bold">
+                <th className="py-4.5 px-6 w-16 text-center">Index</th>
+                <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaUser className="text-[10px] text-[#0437cc]" /> From User</span></th>
+                <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaLink className="text-[10px] text-[#3b52d4]" /> Transaction Hash</span></th>
+                <th className="py-4.5 px-6">Plan Cluster</th>
+                <th className="py-4.5 px-6">Value Transferred</th>
+                <th className="py-4.5 px-6"><span className="flex items-center gap-1.5"><FaCalendarAlt className="text-[10px] text-slate-500" /> Log Timestamp</span></th>
+                <th className="py-4.5 px-6 text-center">Operations</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
+              {paginated.length > 0 ? (
+                paginated.map((d, i) => (
+                  <tr key={d.id} onClick={() => {
+                    setViewData(d);
+                    setMenu(null);
+                  }} className="hover:bg-slate-50/80 transition duration-150 cursor-pointer">
+                    <td className="py-4 px-6 text-center text-slate-400 font-mono">
+                      {String((page - 1) * rows + i + 1).padStart(2, '0')}
+                    </td>
+                    <td className="py-4 px-6 text-slate-900 font-bold tracking-wide">{d.user}</td>
+                    <td className="py-4 px-6 font-mono text-[11px] text-slate-500 max-w-[200px] truncate" title={d.hash}>
+                      {d.hash}
+                    </td>
+                    <td className="py-4 px-6 text-[#0437cc] font-bold">{d.plan}</td>
+                    <td className="py-4 px-6 font-mono font-bold text-emerald-600">{d.amount}</td>
+                    <td className="py-4 px-6 text-slate-500 text-[11px] font-mono">{d.created}</td>
+                    <td className="py-4 px-6 text-center relative" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-center">
+                        <button 
+                          onClick={() => setMenu(menu === d.id ? null : d.id)}
+                          className={`p-2 rounded-xl transition duration-150 cursor-pointer ${menu === d.id ? 'bg-slate-100 text-slate-900' : 'text-slate-400 hover:text-slate-700'}`}
+                        >
+                          <FaEllipsisV className="text-xs" />
+                        </button>
+
+                        {menu === d.id && (
+                          <div ref={dropdownRef} className="absolute right-14 top-1/2 -translate-y-1/2 z-50 min-w-[140px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5 space-y-0.5 text-left animate-fade-in divide-y divide-slate-100">
+                            <button
+                              onClick={() => { setViewData(d); setMenu(null); }}
+                              className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-[11px] text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                            >
+                              <FaEye className="text-[10px] text-[#0437cc]" /> View Node
+                            </button>
+                            <button
+                              onClick={() => { setEditData(d); setMenu(null); }}
+                              className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-[11px] text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                            >
+                              <FaEdit className="text-[10px] text-[#3b52d4]" /> Patch Index
+                            </button>
+                            <button
+                              onClick={() => { setDeleteId(d.id); setMenu(null); }}
+                              className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-[11px] text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                            >
+                              <FaTrashAlt className="text-[10px]" /> Purge Stack
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="py-20 text-center text-slate-400 font-medium tracking-wide">
+                    No transactional telemetry patterns matches current indices.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Luxury System Matrix Pagination Footer */}
+        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5 text-xs text-slate-500">
+            <span>Rows per page</span>
+            <div className="relative">
+              <select
+                value={rows}
+                onChange={(e) => setRows(Number(e.target.value))}
+                className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-700 outline-none focus:ring-1 focus:ring-[#0437cc] transition cursor-pointer appearance-none pr-6"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+              <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[8px] text-slate-400">▼</div>
+            </div>
           </div>
 
-          {/* Luxury System Matrix Pagination Footer */}
-          <div className="bg-[#0b102e]/50 border-t border-white/10 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5 text-xs text-slate-400">
-              <span>Rows visible per frame</span>
-              <div className="relative">
-                <select
-                  value={rows}
-                  onChange={(e) => setRows(Number(e.target.value))}
-                  className="bg-[#060a22] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 outline-none focus:border-purple-500 transition cursor-pointer appearance-none pr-6"
-                >
-                  <option value={10}>10</option>
-                  <option value={25}>25</option>
-                  <option value={50}>50</option>
-                </select>
-                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[8px] text-slate-400">▼</div>
-              </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
+            >
+              <FaChevronLeft className="text-[10px]" />
+            </button>
+
+            <div className="flex items-center gap-1">
+              {getPagination().map((p, i) =>
+                p === "..." ? (
+                  <span key={i} className="px-2 text-slate-400 text-sm tracking-wider">...</span>
+                ) : (
+                  <button
+                    key={i}
+                    onClick={() => setPage(p)}
+                    className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 cursor-pointer ${
+                      page === p 
+                        ? 'bg-[#0437cc] text-white shadow-xs' 
+                        : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                )
+              )}
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <button
-                disabled={page === 1}
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className="p-2 rounded-lg border border-white/5 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition disabled:opacity-20 disabled:pointer-events-none"
-              >
-                <FaChevronLeft className="text-[9px]" />
-              </button>
-
-              <div className="flex items-center gap-1">
-                {getPagination().map((p, i) =>
-                  p === "..." ? (
-                    <span key={i} className="px-2.5 text-slate-500 font-mono text-xs">...</span>
-                  ) : (
-                    <button
-                      key={i}
-                      onClick={() => setPage(p)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-                        page === p 
-                          ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md shadow-purple-950/40' 
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  )
-                )}
-              </div>
-
-              <button
-                disabled={page === totalPages}
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                className="p-2 rounded-lg border border-white/5 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition disabled:opacity-20 disabled:pointer-events-none"
-              >
-                <FaChevronRight className="text-[9px]" />
-              </button>
-            </div>
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
+            >
+              <FaChevronRight className="text-[10px]" />
+            </button>
           </div>
         </div>
       </div>
@@ -374,13 +364,13 @@ const DepositTransactions = () => {
       
       {/* View Data Modal Overlay */}
       {viewData && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0d153a]/40">
-              <h3 className="text-sm font-bold text-white tracking-wide">Telemetry Transaction Matrix</h3>
-              <button onClick={() => setViewData(null)} className="text-slate-400 hover:text-white text-lg focus:outline-none">✕</button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+              <h3 className="text-base font-bold text-slate-900 tracking-wide">Telemetry Transaction Matrix</h3>
+              <button onClick={() => setViewData(null)} className="text-slate-400 hover:text-slate-700 transition text-sm cursor-pointer">✕</button>
             </div>
-            <div className="p-6 space-y-2.5">
+            <div className="p-6 space-y-3">
               {[
                 { label: "Account Owner", value: viewData.user },
                 { label: "Blockchain Hash String", value: viewData.hash },
@@ -388,11 +378,16 @@ const DepositTransactions = () => {
                 { label: "Principal Volume", value: viewData.amount },
                 { label: "Creation Cycle Stamp", value: viewData.created }
               ].map((item, idx) => (
-                <div key={idx} className="flex flex-col gap-1 bg-[#0d1433] px-4 py-3 border border-white/5 rounded-xl text-xs">
-                  <span className="text-slate-400 font-medium">{item.label}</span>
-                  <span className="text-slate-100 font-bold tracking-wide break-all">{item.value}</span>
+                <div key={idx} className="flex flex-col gap-1 bg-slate-50 px-4 py-3 border border-slate-200/80 rounded-xl text-xs">
+                  <span className="text-[11px] uppercase font-bold tracking-wider text-slate-400">{item.label}</span>
+                  <span className="text-slate-900 font-bold tracking-wide break-all mt-0.5">{item.value}</span>
                 </div>
               ))}
+            </div>
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+              <button onClick={() => setViewData(null)} className="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer">
+                Dismiss View
+              </button>
             </div>
           </div>
         </div>
@@ -400,46 +395,46 @@ const DepositTransactions = () => {
 
       {/* Patch/Edit Data Modal Overlay */}
       {editData && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0d153a]/40">
-              <h3 className="text-sm font-bold text-white tracking-wide">Patch Index Variable Parameters</h3>
-              <button onClick={() => setEditData(null)} className="text-slate-400 hover:text-white text-lg focus:outline-none">✕</button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+              <h3 className="text-base font-bold text-slate-900 tracking-wide">Patch Index Variable Parameters</h3>
+              <button onClick={() => setEditData(null)} className="text-slate-400 hover:text-slate-700 transition text-sm cursor-pointer">✕</button>
             </div>
             <div className="p-6 space-y-4">
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Account Owner Identifier</label>
+                <label className="text-xs font-semibold text-slate-600">Account Owner Identifier</label>
                 <input
                   name="user"
                   value={editData.user}
                   onChange={handleEditChange}
-                  className="w-full bg-[#05081a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Node Core Plan Level</label>
+                <label className="text-xs font-semibold text-slate-600">Node Core Plan Level</label>
                 <input
                   name="plan"
                   value={editData.plan}
                   onChange={handleEditChange}
-                  className="w-full bg-[#05081a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Staked Allocation Amount</label>
+                <label className="text-xs font-semibold text-slate-600">Staked Allocation Amount</label>
                 <input
                   name="amount"
                   value={editData.amount}
                   onChange={handleEditChange}
-                  className="w-full bg-[#05081a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition"
                 />
               </div>
             </div>
-            <div className="px-6 py-4 bg-[#0d153a]/20 border-t border-white/10 flex items-center justify-end gap-3">
-              <button onClick={() => setEditData(null)} className="px-4 py-2 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition">
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3">
+              <button onClick={() => setEditData(null)} className="px-4 py-2.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer">
                 Abort Changes
               </button>
-              <button onClick={saveEdit} className="px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-950/40 hover:brightness-110 transition">
+              <button onClick={saveEdit} className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#0437cc] hover:bg-[#3b52d4] text-white shadow-xs transition active:scale-95 cursor-pointer">
                 Preserve Mutation
               </button>
             </div>
@@ -449,22 +444,20 @@ const DepositTransactions = () => {
 
       {/* Delete/Purge Modal Overlay */}
       {deleteId && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-sm bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-            <div className="p-6 text-center space-y-4">
-              <div className="w-12 h-12 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-full flex items-center justify-center mx-auto text-base">
-                <FaTrashAlt />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-bold text-white tracking-wide">Purge Execution Protocol</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">Are you completely certain you intend to wipe this transaction from the view matrix cache?</p>
-              </div>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl p-6 space-y-5 text-center">
+            <div className="w-12 h-12 bg-rose-50 text-rose-600 border border-rose-200 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+              ⚠️
             </div>
-            <div className="px-6 py-3.5 bg-[#0d153a]/20 border-t border-white/10 flex items-center justify-center gap-3">
-              <button onClick={() => setDeleteId(null)} className="flex-1 px-4 py-2 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition">
+            <div className="space-y-1.5">
+              <h3 className="text-base font-bold text-slate-900">Purge Execution Protocol</h3>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">Are you completely certain you intend to wipe this transaction from the view matrix cache?</p>
+            </div>
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <button onClick={() => setDeleteId(null)} className="w-28 py-2.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer">
                 Cancel Action
               </button>
-              <button onClick={confirmDelete} className="flex-1 px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-950/40 hover:brightness-110 transition">
+              <button onClick={confirmDelete} className="w-28 py-2.5 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-500 text-white shadow-xs transition active:scale-95 cursor-pointer">
                 Purge Record
               </button>
             </div>
@@ -474,67 +467,65 @@ const DepositTransactions = () => {
 
       {/* Manual Deposit Entry Formulation System */}
       {showManualDeposit && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md bg-[#0b0e26] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0d153a]/40">
-              <h3 className="text-sm font-bold text-white tracking-wide">Initialize Manual Ledger Deposit</h3>
-              <button onClick={() => setShowManualDeposit(false)} className="text-slate-400 hover:text-white text-lg focus:outline-none">✕</button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+              <h3 className="text-base font-bold text-slate-900 tracking-wide">Initialize Manual Ledger Deposit</h3>
+              <button onClick={() => setShowManualDeposit(false)} className="text-slate-400 hover:text-slate-700 transition text-sm cursor-pointer">✕</button>
             </div>
             <div className="p-6 space-y-4">
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Target Account Target</label>
+                <label className="text-xs font-semibold text-slate-600">Target Account Target</label>
                 <div className="relative">
                   <select
                     value={selectedUser}
                     onChange={(e) => setSelectedUser(e.target.value)}
-                    className="w-full bg-[#05081a] border border-white/10 rounded-xl px-4 py-3 text-xs text-slate-100 focus:outline-none focus:border-purple-500 transition cursor-pointer appearance-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition cursor-pointer"
                   >
-                    <option value="" className="bg-[#0b0e26] text-slate-500">Select network account node...</option>
+                    <option value="" className="text-slate-400">Select network account node...</option>
                     {users.map((u) => (
-                      <option key={u.id} value={`${u.name} ${u.user_code}`} className="bg-[#0b0e26] text-slate-100">
+                      <option key={u.id} value={`${u.name} ${u.user_code}`} className="text-slate-800">
                         {u.name} ({u.user_code})
                       </option>
                     ))}
                   </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[8px]">▼</div>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Tier Level Product Index</label>
+                <label className="text-xs font-semibold text-slate-600">Tier Level Product Index</label>
                 <div className="relative">
                   <select
                     value={selectedPlan}
                     onChange={(e) => setSelectedPlan(e.target.value)}
-                    className="w-full bg-[#05081a] border border-white/10 rounded-xl px-4 py-3 text-xs text-slate-100 focus:outline-none focus:border-purple-500 transition cursor-pointer appearance-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition cursor-pointer"
                   >
-                    <option value="" className="bg-[#0b0e26] text-slate-500">Select cluster pricing stack...</option>
+                    <option value="" className="text-slate-400">Select cluster pricing stack...</option>
                     {plans.map((p) => (
-                      <option key={p.id} value={p.name} className="bg-[#0b0e26] text-slate-100">
+                      <option key={p.id} value={p.name} className="text-slate-800">
                         {p.name}
                       </option>
                     ))}
                   </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[8px]">▼</div>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Liquidity Inflow Allocation ($)</label>
+                <label className="text-xs font-semibold text-slate-600">Liquidity Inflow Allocation ($)</label>
                 <input
                   type="number"
                   placeholder="Enter custom liquidity metric..."
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
-                  className="w-full bg-[#05081a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white transition"
                 />
               </div>
             </div>
-            <div className="px-6 py-4 bg-[#0d153a]/20 border-t border-white/10 flex items-center justify-end gap-3">
-              <button onClick={() => setShowManualDeposit(false)} className="px-4 py-2 text-xs font-semibold rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition">
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3">
+              <button onClick={() => setShowManualDeposit(false)} className="px-4 py-2.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer">
                 Cancel Deployment
               </button>
-              <button onClick={createDeposit} className="px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-950/40 hover:brightness-110 transition">
+              <button onClick={createDeposit} className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#0437cc] hover:bg-[#3b52d4] text-white shadow-xs transition active:scale-95 cursor-pointer">
                 Inject Ledger
               </button>
             </div>

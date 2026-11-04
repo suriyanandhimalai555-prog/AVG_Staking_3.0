@@ -67,8 +67,11 @@ const Navbar = () => {
           <img src={Logo} alt="AVG Staking Logo" className="w-10 h-10 object-contain" />
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1.5 mt-1">
-              AVG Staking
+              AVG Staking <span className="rounded bg-[#f77704] px-1.5 py-0.2 text-[9px] font-black uppercase text-white tracking-wider">
+                    3.0
+                  </span>
             </span>
+            
           </div>
         </a>
 

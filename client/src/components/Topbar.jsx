@@ -18,9 +18,9 @@ const Topbar = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 h-[70px] border-b border-white/5 bg-[#070b1e]/80 backdrop-blur-md relative overflow-hidden">
-      {/* Soft premium radial ambient glow behind content */}
-      <div className="absolute top-0 right-1/4 w-72 h-72 bg-purple-600/5 rounded-full blur-3xl pointer-events-none" />
+    <header className="sticky top-0 z-30 h-[75px] border-b border-white/10 bg-[#02185c]/95 backdrop-blur-md relative overflow-hidden shadow-sm md:ml-[-20px]">
+      {/* Soft ambient lighting matching the theme */}
+      <div className="absolute top-0 right-1/4 w-72 h-72 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex h-full items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         
@@ -29,18 +29,18 @@ const Topbar = ({ onMenuClick }) => {
           <button
             type="button"
             onClick={onMenuClick}
-            className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white shadow-md transition duration-200 hover:bg-white/10 active:scale-95"
+            className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white shadow-sm transition duration-200 hover:bg-white/20 active:scale-95"
             aria-label="Open menu"
           >
             <FiMenu className="text-lg" />
           </button>
 
           <div>
-            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider hidden sm:block">
+            <p className="text-[11px] font-semibold text-white/60 uppercase tracking-wider hidden sm:block">
               Welcome back
             </p>
             <h1 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5">
-              Admin
+              Admin Panel
             </h1>
           </div>
         </div>
@@ -48,7 +48,7 @@ const Topbar = ({ onMenuClick }) => {
         {/* Right Side: Action Control Items */}
         <div className="flex items-center gap-3">
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-md shadow-red-950/40 transition duration-200 active:scale-95"
+            className="inline-flex items-center gap-2 rounded-xl bg-white text-[#3b52d4] hover:bg-white/90 px-4 py-2.5 text-xs sm:text-sm font-bold shadow-md transition duration-200 active:scale-95 cursor-pointer"
             onClick={handleLogout}
             type="button"
           >

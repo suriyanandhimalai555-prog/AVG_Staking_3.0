@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import { FaEllipsisV, FaSearch, FaDownload, FaTimes, FaTrashAlt, FaEye, FaEdit, FaCheck, FaBan } from "react-icons/fa";
+import { FaEllipsisV, FaDownload, FaTimes, FaTrashAlt, FaEye, FaEdit, FaCheck, FaBan } from "react-icons/fa";
 import axios from "axios";
 import * as XLSX from "xlsx";
 
@@ -260,17 +260,16 @@ const WithdrawTransactions = () => {
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     
-    // Adjusted column widths to fit the extra "WALLET SYSTEM" column perfectly
     worksheet["!cols"] = [
-      { wch: 26 }, // USER
-      { wch: 14 }, // CODE
-      { wch: 16 }, // WALLET SYSTEM
-      { wch: 22 }, // Account Number
-      { wch: 16 }, // IFSC Code
-      { wch: 18 }, // GPay / PhonePe
-      { wch: 16 }, // Request Amount
-      { wch: 14 }, // Fee (10%)
-      { wch: 14 }  // Dollar
+      { wch: 26 },
+      { wch: 14 },
+      { wch: 16 },
+      { wch: 22 },
+      { wch: 16 },
+      { wch: 18 },
+      { wch: 16 },
+      { wch: 14 },
+      { wch: 14 }
     ];
     
     const workbook = XLSX.utils.book_new();
@@ -279,18 +278,18 @@ const WithdrawTransactions = () => {
   };
 
   return (
-    <div className="p-6 bg-slate-900 min-h-screen text-slate-100 rounded-2xl shadow-2xl">
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
-          <h2 className="text-2xl font-bold tracking-wide text-white">Transactions</h2>
-          <p className="text-sm text-slate-400 mt-1">Withdraw Request Management Portal</p>
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">Transactions</h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Withdraw Request Management Portal</p>
         </div>
-        <div className="relative w-full md:w-96">
+        <div className="relative w-full sm:w-72 lg:w-96">
           <input
             type="text"
             placeholder="Search credentials, txn id, status..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-white border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white shadow-xs transition duration-200"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -298,13 +297,13 @@ const WithdrawTransactions = () => {
       </div>
 
       {/* Control Actions & Filtering */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 bg-slate-800/50 p-4 rounded-xl border border-slate-700/60">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white border border-slate-200 p-5 rounded-2xl shadow-xs">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold text-slate-300">Status Action:</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Status Action:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer"
+            className="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-xl px-3.5 py-2 focus:outline-none focus:ring-1 focus:ring-[#0437cc] cursor-pointer font-semibold"
           >
             <option value="ALL">All States</option>
             <option value="PENDING">Pending Only</option>
@@ -314,29 +313,29 @@ const WithdrawTransactions = () => {
         </div>
 
         <div className="flex flex-wrap gap-2.5">
-          <button onClick={() => exportByStatus("PENDING")} className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600/20 hover:bg-amber-600 border border-amber-600 text-amber-300 hover:text-white rounded-lg text-xs font-medium transition-all shadow-sm">
+          <button onClick={() => exportByStatus("PENDING")} className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95">
             <FaDownload /> Pending Sheet
           </button>
-          <button onClick={() => exportByStatus("APPROVED")} className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-600 text-emerald-300 hover:text-white rounded-lg text-xs font-medium transition-all shadow-sm">
+          <button onClick={() => exportByStatus("APPROVED")} className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95">
             <FaDownload /> Approved Sheet
           </button>
-          <button onClick={() => exportByStatus("REJECTED")} className="inline-flex items-center gap-2 px-4 py-2 bg-rose-600/20 hover:bg-rose-600 border border-rose-600 text-rose-300 hover:text-white rounded-lg text-xs font-medium transition-all shadow-sm">
+          <button onClick={() => exportByStatus("REJECTED")} className="inline-flex items-center gap-2 px-4 py-2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95">
             <FaDownload /> Rejected Sheet
           </button>
         </div>
       </div>
 
       {/* Main Datatable container */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
-        <div className="p-5 border-b border-slate-700 bg-slate-800/50">
-          <h3 className="font-semibold text-lg text-white">Withdraw Ledger Requests</h3>
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div className="p-5 border-b border-slate-200 bg-slate-50/70">
+          <h3 className="font-bold text-base text-slate-900">Withdraw Ledger Requests</h3>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse whitespace-nowrap">
             <thead>
-              <tr className="bg-slate-900 text-slate-400 uppercase text-xs tracking-wider font-semibold border-b border-slate-700">
-                <th className="py-4 px-5">S.No</th>
+              <tr className="bg-slate-50/70 text-slate-600 uppercase text-xs tracking-wider font-bold border-b border-slate-200">
+                <th className="py-4 px-5 w-16 text-center">S.No</th>
                 <th className="py-4 px-5">User Profile</th>
                 <th className="py-4 px-5">Wallet System</th>
                 <th className="py-4 px-5">Requested Value</th>
@@ -346,42 +345,42 @@ const WithdrawTransactions = () => {
                 <th className="py-4 px-5 text-center">Execution Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/60 text-sm text-slate-300">
+            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
               {paginated.length > 0 ? (
                 paginated.map((d, i) => (
                   <tr key={d.id} onClick={() => {
                     setViewData(d);
                     setMenu(null);
-                  }} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="py-3.5 px-5 text-slate-500">{(page - 1) * rows + i + 1}</td>
-                    <td className="py-3.5 px-5 font-medium text-slate-200">{d.user}</td>
-                    <td className="py-3.5 px-5"><span className="bg-slate-900 px-2 py-1 rounded text-xs border border-slate-700 text-slate-400">{d.wallet}</span></td>
-                    <td className="py-3.5 px-5 font-semibold text-emerald-400">{d.amountDisplay}</td>
-                    <td className="py-3.5 px-5 text-xs text-slate-400 max-w-xs truncate">
+                  }} className="hover:bg-slate-50/80 transition-colors cursor-pointer">
+                    <td className="py-4 px-5 text-center text-slate-500 font-medium">{(page - 1) * rows + i + 1}</td>
+                    <td className="py-4 px-5 font-bold text-slate-900">{d.user}</td>
+                    <td className="py-4 px-5"><span className="bg-slate-100 px-2.5 py-1 rounded-md text-xs border border-slate-200 text-slate-600 font-semibold">{d.wallet}</span></td>
+                    <td className="py-4 px-5 font-bold text-emerald-600">{d.amountDisplay}</td>
+                    <td className="py-4 px-5 text-xs text-slate-500 max-w-xs truncate font-mono">
                       {[d.proof !== "-" ? d.proof : null, d.transactionId !== "-" ? d.transactionId : null].filter(Boolean).join(" | ") || "-"}
                     </td>
-                    <td className="py-3.5 px-5">
-                      <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium tracking-wide border ${d.status === "APPROVED" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" :
-                          d.status === "REJECTED" ? "bg-rose-500/10 text-rose-400 border-rose-500/30" :
-                            "bg-amber-500/10 text-amber-400 border-amber-500/30"
-                        }`}>
+                    <td className="py-4 px-5">
+                      <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider border ${
+                        d.status === "APPROVED" ? "bg-emerald-50 text-emerald-600 border-emerald-200" :
+                        d.status === "REJECTED" ? "bg-rose-50 text-rose-600 border-rose-200" :
+                        "bg-amber-50 text-amber-600 border-amber-200 animate-pulse"
+                      }`}>
                         {d.status}
                       </span>
                     </td>
-                    <td className="py-3.5 px-5 text-xs text-slate-400">{d.created}</td>
-                    <td className="py-3.5 px-5 text-center relative" onClick={(e) => e.stopPropagation()}>
-                      <button onClick={() => setMenu(menu === d.id ? null : d.id)} className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-600/50 transition-colors">
+                    <td className="py-4 px-5 text-xs text-slate-500 font-medium">{d.created}</td>
+                    <td className="py-4 px-5 text-center relative" onClick={(e) => e.stopPropagation()}>
+                      <button onClick={() => setMenu(menu === d.id ? null : d.id)} className="p-2 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
                         <FaEllipsisV />
                       </button>
 
                       {menu === d.id && (
-                        <div ref={dropdownRef} className="absolute right-4 mt-1 w-44 bg-slate-900 border border-slate-700 rounded-xl shadow-xl z-30 py-1 text-left overflow-hidden">
-                          <button onClick={() => { setViewData(d); setMenu(null); }} className="w-full px-4 py-2 text-xs flex items-center gap-2 hover:bg-slate-800 text-slate-300 hover:text-white"><FaEye /> View Profile</button>
-                          <button onClick={() => { setEditData(d); setMenu(null); }} className="w-full px-4 py-2 text-xs flex items-center gap-2 hover:bg-slate-800 text-slate-300 hover:text-white"><FaEdit /> Quick Edit</button>
-                          <button onClick={() => approve(d)} className="w-full px-4 py-2 text-xs flex items-center gap-2 hover:bg-emerald-950/50 text-emerald-400 hover:text-emerald-300"><FaCheck /> Approve</button>
-                          <button onClick={() => reject(d.id)} className="w-full px-4 py-2 text-xs flex items-center gap-2 hover:bg-rose-950/50 text-rose-400 hover:text-rose-300"><FaBan /> Reject</button>
-                          <div className="border-t border-slate-800 my-1"></div>
-                          <button onClick={() => { setDeleteId(d.id); setMenu(null); }} className="w-full px-4 py-2 text-xs flex items-center gap-2 hover:bg-rose-600 text-slate-300 hover:text-white"><FaTrashAlt /> Delete Record</button>
+                        <div ref={dropdownRef} className="absolute right-12 top-2 w-44 bg-white border border-slate-200 rounded-xl shadow-xl z-30 py-1 text-left overflow-hidden divide-y divide-slate-100">
+                          <button onClick={() => { setViewData(d); setMenu(null); }} className="w-full px-4 py-2.5 text-xs font-medium flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition cursor-pointer"><FaEye className="text-[#0437cc]" /> View Profile</button>
+                          <button onClick={() => { setEditData(d); setMenu(null); }} className="w-full px-4 py-2.5 text-xs font-medium flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition cursor-pointer"><FaEdit className="text-[#3b52d4]" /> Quick Edit</button>
+                          <button onClick={() => approve(d)} className="w-full px-4 py-2.5 text-xs font-semibold flex items-center gap-2 hover:bg-emerald-50 text-emerald-600 transition cursor-pointer"><FaCheck /> Approve</button>
+                          <button onClick={() => reject(d.id)} className="w-full px-4 py-2.5 text-xs font-semibold flex items-center gap-2 hover:bg-amber-50 text-amber-600 transition cursor-pointer"><FaBan /> Reject</button>
+                          <button onClick={() => { setDeleteId(d.id); setMenu(null); }} className="w-full px-4 py-2.5 text-xs font-semibold flex items-center gap-2 hover:bg-rose-50 text-rose-600 transition cursor-pointer"><FaTrashAlt /> Delete Record</button>
                         </div>
                       )}
                     </td>
@@ -397,74 +396,74 @@ const WithdrawTransactions = () => {
         </div>
 
         {/* Footer Controlled Pagination parameters */}
-        <div className="p-4 bg-slate-900/50 border-t border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="p-5 bg-slate-50/50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500">
           <div className="flex items-center gap-2.5">
-            <span>Rows sizing selection matrix:</span>
-            <select value={rows} onChange={(e) => setRows(Number(e.target.value))} className="bg-slate-800 border border-slate-700 rounded px-2 py-1 focus:outline-none text-slate-300">
+            <span>Rows per page</span>
+            <select value={rows} onChange={(e) => setRows(Number(e.target.value))} className="bg-white border border-slate-300 rounded-lg py-1 px-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0437cc] transition cursor-pointer">
               <option value={10}>10</option>
               <option value={25}>25</option>
               <option value={50}>50</option>
             </select>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <button disabled={page === 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded disabled:opacity-40 hover:bg-slate-700 disabled:hover:bg-slate-800 text-slate-300 transition-colors">{"<"}</button>
+          <div className="flex items-center gap-1">
+            <button disabled={page === 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer">{"<"}</button>
             {getPagination().map((p, i) => p === "..." ? (
-              <span key={i} className="px-2 text-slate-600">...</span>
+              <span key={i} className="px-2 text-slate-400 text-sm tracking-wider">...</span>
             ) : (
-              <button key={i} onClick={() => setPage(p)} className={`px-2.5 py-1.5 rounded font-medium transition-colors border ${page === p ? "bg-indigo-600 border-indigo-500 text-white" : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"}`}>{p}</button>
+              <button key={i} onClick={() => setPage(p)} className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 cursor-pointer ${page === p ? "bg-[#0437cc] text-white shadow-xs" : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"}`}>{p}</button>
             ))}
-            <button disabled={page === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded disabled:opacity-40 hover:bg-slate-700 disabled:hover:bg-slate-800 text-slate-300 transition-colors">{">"}</button>
+            <button disabled={page === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer">{">"}</button>
           </div>
         </div>
       </div>
 
       {/* Primary Edit Dialog Box Overlay */}
       {editData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden my-8">
-            <div className="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-850">
-              <h2 className="text-lg font-bold text-white">Modify System Parameters</h2>
-              <button onClick={() => setEditData(null)} className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"><FaTimes size={16} /></button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-white border border-slate-200 w-full max-w-3xl rounded-2xl shadow-xl overflow-hidden my-8">
+            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+              <h2 className="text-base font-bold text-slate-900 tracking-wide">Modify System Parameters</h2>
+              <button onClick={() => setEditData(null)} className="text-slate-400 hover:text-slate-700 transition text-sm cursor-pointer">✕</button>
             </div>
 
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar text-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <div><span className="text-slate-500 block text-xs uppercase tracking-wider mb-0.5">Profile Attachment</span><strong className="text-slate-200">{editData.user}</strong></div>
-                <div><span className="text-slate-500 block text-xs uppercase tracking-wider mb-0.5">Gateway System</span><strong className="text-slate-200">{editData.wallet}</strong></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div><span className="text-slate-400 block text-[11px] uppercase tracking-wider font-bold mb-0.5">Profile Attachment</span><strong className="text-slate-900">{editData.user}</strong></div>
+                <div><span className="text-slate-400 block text-[11px] uppercase tracking-wider font-bold mb-0.5">Gateway System</span><strong className="text-slate-900">{editData.wallet}</strong></div>
               </div>
 
               <div>
-                <h4 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-3 border-b border-slate-800 pb-1.5">User Remittance Parameters</h4>
+                <h4 className="text-xs font-bold uppercase text-slate-600 tracking-widest mb-3 border-b border-slate-200 pb-1.5">User Remittance Parameters</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-                  <div><span className="text-slate-500 block mb-0.5">Holder Title</span><span className="font-semibold text-slate-300">{editData.bank?.accountHolderName}</span></div>
-                  <div><span className="text-slate-500 block mb-0.5">Institution Code</span><span className="font-semibold text-slate-300">{editData.bank?.bankName}</span></div>
-                  <div><span className="text-slate-500 block mb-0.5">Remittance Line</span><span className="font-semibold text-slate-300">{editData.bank?.accountNumber}</span></div>
-                  <div><span className="text-slate-500 block mb-0.5">Routing Key (IFSC)</span><span className="font-semibold text-slate-300">{editData.bank?.ifscCode}</span></div>
-                  <div><span className="text-slate-500 block mb-0.5">Branch Network</span><span className="font-semibold text-slate-300">{editData.bank?.branch}</span></div>
-                  <div><span className="text-slate-500 block mb-0.5">UPI Identifier</span><span className="font-semibold text-slate-300">{editData.bank?.upiId}</span></div>
-                  <div className="sm:col-span-2"><span className="text-slate-500 block mb-0.5">Alternative Payment Interface</span><span className="font-semibold text-slate-300">{editData.bank?.gpayNumber}</span></div>
+                  <div><span className="text-slate-400 font-bold block mb-0.5">Holder Title</span><span className="font-semibold text-slate-800">{editData.bank?.accountHolderName}</span></div>
+                  <div><span className="text-slate-400 font-bold block mb-0.5">Institution Code</span><span className="font-semibold text-slate-800">{editData.bank?.bankName}</span></div>
+                  <div><span className="text-slate-400 font-bold block mb-0.5">Remittance Line</span><span className="font-semibold text-slate-800">{editData.bank?.accountNumber}</span></div>
+                  <div><span className="text-slate-400 font-bold block mb-0.5">Routing Key (IFSC)</span><span className="font-semibold text-slate-800">{editData.bank?.ifscCode}</span></div>
+                  <div><span className="text-slate-400 font-bold block mb-0.5">Branch Network</span><span className="font-semibold text-slate-800">{editData.bank?.branch}</span></div>
+                  <div><span className="text-slate-400 font-bold block mb-0.5">UPI Identifier</span><span className="font-semibold text-slate-800">{editData.bank?.upiId}</span></div>
+                  <div className="sm:col-span-2"><span className="text-slate-400 font-bold block mb-0.5">Alternative Payment Interface</span><span className="font-semibold text-slate-800">{editData.bank?.gpayNumber}</span></div>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-3 border-b border-slate-800 pb-1.5">Ledger Invoicing Specifications</h4>
+                <h4 className="text-xs font-bold uppercase text-slate-600 tracking-widest mb-3 border-b border-slate-200 pb-1.5">Ledger Invoicing Specifications</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end">
-                  <div><span className="text-slate-500 block text-xs mb-1">Currency Specification</span><span className="font-semibold text-slate-300 bg-slate-950 px-2.5 py-2 rounded-lg border border-slate-800 block text-center">{editData.currency}</span></div>
-                  <div><span className="text-slate-500 block text-xs mb-1">Base Valuation</span><span className="font-semibold text-slate-300 bg-slate-950 px-2.5 py-2 rounded-lg border border-slate-800 block text-center">${Number(editData.amount).toFixed(2)}</span></div>
-                  <div><span className="text-slate-500 block text-xs mb-1">Brokerage Surcharge (10%)</span><span className="font-semibold text-slate-400 bg-slate-950 px-2.5 py-2 rounded-lg border border-slate-800 block text-center">${Number(editData.fee).toFixed(2)}</span></div>
+                  <div><span className="text-slate-500 block text-xs mb-1 font-semibold">Currency Specification</span><span className="font-semibold text-slate-800 bg-slate-50 px-3 py-2 rounded-xl border border-slate-300 block text-center">{editData.currency}</span></div>
+                  <div><span className="text-slate-500 block text-xs mb-1 font-semibold">Base Valuation</span><span className="font-semibold text-slate-800 bg-slate-50 px-3 py-2 rounded-xl border border-slate-300 block text-center">${Number(editData.amount).toFixed(2)}</span></div>
+                  <div><span className="text-slate-500 block text-xs mb-1 font-semibold">Brokerage Surcharge (10%)</span><span className="font-semibold text-slate-600 bg-slate-50 px-3 py-2 rounded-xl border border-slate-300 block text-center">${Number(editData.fee).toFixed(2)}</span></div>
 
                   <div className="sm:col-span-2 md:col-span-1">
-                    <label className="text-slate-400 block text-xs mb-1 font-medium">Disbursed Ledger Value (INR ₹)</label>
-                    <input type="number" name="approvedInr" value={editData.approvedInr || ""} onChange={handleEditChange} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-indigo-500 text-slate-200" step="0.01" />
+                    <label className="text-slate-600 block text-xs mb-1 font-bold">Disbursed Ledger Value (INR ₹)</label>
+                    <input type="number" name="approvedInr" value={editData.approvedInr || ""} onChange={handleEditChange} className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white text-slate-800 text-xs" step="0.01" />
                   </div>
                   <div className="sm:col-span-2 md:col-span-1">
-                    <label className="text-slate-400 block text-xs mb-1 font-medium">System Transaction Hash ID</label>
-                    <input type="text" name="transactionId" value={editData.transactionId || ""} onChange={handleEditChange} placeholder="Enter receipt hash ID" className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-indigo-500 text-slate-200 text-xs" />
+                    <label className="text-slate-600 block text-xs mb-1 font-bold">System Transaction Hash ID</label>
+                    <input type="text" name="transactionId" value={editData.transactionId || ""} onChange={handleEditChange} placeholder="Enter receipt hash ID" className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white text-slate-800 text-xs" />
                   </div>
                   <div>
-                    <label className="text-slate-400 block text-xs mb-1 font-medium">Ledger State Assertion</label>
-                    <select name="status" value={editData.status || ""} onChange={handleEditChange} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-slate-300 cursor-pointer">
+                    <label className="text-slate-600 block text-xs mb-1 font-bold">Ledger State Assertion</label>
+                    <select name="status" value={editData.status || ""} onChange={handleEditChange} className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white text-slate-800 font-semibold cursor-pointer">
                       <option value="PENDING">PENDING</option>
                       <option value="APPROVED">APPROVED</option>
                       <option value="REJECTED">REJECTED</option>
@@ -474,9 +473,9 @@ const WithdrawTransactions = () => {
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-700 bg-slate-850 flex justify-end gap-2.5">
-              <button onClick={() => setEditData(null)} className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-semibold transition-colors">Abort Changes</button>
-              <button onClick={saveEdit} className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-colors shadow-lg">Commit Records</button>
+            <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+              <button onClick={() => setEditData(null)} className="px-4 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-semibold transition-colors cursor-pointer active:scale-95">Abort Changes</button>
+              <button onClick={saveEdit} className="px-5 py-2.5 bg-[#0437cc] hover:bg-[#3b52d4] text-white rounded-xl text-xs font-bold transition-colors shadow-xs cursor-pointer active:scale-95">Commit Records</button>
             </div>
           </div>
         </div>
@@ -484,23 +483,23 @@ const WithdrawTransactions = () => {
 
       {/* Info Inspection View Modal */}
       {viewData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden text-sm">
-            <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-850">
-              <h3 className="font-bold text-white text-base">Metadata View Inspection</h3>
-              <button onClick={() => setViewData(null)} className="text-slate-400 hover:text-white"><FaTimes size={14} /></button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="bg-white border border-slate-200 w-full max-w-md rounded-2xl shadow-xl overflow-hidden text-sm">
+            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+              <h3 className="font-bold text-slate-900 text-base tracking-wide">Metadata View Inspection</h3>
+              <button onClick={() => setViewData(null)} className="text-slate-400 hover:text-slate-700 transition cursor-pointer">✕</button>
             </div>
-            <div className="p-5 space-y-3 text-slate-300">
-              <p className="flex justify-between py-1.5 border-b border-slate-800"><strong>Profile Owner:</strong> <span className="text-slate-400">{viewData.user}</span></p>
-              <p className="flex justify-between py-1.5 border-b border-slate-800"><strong>Channel Class:</strong> <span className="text-slate-400">{viewData.wallet}</span></p>
-              <p className="flex justify-between py-1.5 border-b border-slate-800"><strong>Assigned Value:</strong> <span className="text-emerald-400 font-semibold">{viewData.amountDisplay}</span></p>
-              <p className="flex justify-between py-1.5 border-b border-slate-800"><strong>Audit Trace ID:</strong> <span className="text-slate-400 break-all text-xs max-w-[200px] text-right">{viewData.transactionId || "-"}</span></p>
-              <p className="flex justify-between py-1.5 border-b border-slate-800"><strong>Cryptographic Proof:</strong> <span className="text-slate-400 truncate max-w-[200px] text-xs">{viewData.proof || "-"}</span></p>
-              <p className="flex justify-between py-1.5 border-b border-slate-800"><strong>Ledger Alignment:</strong> <span className="text-amber-400">{viewData.status}</span></p>
-              <p className="flex justify-between py-1.5"><strong>System Initialization:</strong> <span className="text-slate-400 text-xs">{viewData.created}</span></p>
+            <div className="p-6 space-y-3 text-slate-700 text-xs">
+              <p className="flex justify-between py-2 border-b border-slate-100"><strong className="text-slate-500">Profile Owner:</strong> <span className="font-bold text-slate-900">{viewData.user}</span></p>
+              <p className="flex justify-between py-2 border-b border-slate-100"><strong className="text-slate-500">Channel Class:</strong> <span className="font-bold text-slate-900">{viewData.wallet}</span></p>
+              <p className="flex justify-between py-2 border-b border-slate-100"><strong className="text-slate-500">Assigned Value:</strong> <span className="text-emerald-600 font-bold">{viewData.amountDisplay}</span></p>
+              <p className="flex justify-between py-2 border-b border-slate-100"><strong className="text-slate-500">Audit Trace ID:</strong> <span className="font-mono text-slate-700 break-all max-w-[200px] text-right">{viewData.transactionId || "-"}</span></p>
+              <p className="flex justify-between py-2 border-b border-slate-100"><strong className="text-slate-500">Cryptographic Proof:</strong> <span className="font-mono text-slate-700 truncate max-w-[200px]">{viewData.proof || "-"}</span></p>
+              <p className="flex justify-between py-2 border-b border-slate-100"><strong className="text-slate-500">Ledger Alignment:</strong> <span className="font-bold text-amber-600 uppercase">{viewData.status}</span></p>
+              <p className="flex justify-between py-2"><strong className="text-slate-500">System Initialization:</strong> <span className="font-mono text-slate-600">{viewData.created}</span></p>
             </div>
-            <div className="p-3 bg-slate-850 border-t border-slate-700 flex justify-end">
-              <button onClick={() => setViewData(null)} className="px-4 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-300 hover:text-white">Dismiss</button>
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+              <button onClick={() => setViewData(null)} className="px-5 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition cursor-pointer">Dismiss</button>
             </div>
           </div>
         </div>
@@ -508,14 +507,16 @@ const WithdrawTransactions = () => {
 
       {/* Delete Destructive Confirmation Drawer */}
       {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-2xl shadow-2xl p-6 text-center text-sm">
-            <div className="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-rose-500/20"><FaTrashAlt size={20} /></div>
-            <h3 className="font-bold text-lg text-white mb-2">Purge Request Profile?</h3>
-            <p className="text-slate-400 mb-6 leading-relaxed">This acts as an absolute truncation protocol. This record cannot be synchronized after removal.</p>
-            <div className="flex gap-2 justify-center">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium transition-all text-xs">Cancel</button>
-              <button onClick={confirmDelete} className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-medium transition-all text-xs shadow-lg">Confirm Purge</button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="bg-white border border-slate-200 w-full max-w-md rounded-2xl shadow-xl p-6 text-center text-sm space-y-5">
+            <div className="w-12 h-12 bg-rose-50 text-rose-600 border border-rose-200 rounded-full flex items-center justify-center mx-auto text-xl font-bold">⚠️</div>
+            <div className="space-y-1.5">
+              <h3 className="font-bold text-base text-slate-900">Purge Request Profile?</h3>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">This acts as an absolute truncation protocol. This record cannot be synchronized after removal.</p>
+            </div>
+            <div className="flex gap-3 justify-center pt-2">
+              <button onClick={() => setDeleteId(null)} className="w-28 py-2.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-xl font-semibold transition-all text-xs cursor-pointer active:scale-95">Cancel</button>
+              <button onClick={confirmDelete} className="w-28 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-bold transition-all text-xs shadow-xs cursor-pointer active:scale-95">Confirm Purge</button>
             </div>
           </div>
         </div>

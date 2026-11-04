@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { FaSearch, FaSitemap, FaUserAlt, FaCalendarAlt, FaDollarSign, FaFingerprint, FaEye, FaTimes } from "react-icons/fa";
+import { FaSitemap, FaUserAlt, FaCalendarAlt, FaDollarSign, FaFingerprint, FaEye, FaTimes } from "react-icons/fa";
 import { formatDateTimeIST } from "../utils/dateFormat";
 
 /**
@@ -113,23 +113,20 @@ const LevelEarnings = () => {
   const startIndex = (page - 1) * rowsPerPage;
 
   return (
-    <div className="p-6 bg-slate-900 min-h-screen text-slate-100 rounded-2xl shadow-2xl">
+    <div className="w-full max-w-7xl mx-auto space-y-8 text-slate-800 select-none bg-white/90 p-6 rounded-2xl shadow-md">
       
       {/* HEADER SECTION */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
-          <h2 className="text-2xl font-bold tracking-wide text-white">Level Matrix Earnings</h2>
-          <p className="text-sm text-slate-400 mt-1">Audit multi-tier organizational downline payouts and generations</p>
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">Level Matrix Earnings</h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Audit multi-tier organizational downline payouts and generations</p>
         </div>
 
-        <div className="relative w-full md:w-96">
-          {/* <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
-            <FaSearch size={14} />
-          </span> */}
+        <div className="relative w-full sm:w-72 lg:w-96">
           <input
             type="text"
             placeholder="Search level parameters, names, sums..."
-            className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-white border border-slate-300 rounded-xl py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0437cc] focus:bg-white shadow-xs transition duration-200"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -137,16 +134,16 @@ const LevelEarnings = () => {
       </div>
 
       {/* DATA CARD ARCHITECTURE */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
-        <div className="p-5 border-b border-slate-700 bg-slate-800/50">
-          <h3 className="font-semibold text-base text-white">Multi-Tier Revenue Distribution</h3>
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div className="p-5 border-b border-slate-200 bg-slate-50/70">
+          <h3 className="font-bold text-base text-slate-900">Multi-Tier Revenue Distribution</h3>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse whitespace-nowrap">
             <thead>
-              <tr className="bg-slate-900 text-slate-400 uppercase text-xs tracking-wider font-semibold border-b border-slate-700">
-                <th className="py-4 px-5 w-16">S.No</th>
+              <tr className="bg-slate-50/70 text-slate-600 uppercase text-xs tracking-wider font-bold border-b border-slate-200">
+                <th className="py-4 px-5 w-16 text-center">S.No</th>
                 <th className="py-4 px-5">Origin Node (From)</th>
                 <th className="py-4 px-5">Target Affiliate (To)</th>
                 <th className="py-4 px-5">Generation Tier</th>
@@ -155,13 +152,13 @@ const LevelEarnings = () => {
                 <th className="py-4 px-5 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/50 text-sm text-slate-300">
+            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-16 text-slate-400">
+                  <td colSpan="7" className="text-center py-16 text-slate-500">
                     <div className="flex flex-col items-center justify-center gap-3">
-                      <div className="w-8 h-8 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-                      <span className="text-xs font-medium tracking-wide text-slate-400">Compiling lineage payout trees...</span>
+                      <div className="w-8 h-8 border-4 border-[#0437cc] border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-xs font-medium tracking-wide text-slate-500">Compiling lineage payout trees...</span>
                     </div>
                   </td>
                 </tr>
@@ -173,34 +170,34 @@ const LevelEarnings = () => {
                 </tr>
               ) : (
                 pageItems.map((row, i) => (
-                  <tr key={row.id} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="py-3.5 px-5 text-slate-500 font-medium">
+                  <tr key={row.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-4 px-5 text-center text-slate-500 font-medium">
                       {startIndex + i + 1}
                     </td>
-                    <td className="py-3.5 px-5 font-medium text-slate-200 max-w-xs truncate">
+                    <td className="py-4 px-5 font-bold text-slate-900 max-w-xs truncate">
                       {row.fromUser}
                     </td>
-                    <td className="py-3.5 px-5 font-medium text-slate-200 max-w-xs truncate">
+                    <td className="py-4 px-5 font-bold text-slate-900 max-w-xs truncate">
                       {row.toUser}
                     </td>
-                    <td className="py-3.5 px-5">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold tracking-wide border bg-indigo-500/10 text-indigo-400 border-indigo-500/20">
-                        <FaSitemap className="mr-1.5 text-indigo-400" size={11} />
+                    <td className="py-4 px-5">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold tracking-wide border bg-[#eef2fc] text-[#0437cc] border-blue-100">
+                        <FaSitemap className="mr-1.5 text-[#0437cc]" size={11} />
                         {row.type}
                       </span>
                     </td>
-                    <td className="py-3.5 px-5 font-semibold text-emerald-400 tracking-wide">
+                    <td className="py-4 px-5 font-bold text-emerald-600 tracking-wide">
                       {row.amount}
                     </td>
-                    <td className="py-3.5 px-5 text-xs text-slate-400">
+                    <td className="py-4 px-5 text-xs text-slate-500 font-medium">
                       {row.createdAt}
                     </td>
-                    <td className="py-3.5 px-5 text-center">
+                    <td className="py-4 px-5 text-center">
                       <button
                         onClick={() => setViewItem(row)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-indigo-500/50 text-slate-300 hover:text-indigo-400 text-xs font-medium rounded-lg transition-all"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition-all active:scale-95 cursor-pointer"
                       >
-                        <FaEye size={12} />
+                        <FaEye size={12} className="text-[#0437cc]" />
                         View
                       </button>
                     </td>
@@ -212,14 +209,14 @@ const LevelEarnings = () => {
         </div>
 
         {/* CONTROLLER MATRIX (PAGINATION) */}
-        <div className="p-4 bg-slate-900/40 border-t border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="p-5 bg-slate-50/50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500">
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <span>Rows per view channel:</span>
             <select
               value={rowsPerPage}
               onChange={(e) => setRowsPerPage(Number(e.target.value))}
-              className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-slate-300 focus:outline-none focus:border-indigo-500 cursor-pointer"
+              className="bg-white border border-slate-300 rounded-lg py-1 px-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#0437cc] transition cursor-pointer"
             >
               <option value={10}>10 items</option>
               <option value={25}>25 items</option>
@@ -227,26 +224,26 @@ const LevelEarnings = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded disabled:opacity-40 hover:bg-slate-700 text-slate-300 disabled:hover:bg-slate-800 transition-colors font-medium"
+              className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
             >
               {"<"}
             </button>
 
             {getPagination().map((p, i) =>
               p === "..." ? (
-                <span key={i} className="px-1.5 text-slate-600 font-bold">...</span>
+                <span key={i} className="px-2 text-slate-400 text-sm tracking-wider">...</span>
               ) : (
                 <button
                   key={i}
                   onClick={() => setPage(p)}
-                  className={`px-2.5 py-1.5 rounded font-semibold border transition-all ${
+                  className={`h-8 w-8 inline-flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 active:scale-95 cursor-pointer ${
                     page === p
-                      ? "bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-600/20"
-                      : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                      ? "bg-[#0437cc] text-white shadow-xs"
+                      : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   {p}
@@ -257,7 +254,7 @@ const LevelEarnings = () => {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded disabled:opacity-40 hover:bg-slate-700 text-slate-300 disabled:hover:bg-slate-800 transition-colors font-medium"
+              className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-sm text-slate-700 transition hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none active:scale-95 cursor-pointer"
             >
               {">"}
             </button>
@@ -268,69 +265,69 @@ const LevelEarnings = () => {
 
       {/* AUDIT VIEW MODAL */}
       {viewItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm transition-opacity animate-fadeIn">
-          <div className="w-full max-w-lg bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden transform scale-100 transition-transform">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+          <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden transform scale-100 transition-transform">
             
-            <div className="px-6 py-4 bg-slate-900 border-b border-slate-700 flex items-center justify-between">
-              <h3 className="font-bold text-base text-white tracking-wide">Matrix Generation Scope</h3>
+            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="font-bold text-base text-slate-900 tracking-wide">Matrix Generation Scope</h3>
               <button 
                 onClick={() => setViewItem(null)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-slate-700 transition cursor-pointer"
               >
                 <FaTimes size={16} />
               </button>
             </div>
 
-            <div className="p-6 space-y-4 text-sm text-slate-300">
-              <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-700/50 rounded-xl">
-                <FaFingerprint className="text-indigo-400 mt-1 shrink-0" size={16} />
+            <div className="p-6 space-y-4 text-sm text-slate-700">
+              <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                <FaFingerprint className="text-[#0437cc] mt-1 shrink-0" size={16} />
                 <div>
-                  <div className="text-xs text-slate-500 uppercase font-semibold tracking-wider">Transaction Index ID</div>
-                  <div className="text-slate-200 mt-0.5 font-mono">{viewItem.id}</div>
+                  <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Transaction Index ID</div>
+                  <div className="text-slate-900 mt-0.5 font-mono text-xs font-bold">{viewItem.id}</div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-700/50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
                   <FaUserAlt className="text-slate-400 mt-1 shrink-0" size={14} />
                   <div>
-                    <div className="text-xs text-slate-500 uppercase font-semibold tracking-wider">Origin Source Node</div>
-                    <div className="text-slate-200 mt-0.5 font-medium break-all">{viewItem.fromUser}</div>
+                    <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Origin Source Node</div>
+                    <div className="text-slate-900 mt-0.5 font-semibold text-xs break-all">{viewItem.fromUser}</div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-700/50 rounded-xl">
-                  <FaUserAlt className="text-indigo-400 mt-1 shrink-0" size={14} />
+                <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                  <FaUserAlt className="text-[#0437cc] mt-1 shrink-0" size={14} />
                   <div>
-                    <div className="text-xs text-slate-500 uppercase font-semibold tracking-wider">Target Affiliate Recipient</div>
-                    <div className="text-slate-200 mt-0.5 font-medium break-all">{viewItem.toUser}</div>
+                    <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Target Affiliate Recipient</div>
+                    <div className="text-slate-900 mt-0.5 font-semibold text-xs break-all">{viewItem.toUser}</div>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-700/50 rounded-xl">
-                  <FaDollarSign className="text-emerald-400 mt-1 shrink-0" size={14} />
+                <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                  <FaDollarSign className="text-emerald-600 mt-1 shrink-0" size={14} />
                   <div>
-                    <div className="text-xs text-slate-500 uppercase font-semibold tracking-wider">Disbursed Value</div>
-                    <div className="text-emerald-400 font-bold mt-0.5 text-base tracking-wide">{viewItem.amount}</div>
+                    <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Disbursed Value</div>
+                    <div className="text-emerald-600 font-bold mt-0.5 text-base tracking-wide">{viewItem.amount}</div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 bg-slate-900/40 border border-slate-700/50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
                   <FaCalendarAlt className="text-slate-400 mt-1 shrink-0" size={14} />
                   <div>
-                    <div className="text-xs text-slate-500 uppercase font-semibold tracking-wider">Timestamp Log</div>
-                    <div className="text-slate-200 mt-0.5 text-xs">{viewItem.createdAt}</div>
+                    <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Timestamp Log</div>
+                    <div className="text-slate-600 mt-0.5 text-xs font-medium">{viewItem.createdAt}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="px-6 py-4 bg-slate-900/60 border-t border-slate-700 flex justify-end">
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
               <button
                 onClick={() => setViewItem(null)}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition-colors"
+                className="px-5 py-2 bg-white border border-slate-300 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition active:scale-95 cursor-pointer"
               >
                 Close Matrix View
               </button>

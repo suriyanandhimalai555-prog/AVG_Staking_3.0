@@ -9649,7 +9649,7 @@ input:checked+.slider:before {
 }
 
 /* ===== INPUTS ===== */
-input {
+/* input {
   background: #0b1a3a;
   border: 1px solid #2c3e75;
   color: #fff;
@@ -9660,7 +9660,7 @@ input {
 
 input:focus {
   border-color: #ff4dff;
-}
+} */
 
 /* ===== WALLET ===== */
 .wallet-address {
