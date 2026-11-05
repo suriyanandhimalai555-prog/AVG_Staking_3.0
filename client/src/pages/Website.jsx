@@ -36,9 +36,9 @@ const Website = () => {
         <section id="home">
             <Hero />
         </section>
-        <section id="">
+        {/* <section id="">
             <ImageSlider />
-        </section>
+        </section> */}
         <section id="guidelines">
             <FinancialGuidelines />
         </section>
