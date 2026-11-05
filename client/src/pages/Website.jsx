@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
+import ImageSlider from '../components/ImageSlider';
 import FinancialGuidelines from '../components/FinancialGuidelines';
 import CompensationPlan from '../components/CompensationPlan';
 import FAQ from '../components/Faq';
@@ -34,6 +35,9 @@ const Website = () => {
         <Navbar />
         <section id="home">
             <Hero />
+        </section>
+        <section id="">
+            <ImageSlider />
         </section>
         <section id="guidelines">
             <FinancialGuidelines />
