@@ -215,7 +215,7 @@ const UserDashboard = () => {
         {/* <Topbar isOpen={isOpen} setIsOpen={setIsOpen} /> */}
 
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-8">
-          
+
           {/* Header Banner */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xs">
             <div>
@@ -242,7 +242,7 @@ const UserDashboard = () => {
                   <FiAward className="text-amber-500 text-sm" /> AVG Achievers
                 </h2>
               </div>
-              
+
               <div className="overflow-hidden rounded-2xl">
                 <style>{`
                   @keyframes avgScrollLeft {
@@ -396,7 +396,7 @@ const UserDashboard = () => {
       {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 animate-in fade-in duration-300">
           <div className="bg-white border border-slate-200 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden p-6 sm:p-8 space-y-6 relative">
-            
+
             {/* Close Button */}
             <button
               onClick={handleIgnore}
@@ -407,23 +407,31 @@ const UserDashboard = () => {
 
             {/* Icon & Heading */}
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-xl shrink-0 shadow-inner">
+              <div className="h-12 w-12 rounded-2xl bg-[#0437cc]/10 text-[#0437cc] flex items-center justify-center text-xl shrink-0 shadow-inner">
                 <FiBell />
               </div>
               <div>
-                <span className="inline-block px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider mb-1">
-                  Dashboard Notice
+                <span className="inline-block px-2 py-0.5 rounded bg-[#f77704]/10 text-[#f77704] text-[10px] font-black uppercase tracking-wider mb-1">
+                  Important Announcement
                 </span>
                 <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                  Welcome to your Portal!
+                  Payout Notice
                 </h3>
               </div>
             </div>
 
             {/* Message Body */}
-            <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-              Welcome to the upgraded dashboard! Your session is active and securely connected. Easily track your ROI earnings, monitor your team network volume, and manage your staking portfolio all from one place. Enjoy the improved experience!
-            </p>
+            <div className="space-y-3 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+              <p>
+                Please note that payouts will not be processed on <span className="font-bold text-slate-900">November 6th, 7th, 8th, and 9th</span>. Regular payouts will resume right after this period.
+              </p>
+              <p className="text-slate-500 font-semibold italic text-xs">
+                * All other dashboard operations, staking services, and system features will continue to work normally as usual.
+              </p>
+              <p className="text-sm sm:text-base font-bold text-[#f77704] pt-1">
+                🪔 Wishing you and your family a Happy Diwali! ✨
+              </p>
+            </div>
 
             {/* Action Buttons */}
             <div className="space-y-2.5 pt-2">
@@ -470,9 +478,8 @@ const StatCard = ({ title, value, icon, badge = "Stat", accent = "blue" }) => {
 
   return (
     <div
-      className={`bg-white border border-slate-200/90 rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 shadow-xs hover:shadow-md ${
-        accentStyles[accent] || accentStyles.blue
-      }`}
+      className={`bg-white border border-slate-200/90 rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 shadow-xs hover:shadow-md ${accentStyles[accent] || accentStyles.blue
+        }`}
     >
       <div className="flex items-center justify-between">
         <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
