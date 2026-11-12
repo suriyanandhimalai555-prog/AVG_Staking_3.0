@@ -195,10 +195,10 @@ const UserBank = () => {
 
       {/* BANK EDIT / ADD MODAL */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-xl w-full max-w-3xl my-auto max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
             
-            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 bg-slate-50/50 shrink-0">
               <h3 className="text-base font-bold text-slate-900">
                 {bankData ? "Edit Bank Details" : "Add Bank Details"}
               </h3>
@@ -210,7 +210,7 @@ const UserBank = () => {
               </button>
             </div>
 
-            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-y-auto">
               
               <div className="space-y-4">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">Bank Information</h4>
@@ -245,7 +245,7 @@ const UserBank = () => {
 
             </div>
 
-            <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4 bg-slate-50/50">
+            <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4 bg-slate-50/50 shrink-0">
               <button
                 className="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 text-xs sm:text-sm font-bold transition cursor-pointer"
                 onClick={() => setShowModal(false)}
