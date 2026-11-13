@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sidebar from "../components/user/UserSidebar";
-import Topbar from "../components/user/UserTopbar";
+// import Sidebar from "../components/user/UserSidebar";
+// import Topbar from "../components/user/UserTopbar";
 import { toast } from "react-hot-toast";
 import {
   FiLayers,
@@ -29,17 +29,23 @@ const Portfolio = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // ✅ FIXED DATE FORMAT FUNCTION
+  // ✅ FIXED DATE & TIME FORMAT FUNCTION (Matches Admin Panel)
   const formatDate = (date) => {
     if (!date) return "-";
     const d = new Date(date);
     if (isNaN(d.getTime())) return "-";
 
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
+    const istDate = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+    const day = String(istDate.getDate()).padStart(2, "0");
+    const month = String(istDate.getMonth() + 1).padStart(2, "0");
+    const year = istDate.getFullYear();
 
-    return `${day}/${month}/${year}`;
+    let hours = istDate.getHours();
+    const minutes = String(istDate.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    return `${day}/${month}/${year} • ${hours}:${minutes} ${ampm}`;
   };
 
   const fetchPortfolioAndUser = async () => {
@@ -191,7 +197,7 @@ const Portfolio = () => {
 
       ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
       ctx.font = "bold 16px monospace";
-      ctx.fillText(`PURCHASE DATE: ${formatDate(selectedPlan.created_at)}`, 280, 910);
+      ctx.fillText(`PURCHASE DATE: ${formatDate(selectedPlan.created_at)}`, 320, 910);
       ctx.fillText(`PACKAGE ID: #${selectedPlan.id || "101"}`, 920, 910);
 
       // Verified Hologram Seal
@@ -236,11 +242,7 @@ const Portfolio = () => {
 
   return (
     <div className="flex bg-slate-100 rounded-lg min-h-screen">
-      {/* <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} /> */}
-
       <div className="flex-1 flex flex-col min-w-0">
-        {/* <Topbar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} /> */}
-
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-8 bg-slate-100">
 
           {/* Header Banner */}
@@ -357,10 +359,11 @@ const Portfolio = () => {
 
                           {/* Status Badge */}
                           <span
-                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide shadow-xs ${isCompleted
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide shadow-xs ${
+                              isCompleted
                                 ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20"
                                 : "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20"
-                              }`}
+                            }`}
                           >
                             {isCompleted ? (
                               <FiCheckCircle className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
@@ -395,7 +398,6 @@ const Portfolio = () => {
 
                       {/* Progress Sections */}
                       <div className="space-y-4 pt-2">
-
                         {/* ROI Progress */}
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center text-xs font-semibold">
@@ -440,7 +442,6 @@ const Portfolio = () => {
                           </div>
                           <p className="text-[10px] text-slate-400 text-right font-medium">{levelProgress}% completed</p>
                         </div>
-
                       </div>
 
                       {/* Total Earned Summary Box */}
@@ -498,11 +499,9 @@ const Portfolio = () => {
               </button>
             </div>
 
-            {/* PREVIEW CARD (Matches Certificate Layout + User Name & Code) */}
+            {/* PREVIEW CARD */}
             <div className="p-6 flex justify-center bg-slate-100">
-              <div
-                className="w-full bg-[#02185c] border-4 border-[#f77704] rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden flex flex-col items-center text-center space-y-4"
-              >
+              <div className="w-full bg-[#02185c] border-4 border-[#f77704] rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden flex flex-col items-center text-center space-y-4">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f77704]/20 border border-[#f77704]/40 text-[#f77704] text-[10px] font-black uppercase tracking-widest">
                   ★ ELITE INVESTMENT CERTIFICATE ★
                 </div>
